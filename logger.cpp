@@ -37,7 +37,7 @@ void Logger::LogError(const std::string &)
 
 void Logger::Log(const std::string &text)
 {
-    std::string tmp = "INFO " + text + "\n";
+    std::string tmp = "INF " + text + "\n";
     Logger::_buffer.append(tmp);
 
     Logger::Flush();
