@@ -1,4 +1,8 @@
 #include "logger.hpp"
+#include <chrono>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 
 std::string Logger::_filename = "";
 int Logger::_flushResolution = 0;
@@ -25,20 +29,37 @@ void Logger::Flush()
     }
 }
 
-void Logger::LogDebug(const std::string &)
+std::string Logger::CurrentTime()
 {
+    using namespace std::chrono;
 
+    auto now = system_clock::now();
+    auto in_time_t = system_clock::to_time_t(now);
+
+    std::stringstream stringStream;
+    stringStream << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
+    return stringStream.str();
 }
 
-void Logger::LogError(const std::string &)
+void Logger::Log(const std::string &prefix, const std::string &text)
 {
+    auto tmp = CurrentTime() + " " + prefix + " " + text + "\n";
+    Logger::_buffer.append(tmp);
 
+    Logger::Flush();
+}
+
+void Logger::LogDebug(const std::string &text)
+{
+    Logger::Log("DBG", text);
+}
+
+void Logger::LogError(const std::string &text)
+{
+    Logger::Log("ERR", text);
 }
 
 void Logger::Log(const std::string &text)
 {
-    std::string tmp = "INF " + text + "\n";
-    Logger::_buffer.append(tmp);
-
-    Logger::Flush();
+    Logger::Log("INF", text);
 }

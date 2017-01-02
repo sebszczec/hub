@@ -13,6 +13,8 @@ class Logger
     ~Logger() = delete;
 
     static void Flush();
+    static void Log(const std::string &prefix, const std::string &text);
+    static std::string CurrentTime();
 public:
     static void Initilize(const std::string &filename, int flushResolution);
 
