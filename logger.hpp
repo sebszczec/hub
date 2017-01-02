@@ -7,6 +7,7 @@ class Logger
     static int _flushResolution;
     static int _flushCounter;
     static std::fstream _file;
+    static std::string _buffer;
 
     Logger() = delete;
     ~Logger() = delete;

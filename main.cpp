@@ -1,9 +1,12 @@
 #include "daemon.hpp"
 #include <stdlib.h>
 #include <unistd.h>
+#include "logger.hpp"
 
 int main()
 {
+    Logger::Initilize("hub.log", 1);
+
     Daemon daemon;
     daemon.Initilize();
     
