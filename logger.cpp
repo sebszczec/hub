@@ -9,6 +9,7 @@ int Logger::_flushResolution = 0;
 int Logger::_flushCounter = 0;
 std::fstream Logger::_file;
 std::string Logger::_buffer = "";
+LogLevel Logger::_logLevel = LogLevel::Debug;
 
 void Logger::Initilize(const std::string &filename, int flushResolution)
 {
@@ -16,6 +17,12 @@ void Logger::Initilize(const std::string &filename, int flushResolution)
     Logger::_filename = filename;
 
     Logger::_file.open(Logger::_filename, std::fstream::out | std::fstream::app);
+}
+
+void Logger::Initilize(const std::string &filename, int flushResolution, LogLevel logLevel)
+{
+    Logger::Initilize(filename, flushResolution);
+    Logger::SetLogLevel(logLevel);
 }
 
 void Logger::Flush()
@@ -51,15 +58,24 @@ void Logger::Log(const std::string &prefix, const std::string &text)
 
 void Logger::LogDebug(const std::string &text)
 {
-    Logger::Log("DBG", text);
+    if (Logger::_logLevel <= LogLevel::Debug)
+    {
+        Logger::Log("DBG", text);
+    }
 }
 
 void Logger::LogError(const std::string &text)
 {
-    Logger::Log("ERR", text);
+    if (Logger::_logLevel <= LogLevel::Error)
+    {
+        Logger::Log("ERR", text);
+    }
 }
 
 void Logger::Log(const std::string &text)
 {
-    Logger::Log("INF", text);
+    if (Logger::_logLevel <= LogLevel::Info)
+    {
+        Logger::Log("INF", text);
+    }
 }

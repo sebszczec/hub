@@ -17,7 +17,7 @@ void Daemon::Initilize()
     this->_pid = fork();
     if (this->_pid < 0) 
     {
-            Logger::Log("Daemon: getting new PID FAILED");
+            Logger::LogError("Daemon: getting new PID FAILED");
             exit(EXIT_FAILURE);
     }
     /* If we got a good PID, then
@@ -38,7 +38,7 @@ void Daemon::Initilize()
     if (this->_sid < 0) 
     {
             /* Log the failure */
-            Logger::Log("Daemon: getting new SID FAILED");
+            Logger::LogError("Daemon: getting new SID FAILED");
             exit(EXIT_FAILURE);
     }
     Logger::Log("Daemon: getting new SID SUCCESSED, value: " + std::to_string(this->_sid));
@@ -47,7 +47,7 @@ void Daemon::Initilize()
     if ((chdir("/")) < 0) 
     {
             /* Log the failure */
-            Logger::Log("Daemon: changing root path FAILED");
+            Logger::LogError("Daemon: changing root path FAILED");
             exit(EXIT_FAILURE);
     }
     Logger::Log("Daemon: changing root path SUCCESSED");
