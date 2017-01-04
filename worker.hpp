@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 class Worker
 {
 public:
@@ -14,6 +13,7 @@ public:
 private:
     bool _isLooped = false;
     DelayMS _delay = DelayMS(0); // miliseconds
+    bool _stop = false;
 
     template <class Function, class... ARGS>
     void StartThread(Function&& function, ARGS&&... args)
@@ -30,6 +30,10 @@ private:
        std::thread t([=](){
            while (true)
            {
+               if (this->_stop)
+               {
+                   return;
+               }
                binded();
                this_thread::sleep_for(this->_delay);
            }
@@ -70,5 +74,10 @@ public:
     void SetDelay(DelayMS delay)
     {
         this->_delay = delay;
+    }
+
+    void Stop()
+    {
+        this->_stop = true;
     }
 };

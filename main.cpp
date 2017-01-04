@@ -28,12 +28,18 @@ int main()
     },
     "TERROR");
 
+    int a = 0;
     /* The Big Loop */
     while (1) 
     {
         /* Do some task here ... */  
         Logger::LogDebug("Standard loop");  
         sleep(1); /* wait 1 second */
+
+        if (a++ == 5)
+        {
+            worker.Stop();
+        }
     }
 
    exit(EXIT_SUCCESS);
