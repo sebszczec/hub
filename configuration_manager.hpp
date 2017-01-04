@@ -73,7 +73,7 @@ public:
     };
 
     static bool LoadResources();
-    static IResource * GetResource(ConfigurationManager::Variable variableName);
+    static IResource & GetResource(ConfigurationManager::Variable variableName);
 
 private:
     ConfigurationManager() = delete;

@@ -36,7 +36,7 @@ bool CM::LoadResources()
     return true;
 }
 
-IResource * CM::GetResource(CMV variableName)
+IResource & CM::GetResource(CMV variableName)
 {
-    return  CM::_resources[variableName];
+    return  *CM::_resources[variableName];
 }

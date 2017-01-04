@@ -14,9 +14,9 @@ int main()
     }
     
     Logger::Initilize(
-        CM::GetResource(CMV::LogFileName)->ToString(), 
-        CM::GetResource(CMV::LogResolution)->ToInt(), 
-        (LogLevel)CM::GetResource(CMV::LogLevel)->ToInt());
+        CM::GetResource(CMV::LogFileName).ToString(), 
+        CM::GetResource(CMV::LogResolution).ToInt(), 
+        (LogLevel)CM::GetResource(CMV::LogLevel).ToInt());
 
     Daemon daemon;
     daemon.Initilize();
