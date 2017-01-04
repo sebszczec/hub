@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "logger.hpp"
+#include <libconfig.h++>
 
 int main()
 {
+    libconfig::Config config_file;
+
     Logger::Initilize("hub.log", 1, LogLevel::Debug);
 
     Daemon daemon;
