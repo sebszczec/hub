@@ -1,7 +1,7 @@
 #include <libconfig.h++>
 #include <string>
 #include <exception>
-#include <set>
+#include <map>
 
 using namespace libconfig;
 using namespace std;
@@ -64,18 +64,23 @@ public:
 
 class ConfigurationManager
 {
+public:
     enum Variable
     {
         LogFileName,
-        LogLevel
+        LogLevel,
+        LogResolution
     };
 
+    static bool LoadResources();
+    static IResource * GetResource(ConfigurationManager::Variable variableName);
+
+private:
     ConfigurationManager() = delete;
     ~ConfigurationManager() = delete;
 
     static Config _configFile;
-    static set<ConfigurationManager::Variable, IResource *> _resources;
-public:
-    static bool LoadResources();
-    static IResource * GetResource(ConfigurationManager::Variable variableName);
+
+    using ResourceDictionary = map<ConfigurationManager::Variable, IResource *>;
+    static ResourceDictionary _resources;
 };
