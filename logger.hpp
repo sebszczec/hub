@@ -1,5 +1,6 @@
 #include <string>
 #include <fstream>
+#include <mutex>
 
 enum LogLevel
 {
@@ -16,6 +17,8 @@ class Logger
     static std::fstream _file;
     static std::string _buffer;
     static LogLevel _logLevel;
+    
+    static std::mutex _mutex; // mutex needed when flushing logs
 
     Logger() = delete;
     ~Logger() = delete;

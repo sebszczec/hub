@@ -10,6 +10,7 @@ int Logger::_flushCounter = 0;
 std::fstream Logger::_file;
 std::string Logger::_buffer = "";
 LogLevel Logger::_logLevel = LogLevel::Debug;
+std::mutex Logger::_mutex;
 
 void Logger::Initilize(const std::string &filename, int flushResolution)
 {
@@ -27,6 +28,7 @@ void Logger::Initilize(const std::string &filename, int flushResolution, LogLeve
 
 void Logger::Flush()
 {
+    std::lock_guard<std::mutex> lock(Logger::_mutex);
     if (++Logger::_flushCounter >= Logger::_flushResolution)
     {
         Logger::_flushCounter = 0;
