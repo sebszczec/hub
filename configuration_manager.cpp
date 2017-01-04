@@ -2,6 +2,7 @@
 #include <iostream>
 
 Config ConfigurationManager::_configFile;
+set<ConfigurationManager::Variable, IResource *> ConfigurationManager::_resources;
 
 bool ConfigurationManager::LoadResources()
 {
