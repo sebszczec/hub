@@ -3,10 +3,28 @@
 #include <unistd.h>
 #include "logger.hpp"
 #include <libconfig.h++>
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
 
 int main()
 {
     libconfig::Config config_file;
+
+    try
+    {
+        config_file.readFile("settings.cfg");
+    }
+    catch (const libconfig::FileIOException &exception)
+    {
+        std::cerr << "I/O error while reading config file." << std::endl;
+        return(EXIT_FAILURE);
+    }
+    catch (const libconfig::ParseException &exception)
+    {
+        std::cerr << "Config file parse error at " << exception.getFile() << ":" << exception.getLine() << " - " << exception.getError() << std::endl;
+        return(EXIT_FAILURE);
+    }
 
     Logger::Initilize("hub.log", 1, LogLevel::Debug);
 
