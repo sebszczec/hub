@@ -4,6 +4,9 @@ project (hub)
 # enable C++14 standard
 set(CMAKE_CXX_STANDARD 14)  
 
+# extra compilation flags
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
+
 # check if libconfig is present
 FIND_LIBRARY(CONFIG_LIB config++)
 IF(NOT CONFIG_LIB)

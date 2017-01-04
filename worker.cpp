@@ -1,6 +1,6 @@
 #include "worker.hpp"
 
-void Worker::StartAsync()
-{
-    auto a = 1;
-}
+
+using namespace std;
+
+
