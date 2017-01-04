@@ -11,7 +11,7 @@ IF(NOT CONFIG_LIB)
 ENDIF()
 
 # sources
-set (SOURCE_FILES daemon.cpp hub.cpp logger.cpp main.cpp)
+set (SOURCE_FILES configuration_manager.cpp daemon.cpp hub.cpp logger.cpp main.cpp)
 add_executable(hub ${SOURCE_FILES})
 
 # linking
