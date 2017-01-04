@@ -22,16 +22,18 @@ int main()
     Daemon daemon;
     daemon.Initilize();
 
-    Worker worker;
-    worker.StartAsync([](string a, string b){
-        Logger::LogDebug("Worker ended job " + a + b);
-    }, "argument text ", "second argument");
+    Worker worker(true, Worker::DelayMS(1000));
+    worker.StartAsync([](string a){
+        Logger::LogDebug("I am alive! " + a);
+    },
+    "TERROR");
 
     /* The Big Loop */
     while (1) 
     {
-        /* Do some task here ... */    
-        sleep(30); /* wait 30 seconds */
+        /* Do some task here ... */  
+        Logger::LogDebug("Standard loop");  
+        sleep(1); /* wait 1 second */
     }
 
    exit(EXIT_SUCCESS);

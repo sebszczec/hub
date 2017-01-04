@@ -31,6 +31,7 @@ void Logger::Flush()
     {
         Logger::_flushCounter = 0;
         Logger::_file << Logger::_buffer;
+        Logger::_buffer = "";
         Logger::_file.flush();
         return;
     }
