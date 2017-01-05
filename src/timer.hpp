@@ -3,24 +3,13 @@
 #include <exception>
 #include <iostream>
 #include <map>
+#include "iasync.hpp"
 
 using namespace std;
 
-class Timer
+class Timer : public IAsync
 {
-public:
-    using DelayMS = std::chrono::duration<int, std::milli>;
-
 private:
-    static int _idGenerator;
-    static map <int, Timer *> _activeWorkes;
-
-    int _id = 0;
-    bool _isLooped = false;
-    DelayMS _delay = DelayMS(0); // miliseconds
-
-    void Register();
-    void Deregister();
 
     template <class Function, class... ARGS>
     void StartThread(Function&& function, ARGS&&... args)
@@ -52,24 +41,19 @@ private:
     }
 
 public:
-    static void StopActiveJobs();
 
     Timer() = delete;
 
     Timer(DelayMS delay, bool isLooped)
-    : _delay(delay), _isLooped(isLooped)
+    : IAsync(isLooped, delay)
     {
-        this->Register();
     }
 
     Timer(DelayMS delay)
     : Timer(delay, false)
     {}
 
-    ~Timer()
-    {
-        this->Deregister();
-    }
+    ~Timer() = default;
 
     template <class Function, class... ARGS>
     void StartAsync(Function&& function, ARGS&&... args)
@@ -81,20 +65,5 @@ public:
         }
 
         this->StartThreadLooped(function, args...);
-    }
-
-    void SetLooping(bool isLooped)
-    {
-        this->_isLooped = isLooped;
-    }
-
-    void SetDelay(DelayMS delay)
-    {
-        this->_delay = delay;
-    }
-
-    void Stop()
-    {
-        this->_isLooped = false;
     }
 };

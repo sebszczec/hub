@@ -1,3 +1,6 @@
+#ifndef __I_ASYNC
+#define __I_ASYNC
+
 #include <chrono>
 #include <map>
 
@@ -54,3 +57,5 @@ public:
         this->_isLooped = false;
     }
 };
+
+#endif // __I_ASYNC
