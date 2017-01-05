@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <exception>
 #include <iostream>
+#include <map>
 
 using namespace std;
 
@@ -11,9 +12,25 @@ public:
     using DelayMS = std::chrono::duration<int, std::milli>;
 
 private:
+    static int _idGenerator;
+    static map <int, Worker *> _activeWorkes;
+
+    int _id = 0;
     bool _isLooped = false;
     DelayMS _delay = DelayMS(0); // miliseconds
     bool _stop = false;
+
+    void Register()
+    {
+        this->_id = Worker::_idGenerator++;
+        Worker::_activeWorkes[this->_id] = this;
+    }
+
+    void Deregister()
+    {
+        auto item = Worker::_activeWorkes.find(this->_id);
+        Worker::_activeWorkes.erase(item);
+    }
 
     template <class Function, class... ARGS>
     void StartThread(Function&& function, ARGS&&... args)
@@ -42,14 +59,18 @@ private:
     }
 
 public:
-    Worker() = default;
+    static void StopActiveJobs();
 
-    Worker(bool isLooped)
-    : _isLooped(isLooped)
-    {}
+    Worker() = default;
 
     Worker(bool isLooped, DelayMS delay)
     : _isLooped(isLooped), _delay(delay)
+    {
+        this->Register();
+    }
+
+    Worker(bool isLooped)
+    : Worker(isLooped, DelayMS(0))
     {}
 
     ~Worker() = default;
