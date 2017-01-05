@@ -20,5 +20,5 @@ public:
         return this->_sid;
     }
 
-    void Initilize();
+    void Initilize(bool goBackground);
 };

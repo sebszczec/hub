@@ -22,20 +22,14 @@ int main()
         (LogLevel)CM::GetResource(CMV::LogLevel).ToInt());
 
     Daemon daemon;
-    daemon.Initilize();
+    daemon.Initilize( CM::GetResource(CMV::IsDaemon).ToBool());
 
     SignalHandler::RegisterExitSignals();
 
     Worker worker(true, Worker::DelayMS(1000));
-    worker.StartAsync([](string a){
-        Logger::LogDebug("I am alive! " + a);
-    },
-    "VAR");
-
-    Timer timer(Timer::DelayMS(10000));
-    timer.StartAsync([](string a){
-        Logger::LogDebug("TIMER shot " + a);
-    }, "tadam!");
+    worker.StartAsync([](){
+        Logger::LogDebug("Keep alive message.");
+    });
 
     /* The Big Loop */
     while (1) 
