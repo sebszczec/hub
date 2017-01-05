@@ -19,6 +19,7 @@ public:
 
     virtual int ToInt() = 0;
     virtual string ToString() = 0;
+    virtual bool ToBool() = 0;
 };
 
 class IntResource : public IResource
@@ -37,6 +38,11 @@ public:
     }
 
     string ToString() override
+    {
+        throw WrongTypeException();
+    }
+
+    bool ToBool() override
     {
         throw WrongTypeException();
     }
@@ -60,6 +66,37 @@ public:
     {
         return this->_value;
     }
+    
+    bool ToBool() override
+    {
+        throw WrongTypeException();
+    }
+};
+
+class BoolResource : public IResource
+{
+private:
+    bool _value = 0;
+public:
+    BoolResource(int value)
+    : _value(value) {}
+
+    ~BoolResource() {}
+
+    int ToInt() override
+    {
+        throw WrongTypeException();
+    }
+
+    string ToString() override
+    {
+        throw WrongTypeException();
+    }
+
+    bool ToBool() override
+    {
+        return this->_value;
+    }
 };
 
 class ConfigurationManager
@@ -70,6 +107,7 @@ public:
         LogFileName,
         LogLevel,
         LogResolution,
+        IsDaemon,
         PidFileName
     };
 

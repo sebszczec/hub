@@ -36,6 +36,9 @@ bool CM::LoadResources()
     string pidName = CM::_configFile.lookup("pid_name");
     CM::_resources[CMV::PidFileName] = new StringResource(pidName);
 
+    int isDaemon = CM::_configFile.lookup("daemon");
+    CM::_resources[CMV::IsDaemon] = new BoolResource(isDaemon == 1);
+
     return true;
 }
 
