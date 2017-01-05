@@ -75,6 +75,7 @@ public:
 
     static bool LoadResources();
     static IResource & GetResource(ConfigurationManager::Variable variableName);
+    static void CleanResources();
 
 private:
     ConfigurationManager() = delete;

@@ -5,6 +5,7 @@
 #include "configuration_manager.hpp"
 #include "worker.hpp"
 #include "timer.hpp"
+#include "signal_handler.hpp"
 
 int main()
 {
@@ -22,6 +23,8 @@ int main()
 
     Daemon daemon;
     daemon.Initilize();
+
+    SignalHandler::RegisterExitSignals();
 
     Worker worker(true, Worker::DelayMS(1000));
     worker.StartAsync([](string a){

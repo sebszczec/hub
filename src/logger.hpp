@@ -23,12 +23,14 @@ class Logger
     Logger() = delete;
     ~Logger() = delete;
 
-    static void Flush();
+    static void Flush(bool force = false);
     static void Log(const std::string &prefix, const std::string &text);
     static std::string CurrentTime();
 public:
     static void Initilize(const std::string &filename, int flushResolution);
     static void Initilize(const std::string &filename, int flushResolution, LogLevel logLevel);
+    
+    static void CleanResources();
 
     static void LogDebug(const std::string &text);
     static void LogError(const std::string &text);

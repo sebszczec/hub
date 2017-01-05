@@ -43,3 +43,13 @@ IResource & CM::GetResource(CMV variableName)
 {
     return  *CM::_resources[variableName];
 }
+
+void CM::CleanResources()
+{
+    for (auto &pair : CM::_resources)
+    {
+        delete pair.second;
+    }
+
+    CM::_resources.clear();
+}
