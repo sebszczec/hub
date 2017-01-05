@@ -14,10 +14,16 @@ void Timer::StopActiveJobs()
 
     for (auto & pair : Timer::_activeWorkes)
     {
-        pair.second->Stop();
-        if (pair.second->_delay > maxDelay)
+        auto & element = pair.second;
+        if(!element->_isLooped)
         {
-            maxDelay = pair.second->_delay;
+            continue;
+        }
+
+        element->Stop();
+        if (element->_delay > maxDelay)
+        {
+            maxDelay = element->_delay;
         }
     }
 
