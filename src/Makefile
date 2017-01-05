@@ -233,6 +233,33 @@ logger.cpp.s:
 	cd /home/slaugh/hub && $(MAKE) -f src/CMakeFiles/production.dir/build.make src/CMakeFiles/production.dir/logger.cpp.s
 .PHONY : logger.cpp.s
 
+signal_handler.o: signal_handler.cpp.o
+
+.PHONY : signal_handler.o
+
+# target to build an object file
+signal_handler.cpp.o:
+	cd /home/slaugh/hub && $(MAKE) -f src/CMakeFiles/production.dir/build.make src/CMakeFiles/production.dir/signal_handler.cpp.o
+.PHONY : signal_handler.cpp.o
+
+signal_handler.i: signal_handler.cpp.i
+
+.PHONY : signal_handler.i
+
+# target to preprocess a source file
+signal_handler.cpp.i:
+	cd /home/slaugh/hub && $(MAKE) -f src/CMakeFiles/production.dir/build.make src/CMakeFiles/production.dir/signal_handler.cpp.i
+.PHONY : signal_handler.cpp.i
+
+signal_handler.s: signal_handler.cpp.s
+
+.PHONY : signal_handler.s
+
+# target to generate assembly for a file
+signal_handler.cpp.s:
+	cd /home/slaugh/hub && $(MAKE) -f src/CMakeFiles/production.dir/build.make src/CMakeFiles/production.dir/signal_handler.cpp.s
+.PHONY : signal_handler.cpp.s
+
 timer.o: timer.cpp.o
 
 .PHONY : timer.o
@@ -308,6 +335,9 @@ help:
 	@echo "... logger.o"
 	@echo "... logger.i"
 	@echo "... logger.s"
+	@echo "... signal_handler.o"
+	@echo "... signal_handler.i"
+	@echo "... signal_handler.s"
 	@echo "... timer.o"
 	@echo "... timer.i"
 	@echo "... timer.s"

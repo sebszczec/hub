@@ -153,9 +153,33 @@ src/CMakeFiles/production.dir/logger.cpp.o.provides: src/CMakeFiles/production.d
 src/CMakeFiles/production.dir/logger.cpp.o.provides.build: src/CMakeFiles/production.dir/logger.cpp.o
 
 
+src/CMakeFiles/production.dir/signal_handler.cpp.o: src/CMakeFiles/production.dir/flags.make
+src/CMakeFiles/production.dir/signal_handler.cpp.o: src/signal_handler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/production.dir/signal_handler.cpp.o"
+	cd /home/slaugh/hub/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/production.dir/signal_handler.cpp.o -c /home/slaugh/hub/src/signal_handler.cpp
+
+src/CMakeFiles/production.dir/signal_handler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/production.dir/signal_handler.cpp.i"
+	cd /home/slaugh/hub/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/slaugh/hub/src/signal_handler.cpp > CMakeFiles/production.dir/signal_handler.cpp.i
+
+src/CMakeFiles/production.dir/signal_handler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/production.dir/signal_handler.cpp.s"
+	cd /home/slaugh/hub/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/slaugh/hub/src/signal_handler.cpp -o CMakeFiles/production.dir/signal_handler.cpp.s
+
+src/CMakeFiles/production.dir/signal_handler.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/production.dir/signal_handler.cpp.o.requires
+
+src/CMakeFiles/production.dir/signal_handler.cpp.o.provides: src/CMakeFiles/production.dir/signal_handler.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/production.dir/build.make src/CMakeFiles/production.dir/signal_handler.cpp.o.provides.build
+.PHONY : src/CMakeFiles/production.dir/signal_handler.cpp.o.provides
+
+src/CMakeFiles/production.dir/signal_handler.cpp.o.provides.build: src/CMakeFiles/production.dir/signal_handler.cpp.o
+
+
 src/CMakeFiles/production.dir/timer.cpp.o: src/CMakeFiles/production.dir/flags.make
 src/CMakeFiles/production.dir/timer.cpp.o: src/timer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/production.dir/timer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/production.dir/timer.cpp.o"
 	cd /home/slaugh/hub/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/production.dir/timer.cpp.o -c /home/slaugh/hub/src/timer.cpp
 
 src/CMakeFiles/production.dir/timer.cpp.i: cmake_force
@@ -179,7 +203,7 @@ src/CMakeFiles/production.dir/timer.cpp.o.provides.build: src/CMakeFiles/product
 
 src/CMakeFiles/production.dir/worker.cpp.o: src/CMakeFiles/production.dir/flags.make
 src/CMakeFiles/production.dir/worker.cpp.o: src/worker.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/production.dir/worker.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/production.dir/worker.cpp.o"
 	cd /home/slaugh/hub/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/production.dir/worker.cpp.o -c /home/slaugh/hub/src/worker.cpp
 
 src/CMakeFiles/production.dir/worker.cpp.i: cmake_force
@@ -207,6 +231,7 @@ production_OBJECTS = \
 "CMakeFiles/production.dir/daemon.cpp.o" \
 "CMakeFiles/production.dir/hub.cpp.o" \
 "CMakeFiles/production.dir/logger.cpp.o" \
+"CMakeFiles/production.dir/signal_handler.cpp.o" \
 "CMakeFiles/production.dir/timer.cpp.o" \
 "CMakeFiles/production.dir/worker.cpp.o"
 
@@ -217,11 +242,12 @@ src/libproduction.a: src/CMakeFiles/production.dir/configuration_manager.cpp.o
 src/libproduction.a: src/CMakeFiles/production.dir/daemon.cpp.o
 src/libproduction.a: src/CMakeFiles/production.dir/hub.cpp.o
 src/libproduction.a: src/CMakeFiles/production.dir/logger.cpp.o
+src/libproduction.a: src/CMakeFiles/production.dir/signal_handler.cpp.o
 src/libproduction.a: src/CMakeFiles/production.dir/timer.cpp.o
 src/libproduction.a: src/CMakeFiles/production.dir/worker.cpp.o
 src/libproduction.a: src/CMakeFiles/production.dir/build.make
 src/libproduction.a: src/CMakeFiles/production.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libproduction.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/slaugh/hub/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libproduction.a"
 	cd /home/slaugh/hub/src && $(CMAKE_COMMAND) -P CMakeFiles/production.dir/cmake_clean_target.cmake
 	cd /home/slaugh/hub/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/production.dir/link.txt --verbose=$(VERBOSE)
 
@@ -234,6 +260,7 @@ src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/configurat
 src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/daemon.cpp.o.requires
 src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/hub.cpp.o.requires
 src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/logger.cpp.o.requires
+src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/signal_handler.cpp.o.requires
 src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/timer.cpp.o.requires
 src/CMakeFiles/production.dir/requires: src/CMakeFiles/production.dir/worker.cpp.o.requires
 

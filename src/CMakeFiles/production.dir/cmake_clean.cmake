@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/production.dir/daemon.cpp.o"
   "CMakeFiles/production.dir/hub.cpp.o"
   "CMakeFiles/production.dir/logger.cpp.o"
+  "CMakeFiles/production.dir/signal_handler.cpp.o"
   "CMakeFiles/production.dir/timer.cpp.o"
   "CMakeFiles/production.dir/worker.cpp.o"
   "libproduction.pdb"

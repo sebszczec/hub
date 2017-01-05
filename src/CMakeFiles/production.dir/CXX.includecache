@@ -78,6 +78,18 @@ fstream
 mutex
 -
 
+/home/slaugh/hub/src/signal_handler.cpp
+csignal
+-
+signal_handler.hpp
+/home/slaugh/hub/src/signal_handler.hpp
+logger.hpp
+/home/slaugh/hub/src/logger.hpp
+configuration_manager.hpp
+/home/slaugh/hub/src/configuration_manager.hpp
+
+/home/slaugh/hub/src/signal_handler.hpp
+
 /home/slaugh/hub/src/timer.cpp
 timer.hpp
 /home/slaugh/hub/src/timer.hpp

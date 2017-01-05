@@ -15,6 +15,11 @@ src/CMakeFiles/production.dir/hub.cpp.o: src/hub.hpp
 src/CMakeFiles/production.dir/logger.cpp.o: src/logger.cpp
 src/CMakeFiles/production.dir/logger.cpp.o: src/logger.hpp
 
+src/CMakeFiles/production.dir/signal_handler.cpp.o: src/configuration_manager.hpp
+src/CMakeFiles/production.dir/signal_handler.cpp.o: src/logger.hpp
+src/CMakeFiles/production.dir/signal_handler.cpp.o: src/signal_handler.cpp
+src/CMakeFiles/production.dir/signal_handler.cpp.o: src/signal_handler.hpp
+
 src/CMakeFiles/production.dir/timer.cpp.o: src/timer.cpp
 src/CMakeFiles/production.dir/timer.cpp.o: src/timer.hpp
 

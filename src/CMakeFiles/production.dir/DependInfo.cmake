@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/slaugh/hub/src/daemon.cpp" "/home/slaugh/hub/src/CMakeFiles/production.dir/daemon.cpp.o"
   "/home/slaugh/hub/src/hub.cpp" "/home/slaugh/hub/src/CMakeFiles/production.dir/hub.cpp.o"
   "/home/slaugh/hub/src/logger.cpp" "/home/slaugh/hub/src/CMakeFiles/production.dir/logger.cpp.o"
+  "/home/slaugh/hub/src/signal_handler.cpp" "/home/slaugh/hub/src/CMakeFiles/production.dir/signal_handler.cpp.o"
   "/home/slaugh/hub/src/timer.cpp" "/home/slaugh/hub/src/CMakeFiles/production.dir/timer.cpp.o"
   "/home/slaugh/hub/src/worker.cpp" "/home/slaugh/hub/src/CMakeFiles/production.dir/worker.cpp.o"
   )
