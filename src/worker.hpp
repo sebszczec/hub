@@ -20,17 +20,9 @@ private:
     DelayMS _delay = DelayMS(0); // miliseconds
     bool _stop = false;
 
-    void Register()
-    {
-        this->_id = Worker::_idGenerator++;
-        Worker::_activeWorkes[this->_id] = this;
-    }
+    void Register();
 
-    void Deregister()
-    {
-        auto item = Worker::_activeWorkes.find(this->_id);
-        Worker::_activeWorkes.erase(item);
-    }
+    void Deregister();
 
     template <class Function, class... ARGS>
     void StartThread(Function&& function, ARGS&&... args)
