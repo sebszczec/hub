@@ -4,6 +4,7 @@
 #include "logger.hpp"
 #include "configuration_manager.hpp"
 #include "worker.hpp"
+#include "timer.hpp"
 
 int main()
 {
@@ -27,6 +28,11 @@ int main()
         Logger::LogDebug("I am alive! " + a);
     },
     "VAR");
+
+    Timer timer(Timer::DelayMS(10000));
+    timer.StartAsync([](string a){
+        Logger::LogDebug("TIMER shot " + a);
+    }, "tadam!");
 
     /* The Big Loop */
     while (1) 

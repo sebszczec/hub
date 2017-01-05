@@ -18,7 +18,7 @@ FIND_PACKAGE(GTest REQUIRED)
 INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
 
 # sources
-set (SOURCE_FILES configuration_manager.cpp daemon.cpp hub.cpp logger.cpp main.cpp worker.cpp)
+set (SOURCE_FILES configuration_manager.cpp daemon.cpp hub.cpp logger.cpp main.cpp timer.cpp worker.cpp)
 add_executable(hub ${SOURCE_FILES})
 
 # linking
