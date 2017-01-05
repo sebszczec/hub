@@ -18,7 +18,6 @@ private:
     int _id = 0;
     bool _isLooped = false;
     DelayMS _delay = DelayMS(0); // miliseconds
-    bool _stop = false;
 
     void Register();
     void Deregister();
@@ -41,7 +40,7 @@ private:
        std::thread t([=](){
            while (true)
            {
-               if (this->_stop)
+               if (!this->_isLooped)
                {
                    return;
                }
@@ -96,6 +95,6 @@ public:
 
     void Stop()
     {
-        this->_stop = true;
+        this->_isLooped = false;
     }
 };
