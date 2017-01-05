@@ -8,8 +8,8 @@ std::map<int, std::string> SignalHandler::_signalNames;
 void SignalHandler::Handler(int signal_number)
 {
     Logger::LogError("Signal " + SignalHandler::_signalNames[signal_number] + " received, cleanning resources and quiting..");
-    //ConfigurationManager::CleanResources();
-    //Logger::CleanResources();
+    ConfigurationManager::CleanResources();
+    Logger::CleanResources();
     exit(EXIT_FAILURE);
 }
 
