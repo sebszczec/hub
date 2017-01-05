@@ -89,6 +89,10 @@ configuration_manager.hpp
 /home/slaugh/hub/src/configuration_manager.hpp
 
 /home/slaugh/hub/src/signal_handler.hpp
+string
+-
+map
+-
 
 /home/slaugh/hub/src/timer.cpp
 timer.hpp

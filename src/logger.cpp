@@ -26,10 +26,16 @@ void Logger::Initilize(const std::string &filename, int flushResolution, LogLeve
     Logger::SetLogLevel(logLevel);
 }
 
-void Logger::Flush()
+void Logger::CleanResources()
+{
+    Logger::Flush(true);
+    Logger::_file.close();
+}
+
+void Logger::Flush(bool force)
 {
     std::lock_guard<std::mutex> lock(Logger::_mutex);
-    if (++Logger::_flushCounter >= Logger::_flushResolution)
+    if (++Logger::_flushCounter >= Logger::_flushResolution || force)
     {
         Logger::_flushCounter = 0;
         Logger::_file << Logger::_buffer;
