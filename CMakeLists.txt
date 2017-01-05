@@ -5,7 +5,8 @@ project (hub)
 set(CMAKE_CXX_STANDARD 14)  
 
 # extra compilation flags
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
+# -g - generates debug symbols
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -g")
 
 # check if libconfig is present
 FIND_LIBRARY(CONFIG_LIB config++)
