@@ -22,10 +22,7 @@ int main()
         (LogLevel)CM::GetResource(CMV::LogLevel).ToInt());
 
     Daemon daemon;
-    if (CM::GetResource(CMV::IsDaemon).ToBool())
-    {
-        daemon.Initilize();
-    }
+    daemon.Initilize( CM::GetResource(CMV::IsDaemon).ToBool());
 
     SignalHandler::RegisterExitSignals();
 
