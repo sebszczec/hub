@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8.9)
 set(CMAKE_CXX_STANDARD 14)  
 
 # sources
-set (SOURCE_FILES configuration_manager.cpp daemon.cpp hub.cpp logger.cpp signal_handler.cpp timer.cpp worker.cpp)
+set (SOURCE_FILES configuration_manager.cpp daemon.cpp hub.cpp iasync.cpp logger.cpp signal_handler.cpp timer.cpp worker.cpp)
 add_library(production ${SOURCE_FILES})
 
 

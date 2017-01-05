@@ -2,18 +2,14 @@
 #include <unistd.h>
 #include <exception>
 #include <iostream>
+#include <map>
+#include "iasync.hpp"
 
 using namespace std;
 
-class Timer
+class Timer : public IAsync
 {
-public:
-    using DelayMS = std::chrono::duration<int, std::milli>;
-
 private:
-    bool _isLooped = false;
-    DelayMS _delay = DelayMS(0); // miliseconds
-    bool _stop = false;
 
     template <class Function, class... ARGS>
     void StartThread(Function&& function, ARGS&&... args)
@@ -33,7 +29,7 @@ private:
        std::thread t([=](){
            while (true)
            {
-               if (this->_stop)
+               if (!this->_isLooped)
                {
                    return;
                }
@@ -45,14 +41,16 @@ private:
     }
 
 public:
+
     Timer() = delete;
 
-    Timer(DelayMS delay)
-    : _delay(delay)
-    {}
-
     Timer(DelayMS delay, bool isLooped)
-    : _delay(delay), _isLooped(isLooped)
+    : IAsync(isLooped, delay)
+    {
+    }
+
+    Timer(DelayMS delay)
+    : Timer(delay, false)
     {}
 
     ~Timer() = default;
@@ -67,20 +65,5 @@ public:
         }
 
         this->StartThreadLooped(function, args...);
-    }
-
-    void SetLooping(bool isLooped)
-    {
-        this->_isLooped = isLooped;
-    }
-
-    void SetDelay(DelayMS delay)
-    {
-        this->_delay = delay;
-    }
-
-    void Stop()
-    {
-        this->_stop = true;
     }
 };
