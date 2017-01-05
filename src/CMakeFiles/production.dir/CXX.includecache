@@ -43,6 +43,10 @@ string.h
 -
 logger.hpp
 /home/slaugh/hub/src/logger.hpp
+fstream
+-
+configuration_manager.hpp
+/home/slaugh/hub/src/configuration_manager.hpp
 
 /home/slaugh/hub/src/daemon.hpp
 sys/types.h

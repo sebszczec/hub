@@ -5,6 +5,7 @@ src/CMakeFiles/production.dir/configuration_manager.cpp.o
  /home/slaugh/hub/src/configuration_manager.cpp
  /home/slaugh/hub/src/configuration_manager.hpp
 src/CMakeFiles/production.dir/daemon.cpp.o
+ /home/slaugh/hub/src/configuration_manager.hpp
  /home/slaugh/hub/src/daemon.cpp
  /home/slaugh/hub/src/daemon.hpp
  /home/slaugh/hub/src/logger.hpp

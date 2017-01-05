@@ -8,6 +8,8 @@
 #include <syslog.h>
 #include <string.h>
 #include "logger.hpp"
+#include <fstream>
+#include "configuration_manager.hpp"
 
 void Daemon::Initilize()
 {
@@ -25,6 +27,7 @@ void Daemon::Initilize()
     if (this->_pid > 0) 
     {
             Logger::Log("Daemon: getting new PID SUCCESSED, value: " + std::to_string(this->_pid) + ", parrent exiting");
+            SavePidToFile();
             exit(EXIT_SUCCESS);
     }
     
@@ -59,4 +62,20 @@ void Daemon::Initilize()
     Logger::Log("Daemon: disabling standard descriptors SUCCESSED");
 
     /* Daemon-specific initialization goes here */
+
+}
+
+void Daemon::SavePidToFile()
+{
+    using namespace std;
+    using CM = ConfigurationManager;
+    using CMV = CM::Variable;
+
+    auto name = CM::GetResource(CMV::PidFileName).ToString();
+    fstream file;
+    file.open(name, fstream::out | fstream::trunc);
+    file << to_string(this->_pid) << endl;
+    file.close();
+
+    Logger::LogDebug("Daemon: PID saved to " + name);
 }

@@ -4,6 +4,7 @@
 src/CMakeFiles/production.dir/configuration_manager.cpp.o: src/configuration_manager.cpp
 src/CMakeFiles/production.dir/configuration_manager.cpp.o: src/configuration_manager.hpp
 
+src/CMakeFiles/production.dir/daemon.cpp.o: src/configuration_manager.hpp
 src/CMakeFiles/production.dir/daemon.cpp.o: src/daemon.cpp
 src/CMakeFiles/production.dir/daemon.cpp.o: src/daemon.hpp
 src/CMakeFiles/production.dir/daemon.cpp.o: src/logger.hpp
