@@ -13,6 +13,10 @@ IF(NOT CONFIG_LIB)
   MESSAGE(FATAL_ERROR "libconfig++ library not found")
 ENDIF()
 
+# Locate GTest
+FIND_PACKAGE(GTest REQUIRED)
+INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
+
 # sources
 set (SOURCE_FILES configuration_manager.cpp daemon.cpp hub.cpp logger.cpp main.cpp worker.cpp)
 add_executable(hub ${SOURCE_FILES})
