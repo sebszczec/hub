@@ -33,6 +33,9 @@ bool CM::LoadResources()
     int logResolution = CM::_configFile.lookup("log_resolution");
     CM::_resources[CMV::LogResolution] = new IntResource(logResolution);
 
+    string pidName = CM::_configFile.lookup("pid_name");
+    CM::_resources[CMV::PidFileName] = new StringResource(pidName);
+
     return true;
 }
 

@@ -69,7 +69,8 @@ public:
     {
         LogFileName,
         LogLevel,
-        LogResolution
+        LogResolution,
+        PidFileName
     };
 
     static bool LoadResources();
