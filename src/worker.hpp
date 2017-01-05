@@ -21,7 +21,6 @@ private:
     bool _stop = false;
 
     void Register();
-
     void Deregister();
 
     template <class Function, class... ARGS>
@@ -65,7 +64,10 @@ public:
     : Worker(isLooped, DelayMS(0))
     {}
 
-    ~Worker() = default;
+    ~Worker()
+    {
+        this->Deregister();
+    };
 
     template <class Function, class... ARGS>
     void StartAsync(Function&& function, ARGS&&... args)

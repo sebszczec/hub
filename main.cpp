@@ -31,10 +31,10 @@ int main()
         Logger::LogDebug("Keep alive message from worker.");
     });
 
-    // Timer timer(Worker::DelayMS(500), true);
-    // timer.StartAsync([](){
-    //     Logger::LogDebug("Keep alive message from timer.");
-    // });
+    Timer timer(Worker::DelayMS(500), true);
+    timer.StartAsync([](){
+        Logger::LogDebug("Keep alive message from timer.");
+    });
 
     /* The Big Loop */
     while (1) 

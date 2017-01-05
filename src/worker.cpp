@@ -8,7 +8,7 @@ map <int, Worker *> Worker::_activeWorkes;
 
 void Worker::StopActiveJobs()
 {
-    Logger::LogDebug("Stopping active workers");
+    Logger::LogDebug("Worker: stopping active workers");
 
     auto maxDelay = Worker::DelayMS(0);
 
