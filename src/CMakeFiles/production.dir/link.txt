@@ -1,0 +1,2 @@
+/usr/bin/ar qc libproduction.a  CMakeFiles/production.dir/configuration_manager.cpp.o CMakeFiles/production.dir/daemon.cpp.o CMakeFiles/production.dir/hub.cpp.o CMakeFiles/production.dir/logger.cpp.o CMakeFiles/production.dir/timer.cpp.o CMakeFiles/production.dir/worker.cpp.o
+/usr/bin/ranlib libproduction.a
