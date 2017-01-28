@@ -18,11 +18,17 @@ ENDIF()
 FIND_PACKAGE(GTest REQUIRED)
 INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
 
+# check if libsocket is present
+FIND_LIBRARY(SOCKET_LIB socket++)
+IF(NOT SOCKET_LIB)
+  MESSAGE(FATAL_ERROR "libsocket++ library not found")
+ENDIF()
+
 # sources
 add_subdirectory(src)
 include_directories(src)
 add_executable(hub main.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub production config++)
+TARGET_LINK_LIBRARIES(hub production config++ socket++)
 

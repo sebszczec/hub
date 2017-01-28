@@ -1,6 +1,8 @@
 #include "daemon.hpp"
 #include <stdlib.h>
 #include <unistd.h>
+#include <libsocket/inetserverstream.hpp>
+#include <libsocket/socket.hpp>
 #include "logger.hpp"
 #include "configuration_manager.hpp"
 #include "worker.hpp"
@@ -35,6 +37,13 @@ int main()
     timer.StartAsync([](){
         Logger::LogDebug("Keep alive message from timer.");
     });
+
+    using libsocket::inet_stream_server;
+
+    string host = "127.0.0.1";
+    string port = CM::GetResource(CMV::TelnetPort).ToString();
+
+    inet_stream_server srv(host, port, LIBSOCKET_IPv4);
 
     /* The Big Loop */
     while (1) 
