@@ -8,6 +8,8 @@
 #include <libsocket/select.hpp>
 
 using namespace std;
+using libsocket::inet_socket;
+using libsocket::inet_stream;
 using libsocket::inet_stream_server;
 using libsocket::selectset;
 
@@ -17,7 +19,9 @@ private:
     string _host = "127.0.0.1";
     string _port;
     inet_stream_server * _server = nullptr;
-    selectset<inet_stream_server> _readSet;
+    selectset<inet_stream_server> _serverReadSet;
+    selectset<inet_stream> _clientsReadSet;
+    selectset<inet_socket> _testReadSet;
     bool _working = false;
 
 public:
