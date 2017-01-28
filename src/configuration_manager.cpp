@@ -40,6 +40,9 @@ bool CM::LoadResources()
     int isDaemon = CM::_configFile.lookup("daemon");
     CM::_resources[CMV::IsDaemon] = new BoolResource(isDaemon == 1);
 
+    string telnetPort = CM::_configFile.lookup("telnet_port");
+    CM::_resources[CMV::TelnetPort] = new StringResource(telnetPort);
+
     return true;
 }
 

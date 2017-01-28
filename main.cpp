@@ -6,6 +6,7 @@
 #include "worker.hpp"
 #include "timer.hpp"
 #include "signal_handler.hpp"
+#include <telnet_server.hpp>
 
 int main()
 {
@@ -35,6 +36,14 @@ int main()
     timer.StartAsync([](){
         Logger::LogDebug("Keep alive message from timer.");
     });
+
+    // TelnetServer telnetServer(CM::GetResource(CMV::TelnetPort).ToString());
+    // telnetServer.Start();
+
+    TelnetServer telnetServer(CM::GetResource(CMV::TelnetPort).ToString());
+    Worker telnetWorker(false);
+    telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
+
 
     /* The Big Loop */
     while (1) 
