@@ -1,5 +1,6 @@
 #include "telnet_server.hpp"
 #include "logger.hpp"
+#include <sstream>
 
 TelnetServer::~TelnetServer()
 {
@@ -12,7 +13,7 @@ TelnetServer::~TelnetServer()
 
 void TelnetServer::Start()
 {
-    Logger::Log("Starting TelnetServer");
+    Logger::Log("TelnetServer: starting, port: " + this->_port);
     this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
 
     //this->_serverReadSet.add_fd(*(this->_server), LIBSOCKET_READ);
@@ -43,12 +44,24 @@ void TelnetServer::Start()
             }
             else
             {
-                string message;
-                message.resize(128);
+                char buffer[128] = {0};
                 auto connection = dynamic_cast<inet_stream *>(socket);
-                *connection >> message;
+                
+                auto bytes = connection->rcv(buffer, 128);
+                if (bytes > 0)
+                {
+                    std::stringstream temp_stream;
+                    for(int i = 0; i< bytes; ++i)
+                        temp_stream << std::hex << (int)buffer[i] << " ";
+                    string data = temp_stream.str();
 
-                Logger::LogDebug("TelnetServer: new data." + message);
+                    Logger::LogDebug("TelnetServer: new " + std::to_string(bytes) + " bytes of data: " + data);
+                }
+                else
+                {
+                    Logger::LogDebug("TelnetServer: client disconnected");
+                    this->_testReadSet.remove_fd(*connection);
+                }
             }
         }
     }
