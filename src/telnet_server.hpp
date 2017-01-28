@@ -6,6 +6,7 @@
 #include <libsocket/inetserverstream.hpp>
 #include <libsocket/socket.hpp>
 #include <libsocket/select.hpp>
+#include <map>
 
 using namespace std;
 using libsocket::inet_socket;
@@ -19,21 +20,30 @@ private:
     string _host = "127.0.0.1";
     string _port;
     inet_stream_server * _server = nullptr;
-    selectset<inet_stream_server> _serverReadSet;
-    selectset<inet_stream> _clientsReadSet;
     selectset<inet_socket> _testReadSet;
     bool _working = false;
+    int _id = 0;
+
+    static int _idGenerator;
+    static map<int, TelnetServer *> _instances;
 
 public:
-    TelnetServer() = default;
-    TelnetServer(const string& port)
-    : _port(port)
+    TelnetServer()
+    : _id(TelnetServer::_idGenerator++)
     {
+        TelnetServer::_instances[this->_id] = this;
+    }
+
+    TelnetServer(const string& port)
+    : _id(TelnetServer::_idGenerator++),  _port(port)
+    {
+        TelnetServer::_instances[this->_id] = this;
     }
 
     TelnetServer(string&& port)
-    : _port(port)
+    : _id(TelnetServer::_idGenerator++), _port(port)
     {
+        TelnetServer::_instances[this->_id] = this;
     }
 
     ~TelnetServer();
@@ -56,6 +66,8 @@ public:
     void Start();
 
     void Stop();
+
+    static void StopAllInstances();
 };
 
 #endif
