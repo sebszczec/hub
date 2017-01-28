@@ -18,14 +18,14 @@ void TelnetServer::Start()
     Logger::Log("TelnetServer[" + std::to_string(this->_id) + "]: port: " + this->_port);
     this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
 
-    this->_testReadSet.add_fd(*(this->_server), LIBSOCKET_READ);
+    this->_readSet.add_fd(*(this->_server), LIBSOCKET_READ);
 
     this->_working = true;
     while (this->_working)
     {
         libsocket::selectset<inet_socket>::ready_socks readyPair;
 
-        readyPair = this->_testReadSet.wait();
+        readyPair = this->_readSet.wait();
 
         while(!readyPair.first.empty())
         {
@@ -37,7 +37,7 @@ void TelnetServer::Start()
             {
                 Logger::LogDebug("TelnetServer: id: " + std::to_string(this->_id) + ", new connection to sever, accepting..");
                 auto connection = this->_server->accept();
-                this->_testReadSet.add_fd(*connection, LIBSOCKET_READ);
+                this->_readSet.add_fd(*connection, LIBSOCKET_READ);
 
                 *connection << "Welcome\n";
             }
@@ -62,13 +62,11 @@ void TelnetServer::Start()
                 else
                 {
                     Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: client disconnected");
-                    this->_testReadSet.remove_fd(*connection);
+                    this->_readSet.remove_fd(*connection);
                 }
             }
         }
     }
-
-    this->_testReadSet.remove_fd(*(this->_server));
 }
 
 void TelnetServer::Stop()
@@ -79,6 +77,7 @@ void TelnetServer::Stop()
 
     if (this->_server != nullptr)
     {
+        this->_readSet.remove_fd(*(this->_server));
         this->_server->destroy();
         delete this->_server;
         this->_server = nullptr;

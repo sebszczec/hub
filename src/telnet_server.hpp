@@ -20,7 +20,7 @@ private:
     string _host = "127.0.0.1";
     string _port;
     inet_stream_server * _server = nullptr;
-    selectset<inet_socket> _testReadSet;
+    selectset<inet_socket> _readSet;
     bool _working = false;
     int _id = 0;
 

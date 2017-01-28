@@ -37,8 +37,12 @@ int main()
         Logger::LogDebug("Keep alive message from timer.");
     });
 
+    // TelnetServer telnetServer(CM::GetResource(CMV::TelnetPort).ToString());
+    // telnetServer.Start();
+
     TelnetServer telnetServer(CM::GetResource(CMV::TelnetPort).ToString());
-    telnetServer.Start();
+    Worker telnetWorker(false);
+    telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
 
 
     /* The Big Loop */
