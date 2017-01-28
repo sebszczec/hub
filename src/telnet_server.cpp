@@ -67,6 +67,8 @@ void TelnetServer::Start()
             }
         }
     }
+
+    this->_testReadSet.remove_fd(*(this->_server));
 }
 
 void TelnetServer::Stop()
