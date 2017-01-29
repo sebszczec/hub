@@ -32,15 +32,17 @@ public:
     TelnetServer() = delete;
 
     TelnetServer(const string& port)
-    : _id(TelnetServer::_idGenerator++), _prefix("TelnetServer[" + std::to_string(this->_id) + "]"), _port(port)
+    : _id(TelnetServer::_idGenerator++), _port(port)
     {
         TelnetServer::_instances[this->_id] = this;
+        this->_prefix = "TelnetServer[" + std::to_string(this->_id) + "]";
     }
 
     TelnetServer(string&& port)
-    : _id(TelnetServer::_idGenerator++), _prefix("TelnetServer[" + std::to_string(this->_id) + "]"), _port(port)
+    : _id(TelnetServer::_idGenerator++), _port(port)
     {
         TelnetServer::_instances[this->_id] = this;
+        this->_prefix = "TelnetServer[" + std::to_string(this->_id) + "]";
     }
 
     ~TelnetServer();
