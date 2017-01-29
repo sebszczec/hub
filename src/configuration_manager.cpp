@@ -43,6 +43,12 @@ bool CM::LoadResources()
     string telnetPort = CM::_configFile.lookup("telnet_port");
     CM::_resources[CMV::TelnetPort] = new StringResource(telnetPort);
 
+    int telnetPooling = CM::_configFile.lookup("telnet_pooling");
+    CM::_resources[CMV::TelnetPooling] = new IntResource(telnetPooling);
+
+    int telnetCooling = CM::_configFile.lookup("telnet_cooling");
+    CM::_resources[CMV::TelnetCooling] = new IntResource(telnetCooling);
+
     return true;
 }
 
