@@ -1,6 +1,8 @@
 #include "telnet_server.hpp"
 #include "logger.hpp"
 #include <sstream>
+#include <chrono>
+#include <thread>
 
 int TelnetServer::_idGenerator = 0;
 map<int, TelnetServer *> TelnetServer::_instances;
@@ -25,7 +27,7 @@ void TelnetServer::Start()
     {
         libsocket::selectset<inet_socket>::ready_socks readyPair;
 
-        readyPair = this->_readSet.wait();
+        readyPair = this->_readSet.wait(100);
 
         while(!readyPair.first.empty())
         {
@@ -67,6 +69,8 @@ void TelnetServer::Start()
             }
         }
     }
+
+    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: Out of the while() loop");
 }
 
 void TelnetServer::Stop()
@@ -74,6 +78,9 @@ void TelnetServer::Stop()
     Logger::Log("TelnetServer[" + std::to_string(this->_id) + "]: stopped ");
 
     this->_working = false;
+    using DelayMS = std::chrono::duration<int, std::milli>;
+    auto sleepTime = DelayMS(100);
+    this_thread::sleep_for(sleepTime);
 
     if (this->_server != nullptr)
     {
