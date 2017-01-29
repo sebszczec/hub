@@ -35,7 +35,8 @@ void TelnetServer::Start()
 
         while(!readyPair.first.empty())
         {
-            Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: new trigger, proceeding..");
+            Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: new trigger, proceeding");
+
             auto socket = readyPair.first.back();
             readyPair.first.pop_back();
 
@@ -61,10 +62,10 @@ void TelnetServer::Start()
                 {
                     std::stringstream temp_stream;
                     for(int i = 0; i< bytes; ++i)
-                        temp_stream << std::hex << (int)buffer[i] << " ";
+                        temp_stream << " " << std::hex << (int)buffer[i];
                     string data = temp_stream.str();
 
-                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: new " + std::to_string(bytes) + " bytes of data: " + data);
+                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: new " + std::to_string(bytes) + " bytes of data:" + data);
 
                     string message(buffer, bytes - 2);
                     Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: " + message);
