@@ -109,7 +109,9 @@ public:
         LogResolution,
         IsDaemon,
         PidFileName,
-        TelnetPort
+        TelnetPort,
+        TelnetPooling,
+        TelnetCooling
     };
 
     static bool LoadResources();

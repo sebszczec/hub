@@ -1,6 +1,9 @@
 #include "telnet_server.hpp"
 #include "logger.hpp"
 #include <sstream>
+#include <chrono>
+#include <thread>
+#include "configuration_manager.hpp"
 
 int TelnetServer::_idGenerator = 0;
 map<int, TelnetServer *> TelnetServer::_instances;
@@ -17,15 +20,18 @@ void TelnetServer::Start()
 {    
     Logger::Log("TelnetServer[" + std::to_string(this->_id) + "]: port: " + this->_port);
     this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
-
     this->_readSet.add_fd(*(this->_server), LIBSOCKET_READ);
+
+    using CM = ConfigurationManager;
+    using CMV = CM::Variable;
+    long long delay = CM::GetResource(CMV::TelnetPooling).ToInt();
 
     this->_working = true;
     while (this->_working)
     {
         libsocket::selectset<inet_socket>::ready_socks readyPair;
 
-        readyPair = this->_readSet.wait();
+        readyPair = this->_readSet.wait(delay);
 
         while(!readyPair.first.empty())
         {
@@ -67,13 +73,22 @@ void TelnetServer::Start()
             }
         }
     }
+
+    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: Out of the while() loop");
 }
 
 void TelnetServer::Stop()
 {
     Logger::Log("TelnetServer[" + std::to_string(this->_id) + "]: stopped ");
 
+    using CM = ConfigurationManager;
+    using CMV = CM::Variable;
+    int delay = CM::GetResource(CMV::TelnetCooling).ToInt();
+    
     this->_working = false;
+    using DelayMS = std::chrono::duration<int, std::milli>;
+    auto sleepTime = DelayMS(delay);
+    this_thread::sleep_for(sleepTime);
 
     if (this->_server != nullptr)
     {
