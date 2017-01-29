@@ -35,14 +35,17 @@ void TelnetServer::Start()
 
         while(!readyPair.first.empty())
         {
-            Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: new connection, proceeding..");
+            Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: new trigger, proceeding..");
             auto socket = readyPair.first.back();
             readyPair.first.pop_back();
 
             if (socket->getfd() == this->_server->getfd())
             {
-                Logger::LogDebug("TelnetServer: id: " + std::to_string(this->_id) + ", new connection to sever, accepting..");
+                
                 auto connection = this->_server->accept();
+                auto descriptor = connection->getfd();
+                
+                Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: new connection to sever, accepting fd: " + std::to_string(descriptor));
                 this->_readSet.add_fd(*connection, LIBSOCKET_READ);
 
                 *connection << "Welcome\n";
@@ -51,7 +54,8 @@ void TelnetServer::Start()
             {
                 char buffer[128] = {0};
                 auto connection = dynamic_cast<inet_stream *>(socket);
-                
+                auto descriptor = connection->getfd();
+
                 auto bytes = connection->rcv(buffer, 128);
                 if (bytes > 0)
                 {
@@ -60,15 +64,19 @@ void TelnetServer::Start()
                         temp_stream << std::hex << (int)buffer[i] << " ";
                     string data = temp_stream.str();
 
-                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: new " + std::to_string(bytes) + " bytes of data: " + data);
+                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: new " + std::to_string(bytes) + " bytes of data: " + data);
 
                     string message(buffer, bytes - 2);
-                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: " + message);
+                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: " + message);
+                }
+                else if (bytes == 0)
+                {
+                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: client disconnected");
+                    this->_readSet.remove_fd(*connection);
                 }
                 else
                 {
-                    Logger::LogDebug("TelnetServer[" + std::to_string(this->_id) + "]: client disconnected");
-                    this->_readSet.remove_fd(*connection);
+                    Logger::LogError("TelnetServer[" + std::to_string(this->_id) + ", " + std::to_string(descriptor) + "]: something when wrong");
                 }
             }
         }
