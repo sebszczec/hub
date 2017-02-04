@@ -29,6 +29,11 @@ add_subdirectory(src)
 include_directories(src)
 add_executable(hub main.cpp)
 
+# unit tests
+add_subdirectory(test)
+include_directories(test)
+add_executable(ut test.cpp)
+
 # linking
 TARGET_LINK_LIBRARIES(hub production config++ socket++)
-
+TARGET_LINK_LIBRARIES(ut production testing config++ gtest socket++)
