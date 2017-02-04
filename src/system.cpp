@@ -38,5 +38,6 @@ system_clock::duration System::UpTime()
 
 void System::RegisterCommands()
 {
-    CommandManager::RegisterCommand(new UptimeCommand());
+    ICommand * uptimeCommand = new UptimeCommand();
+    CommandManager::RegisterCommand(uptimeCommand);
 }
