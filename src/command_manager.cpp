@@ -15,7 +15,7 @@ void CommandManager::ClearAllCommands()
 {
     Logger::Log("CommandManager: cleaning all commands");
 
-    for (auto pair : CommandManager::_commands)
+    for (auto & pair : CommandManager::_commands)
     {
         delete pair.second;
     }
