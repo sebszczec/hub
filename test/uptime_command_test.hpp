@@ -32,7 +32,7 @@ TEST_F(UptimeCommandTest, Register)
 
 TEST_F(UptimeCommandTest, PrintHelp)
 {
-    string expect = "Shows time how long service works on.\nUsage: .uptime\n";
+    string expect = "Shows how long applications works";
     auto result = sut->PrintHelp();
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
