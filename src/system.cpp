@@ -1,6 +1,8 @@
 #include "system.hpp"
 #include "configuration_manager.hpp"
 #include "logger.hpp"
+#include "daemon.hpp"
+#include "signal_handler.hpp"
 
 bool System::Start()
 {
@@ -15,6 +17,10 @@ bool System::Start()
     CM::GetResource(CMV::LogFileName).ToString(), 
     CM::GetResource(CMV::LogResolution).ToInt(), 
     (LogLevel)CM::GetResource(CMV::LogLevel).ToInt());
+
+    Daemon::Initilize(CM::GetResource(CMV::IsDaemon).ToBool());
+
+    SignalHandler::RegisterExitSignals();
 
     return true;
 }
