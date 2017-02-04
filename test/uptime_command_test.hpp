@@ -44,8 +44,6 @@ TEST_F(UptimeCommandTest, Execute)
     EXPECT_TRUE(sut->Execute());
     auto result = sut->GetResult();
     
-    std::cout << result << std::endl;
-
     EXPECT_STRNE(expect.c_str(), result.c_str());
 }
 

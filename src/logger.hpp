@@ -30,7 +30,7 @@ public:
     static void Initilize(const std::string &filename, int flushResolution);
     static void Initilize(const std::string &filename, int flushResolution, LogLevel logLevel);
     
-    static void CleanResources();
+    static void ClearResources();
 
     static void LogDebug(const std::string &text);
     static void LogError(const std::string &text);

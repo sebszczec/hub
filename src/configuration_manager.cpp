@@ -57,7 +57,7 @@ IResource & CM::GetResource(CMV variableName)
     return  *CM::_resources[variableName];
 }
 
-void CM::CleanResources()
+void CM::ClearResources()
 {
     Logger::LogDebug("ConfigurationManager: cleaning resources");;
     for (auto &pair : CM::_resources)
