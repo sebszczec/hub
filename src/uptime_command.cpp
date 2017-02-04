@@ -9,7 +9,7 @@ string UptimeCommand::Register()
     
 string UptimeCommand::PrintHelp()
 {
-    return this->_helpText;
+    return "Shows how long applications works";
 }
     
 bool UptimeCommand::Execute()

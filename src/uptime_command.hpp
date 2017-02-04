@@ -9,7 +9,6 @@ class UptimeCommand : public ICommand
 {
 private:
     const string _name = ".uptime";
-    const string _helpText = "Shows time how long service works on.\nUsage: " + _name + "\n";
     string _result = "";
 public:
     using Milliseconds = std::chrono::milliseconds;
