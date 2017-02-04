@@ -19,8 +19,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    Daemon daemon;
-    daemon.Initilize( CM::GetResource(CMV::IsDaemon).ToBool());
+    Daemon::Initilize( CM::GetResource(CMV::IsDaemon).ToBool());
 
     SignalHandler::RegisterExitSignals();
 
