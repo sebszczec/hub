@@ -1,5 +1,6 @@
 #include "uptime_command.hpp"
 #include "system.hpp"
+#include "logger.hpp"
 
 string UptimeCommand::Register()
 {
@@ -13,6 +14,8 @@ string UptimeCommand::PrintHelp()
     
 bool UptimeCommand::Execute()
 {
+    Logger::LogDebug(this->_name + " called");
+
     auto uptime = System::UpTime();
 
     auto milliseconds = std::chrono::duration_cast<UptimeCommand::Milliseconds>(uptime).count();

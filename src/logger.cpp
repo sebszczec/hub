@@ -28,7 +28,7 @@ void Logger::Initilize(const std::string &filename, int flushResolution, LogLeve
 
 void Logger::ClearResources()
 {
-    Logger::LogDebug("Logger: cleaning resources");
+    Logger::Log("Logger: cleaning resources");
     Logger::Flush(true);
     Logger::_file.close();
 }

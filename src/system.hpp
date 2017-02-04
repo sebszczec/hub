@@ -12,6 +12,7 @@ class System
     ~System() = delete;
 
     static system_clock::time_point _timeNow;
+    static void RegisterCommands();
 public:
     using DelayUS = std::chrono::duration<int, std::micro>;
 

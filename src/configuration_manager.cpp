@@ -59,7 +59,7 @@ IResource & CM::GetResource(CMV variableName)
 
 void CM::ClearResources()
 {
-    Logger::LogDebug("ConfigurationManager: cleaning resources");;
+    Logger::Log("ConfigurationManager: cleaning resources");;
     for (auto &pair : CM::_resources)
     {
         delete pair.second;
