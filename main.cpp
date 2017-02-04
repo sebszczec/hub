@@ -19,10 +19,6 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    Daemon::Initilize( CM::GetResource(CMV::IsDaemon).ToBool());
-
-    SignalHandler::RegisterExitSignals();
-
     // Worker worker(true, Worker::DelayMS(500));
     // worker.StartAsync([](){
     //     Logger::LogDebug("Keep alive message from worker.");

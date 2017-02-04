@@ -4,6 +4,8 @@
 #include "daemon.hpp"
 #include "signal_handler.hpp"
 
+system_clock::time_point System::_timeNow = system_clock::now();
+
 bool System::Start()
 {
     using CM = ConfigurationManager;
@@ -23,4 +25,9 @@ bool System::Start()
     SignalHandler::RegisterExitSignals();
 
     return true;
+}
+
+system_clock::duration System::UpTime()
+{
+    return system_clock::now() - System::_timeNow;
 }
