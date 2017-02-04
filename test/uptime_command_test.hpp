@@ -28,4 +28,21 @@ TEST_F(UptimeCommandTest, Register)
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
 
+TEST_F(UptimeCommandTest, PrintHelp)
+{
+    string expect = "Shows time how long service works on.\nUsage: .uptime\n";
+    auto result = sut->PrintHelp();
+    EXPECT_STREQ(expect.c_str(), result.c_str());
+}
+
+TEST_F(UptimeCommandTest, Execute)
+{
+    EXPECT_FALSE(sut->Execute());
+}
+
+TEST_F(UptimeCommandTest, GetResult)
+{
+    EXPECT_EQ(nullptr, sut->GetResult());
+}
+
 #endif
