@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "uptime_command_test.hpp"
 
 int main(int ac, char* av[])
 {
