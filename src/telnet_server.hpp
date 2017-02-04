@@ -17,6 +17,7 @@ using libsocket::selectset;
 class TelnetServer
 {
 private:
+    string _prefix;
     string _host = "127.0.0.1";
     string _port;
     inet_stream_server * _server = nullptr;
@@ -28,25 +29,28 @@ private:
     static map<int, TelnetServer *> _instances;
 
 public:
-    TelnetServer()
-    : _id(TelnetServer::_idGenerator++)
-    {
-        TelnetServer::_instances[this->_id] = this;
-    }
+    TelnetServer() = delete;
 
     TelnetServer(const string& port)
-    : _id(TelnetServer::_idGenerator++),  _port(port)
+    : _id(TelnetServer::_idGenerator++), _port(port)
     {
         TelnetServer::_instances[this->_id] = this;
+        this->_prefix = "TelnetServer[" + std::to_string(this->_id) + "]";
     }
 
     TelnetServer(string&& port)
     : _id(TelnetServer::_idGenerator++), _port(port)
     {
         TelnetServer::_instances[this->_id] = this;
+        this->_prefix = "TelnetServer[" + std::to_string(this->_id) + "]";
     }
 
     ~TelnetServer();
+
+    inline string GetExtendedPrefix(int descriptor)
+    {
+        return this->_prefix + "[" + std::to_string(descriptor) + "]";
+    }
 
     string GetPort()
     {
@@ -66,6 +70,10 @@ public:
     void Start();
 
     void Stop();
+
+    void AddNewConnection();
+
+    void RemoveConnection(const inet_stream& connection);
 
     static void StopAllInstances();
 };
