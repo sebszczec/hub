@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 #include "uptime_command.hpp"
+#include <iostream>
+#include <thread>
 
 class UptimeCommandTest : public testing::Test
 {
@@ -37,12 +39,21 @@ TEST_F(UptimeCommandTest, PrintHelp)
 
 TEST_F(UptimeCommandTest, Execute)
 {
-    EXPECT_FALSE(sut->Execute());
+    string expect = "";
+
+    EXPECT_TRUE(sut->Execute());
+    auto result = sut->GetResult();
+    
+    std::cout << result << std::endl;
+
+    EXPECT_STRNE(expect.c_str(), result.c_str());
 }
 
-TEST_F(UptimeCommandTest, GetResult)
+TEST_F(UptimeCommandTest, GetResult_empty)
 {
-    EXPECT_EQ(nullptr, sut->GetResult());
+    string expect = "";
+    auto result = sut->GetResult();
+    EXPECT_STREQ(expect.c_str(), result.c_str());
 }
 
 #endif
