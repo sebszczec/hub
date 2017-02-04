@@ -11,6 +11,9 @@
 #include <fstream>
 #include "configuration_manager.hpp"
 
+pid_t Daemon::_pid = 0;
+pid_t Daemon::_sid = 0;
+
 void Daemon::Initilize(bool goBackground)
 {
     Logger::Log("Daemon: starting initialization");
@@ -20,17 +23,17 @@ void Daemon::Initilize(bool goBackground)
         Logger::Log("Daemon: going background");
 
         /* Fork off the parent process */
-        this->_pid = fork();
-        if (this->_pid < 0) 
+        Daemon::_pid = fork();
+        if (Daemon::_pid < 0) 
         {
                 Logger::LogError("Daemon: getting new PID FAILED");
                 exit(EXIT_FAILURE);
         }
         /* If we got a good PID, then
                 we can exit the parent process. */
-        if (this->_pid > 0) 
+        if (Daemon::_pid > 0) 
         {
-                Logger::Log("Daemon: getting new PID SUCCESSED, value: " + std::to_string(this->_pid) + ", parrent exiting");
+                Logger::Log("Daemon: getting new PID SUCCESSED, value: " + std::to_string(Daemon::_pid) + ", parrent exiting");
                 SavePidToFile();
                 exit(EXIT_SUCCESS);
         }
@@ -41,14 +44,14 @@ void Daemon::Initilize(bool goBackground)
         /* Open any logs here */        
                 
         /* Create a new SID for the child process */
-        this->_sid = setsid();
-        if (this->_sid < 0) 
+        Daemon::_sid = setsid();
+        if (Daemon::_sid < 0) 
         {
                 /* Log the failure */
                 Logger::LogError("Daemon: getting new SID FAILED");
                 exit(EXIT_FAILURE);
         }
-        Logger::Log("Daemon: getting new SID SUCCESSED, value: " + std::to_string(this->_sid));
+        Logger::Log("Daemon: getting new SID SUCCESSED, value: " + std::to_string(Daemon::_sid));
 
         /* Change the current working directory */
         if ((chdir("/")) < 0) 
@@ -71,8 +74,8 @@ void Daemon::Initilize(bool goBackground)
     }
 
     Logger::Log("Daemon: staying in foreground");
-    this->_pid = getpid();
-    Logger::Log("Daemon: PID value: " + std::to_string(this->_pid));
+    Daemon::_pid = getpid();
+    Logger::Log("Daemon: PID value: " + std::to_string(Daemon::_pid));
     Daemon::SavePidToFile();
 
 }
@@ -86,7 +89,7 @@ void Daemon::SavePidToFile()
     auto name = CM::GetResource(CMV::PidFileName).ToString();
     fstream file;
     file.open(name, fstream::out | fstream::trunc);
-    file << to_string(this->_pid) << endl;
+    file << to_string(Daemon::_pid) << endl;
     file.close();
 
     Logger::LogDebug("Daemon: PID saved to " + name);

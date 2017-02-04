@@ -1,8 +1,9 @@
 #include "daemon.hpp"
 #include <stdlib.h>
 #include <unistd.h>
-#include "logger.hpp"
+#include "system.hpp"
 #include "configuration_manager.hpp"
+#include "logger.hpp"
 #include "worker.hpp"
 #include "timer.hpp"
 #include "signal_handler.hpp"
@@ -12,20 +13,11 @@ int main()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    if (!CM::LoadResources())
+
+    if (!System::Start())
     {
-        return(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
-    
-    Logger::Initilize(
-        CM::GetResource(CMV::LogFileName).ToString(), 
-        CM::GetResource(CMV::LogResolution).ToInt(), 
-        (LogLevel)CM::GetResource(CMV::LogLevel).ToInt());
-
-    Daemon daemon;
-    daemon.Initilize( CM::GetResource(CMV::IsDaemon).ToBool());
-
-    SignalHandler::RegisterExitSignals();
 
     // Worker worker(true, Worker::DelayMS(500));
     // worker.StartAsync([](){

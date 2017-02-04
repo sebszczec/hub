@@ -2,23 +2,23 @@
 
 class Daemon
 {
-    pid_t _pid = 0;
-    pid_t _sid = 0;
+    static pid_t _pid;
+    static pid_t _sid;
 
-    void SavePidToFile();
+    static void SavePidToFile();
 public:
-    Daemon() = default;
-    ~Daemon() = default;
+    Daemon() = delete;
+    ~Daemon() = delete;
     
-    pid_t GetPid() 
+    static pid_t GetPid() 
     {
-        return this->_pid;
+        return Daemon::_pid;
     }
 
-    pid_t GetSid() 
+    static pid_t GetSid() 
     {
-        return this->_sid;
+        return Daemon::_sid;
     }
 
-    void Initilize(bool goBackground);
+    static void Initilize(bool goBackground);
 };
