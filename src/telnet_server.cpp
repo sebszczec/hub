@@ -24,6 +24,7 @@ void TelnetServer::AddNewConnection()
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*connection, LIBSOCKET_READ);
+    this->_connectionManager.AddConnect(descriptor);
 
     *connection << "Welcome\n";
 }
@@ -33,6 +34,7 @@ void TelnetServer::RemoveConnection(const inet_stream& connection)
     auto descriptor = connection.getfd();
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
     this->_readSet.remove_fd(connection);
+    this->_connectionManager.RemoveConnection(descriptor);
 }
 
 void TelnetServer::Start()
