@@ -71,12 +71,10 @@ public:
     }
 
     void Start();
-
     void Stop();
 
-    void AddNewConnection();
-
-    void RemoveConnection(const inet_stream& connection);
+    void AddStream();
+    void RemoveStream(const inet_stream& stream);
 
     static void StopAllInstances();
 };

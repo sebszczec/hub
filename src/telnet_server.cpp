@@ -17,7 +17,7 @@ TelnetServer::~TelnetServer()
     TelnetServer::_instances.erase(item);
 }
 
-void TelnetServer::AddNewConnection()
+void TelnetServer::AddStream()
 {
     auto stream = this->_server->accept();
     auto descriptor = stream->getfd();
@@ -29,7 +29,7 @@ void TelnetServer::AddNewConnection()
     *stream << "Welcome\n";
 }
 
-void TelnetServer::RemoveConnection(const inet_stream& connection)
+void TelnetServer::RemoveStream(const inet_stream& stream)
 {
     auto descriptor = connection.getfd();
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
@@ -63,36 +63,39 @@ void TelnetServer::Start()
 
             if (socket->getfd() == this->_server->getfd())
             {
-                this->AddNewConnection();
+                this->AddStream();
             }
             else
             {
                 auto block = MemoryManager::GetInstance()->GetFreeBlock();
                 char * buffer = reinterpret_cast<char *>(block->GetPayload());
-                auto connection = dynamic_cast<inet_stream *>(socket);
-                auto descriptor = connection->getfd();
+                auto stream = dynamic_cast<inet_stream *>(socket);
+                auto socketFd = stream->getfd();
 
-                auto bytes = connection->rcv(buffer, 128);
+                auto bytes = stream->rcv(buffer, 128);
                 if (bytes > 0)
-                {
-                    block->SetPayloadLength(bytes);
+                {                    
                     std::stringstream temp_stream;
                     for(int i = 0; i< bytes; ++i)
                         temp_stream << " " << std::hex << (int)buffer[i];
                     string data = temp_stream.str();
 
-                    Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
+                    Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
 
                     string message(buffer, bytes - 2);
-                    Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": " + message);
+                    Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
+
+                    block->SetPayloadLength(bytes);
+                    auto connection = this->_connectionManager.GetConnection(socketFd);
+                    connection->HandleData(block);
                 }
                 else if (bytes == 0)
                 {
-                    this->RemoveConnection(*connection);
+                    this->RemoveStream(*stream);
                 }
                 else
                 {
-                    Logger::LogError(this->GetExtendedPrefix(descriptor) + ": something went wrong");
+                    Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
                 }
             }
         }

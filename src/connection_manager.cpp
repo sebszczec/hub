@@ -28,3 +28,11 @@ void ConnectionManager::ClearAllConnections()
 
     this->_connections.clear();
 }
+
+Connection * ConnectionManager::GetConnection(int socketFd)
+{
+    auto item = this->_connections.find(socketFd);
+    assert(item != this->_connections.end());
+
+    return item->second;
+}

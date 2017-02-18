@@ -2,6 +2,7 @@
 #define __CONNECTION_MANAGER_HPP
 
 #include <libsocket/inetserverstream.hpp>
+#include "memory_manager.hpp"
 #include <map>
 
 using namespace std;
@@ -27,6 +28,11 @@ public:
         delete this->_stream;
         this->_stream = nullptr;
     }
+
+    void HandleData(Block * block)
+    {
+
+    }
 };
 
 class ConnectionManager
@@ -39,6 +45,7 @@ public:
 
     void AddConnection(inet_stream * stream);
     void RemoveConnection(int socketFd);
+    Connection * GetConnection(int socketFd);
     void ClearAllConnections();
 };
 
