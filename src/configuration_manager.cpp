@@ -49,6 +49,9 @@ bool CM::LoadResources()
     int telnetCooling = CM::_configFile.lookup("telnet_cooling");
     CM::_resources[CMV::TelnetCooling] = new IntResource(telnetCooling);
 
+    string memoryDumpName = CM::_configFile.lookup("memory_dump_name");
+    CM::_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);
+
     return true;
 }
 

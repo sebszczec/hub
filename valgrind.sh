@@ -8,6 +8,9 @@ valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-cal
 echo "Giving ${DELAY} seconds for app to work"
 sleep ${DELAY}
 
+echo "Running telnet.sh script"
+./telnet.sh
+
 PID=`cat hub.pid`
 echo "Killing hub PID: ${PID}"
 kill $PID

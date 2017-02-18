@@ -5,6 +5,10 @@
 #include "signal_handler.hpp"
 #include "command_manager.hpp"
 #include "uptime_command.hpp"
+#include "iasync.hpp"
+#include "telnet_server.hpp"
+#include "command_manager.hpp"
+#include "memory_manager.hpp"
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
@@ -29,6 +33,18 @@ bool System::Start()
     System::RegisterCommands();
 
     return true;
+}
+
+void System::Stop()
+{
+    MemoryManager::GetInstance()->DumpMemory();
+
+    CommandManager::ClearAllCommands();
+    TelnetServer::StopAllInstances();
+    IAsync::StopActiveJobs();
+    ConfigurationManager::ClearResources();
+    MemoryManager::DeleteInstance();
+    Logger::ClearResources();
 }
 
 system_clock::duration System::UpTime()

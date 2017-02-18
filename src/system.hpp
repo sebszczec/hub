@@ -17,6 +17,7 @@ public:
     using DelayUS = std::chrono::duration<int, std::micro>;
 
     static bool Start();
+    static void Stop();
 
     static system_clock::duration UpTime();
 };

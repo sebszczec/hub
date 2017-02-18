@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include "configuration_manager.hpp"
+#include "memory_manager.hpp"
 
 int TelnetServer::_idGenerator = 0;
 map<int, TelnetServer *> TelnetServer::_instances;
@@ -18,13 +19,14 @@ TelnetServer::~TelnetServer()
 
 void TelnetServer::AddNewConnection()
 {
-    auto connection = this->_server->accept();
-    auto descriptor = connection->getfd();
+    auto stream = this->_server->accept();
+    auto descriptor = stream->getfd();
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
-    this->_readSet.add_fd(*connection, LIBSOCKET_READ);
+    this->_readSet.add_fd(*stream, LIBSOCKET_READ);
+    this->_connectionManager.AddConnection(stream);
 
-    *connection << "Welcome\n";
+    *stream << "Welcome\n";
 }
 
 void TelnetServer::RemoveConnection(const inet_stream& connection)
@@ -32,6 +34,7 @@ void TelnetServer::RemoveConnection(const inet_stream& connection)
     auto descriptor = connection.getfd();
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
     this->_readSet.remove_fd(connection);
+    this->_connectionManager.RemoveConnection(descriptor);
 }
 
 void TelnetServer::Start()
@@ -64,13 +67,15 @@ void TelnetServer::Start()
             }
             else
             {
-                char buffer[128] = {0};
+                auto block = MemoryManager::GetInstance()->GetFreeBlock();
+                char * buffer = reinterpret_cast<char *>(block->GetPayload());
                 auto connection = dynamic_cast<inet_stream *>(socket);
                 auto descriptor = connection->getfd();
 
                 auto bytes = connection->rcv(buffer, 128);
                 if (bytes > 0)
                 {
+                    block->SetPayloadLength(bytes);
                     std::stringstream temp_stream;
                     for(int i = 0; i< bytes; ++i)
                         temp_stream << " " << std::hex << (int)buffer[i];
@@ -115,6 +120,7 @@ void TelnetServer::Stop()
         this->_server->destroy();
         delete this->_server;
         this->_server = nullptr;
+        this->_connectionManager.ClearAllConnections();
     }
 }
 

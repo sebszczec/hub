@@ -7,6 +7,7 @@
 #include <libsocket/socket.hpp>
 #include <libsocket/select.hpp>
 #include <map>
+#include "connection_manager.hpp"
 
 using namespace std;
 using libsocket::inet_socket;
@@ -27,6 +28,8 @@ private:
 
     static int _idGenerator;
     static map<int, TelnetServer *> _instances;
+
+    ConnectionManager _connectionManager;
 
 public:
     TelnetServer() = delete;

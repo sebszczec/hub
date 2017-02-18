@@ -111,7 +111,8 @@ public:
         PidFileName,
         TelnetPort,
         TelnetPooling,
-        TelnetCooling
+        TelnetCooling,
+        MemoryDumpName
     };
 
     static bool LoadResources();
