@@ -48,10 +48,11 @@ TEST_F(MemoryManagerTest, DeleteWrongDescriptor)
     auto block1 = _sut->GetFreeBlock();
     auto block2 = _sut->GetFreeBlock();
 
-    _sut->DeleteBlock(block1->GetDescriptor());
+    auto descriptor = block1->GetDescriptor();
+    _sut->DeleteBlock(descriptor);
     EXPECT_EQ(1, _sut->GetAllocatedBlocks());
 
-    _sut->DeleteBlock(block1->GetDescriptor());
+    _sut->DeleteBlock(descriptor);
     EXPECT_EQ(1, _sut->GetAllocatedBlocks());
 
     _sut->DeleteBlock(block2->GetDescriptor());
