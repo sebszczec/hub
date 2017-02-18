@@ -24,7 +24,7 @@ void TelnetServer::AddNewConnection()
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*connection, LIBSOCKET_READ);
-    this->_connectionManager.AddConnect(descriptor);
+    this->_connectionManager.AddConnection(connection);
 
     *connection << "Welcome\n";
 }
@@ -120,6 +120,7 @@ void TelnetServer::Stop()
         this->_server->destroy();
         delete this->_server;
         this->_server = nullptr;
+        this->_connectionManager.ClearAllConnections();
     }
 }
 
