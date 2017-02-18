@@ -2,6 +2,7 @@
 #define __MEMORY_MANAGER_HPP
 
 #include <map>
+#include <cassert>
 
 using namespace std;
 
@@ -11,7 +12,8 @@ public:
     static const int size = 128;
 
 private:
-    int _descriptor;
+    int _descriptor = 0;
+    int _length = 0;
     char _buffer[size] = { 0 };
 
 public:
@@ -28,6 +30,17 @@ public:
     void * GetPayload()
     {
         return &this->_buffer[0];
+    }
+
+    int GetPayloadLength()
+    {
+        return this->_length;
+    }
+
+    void SetPayloadLength(int length)
+    {
+        assert(length <= size);
+        this->_length = length;
     }
 };
 

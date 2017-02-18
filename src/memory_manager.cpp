@@ -74,13 +74,13 @@ void MemoryManager::DumpMemory()
     Logger::Log("MemoryManager: dumping the memory to " + name);
 
     fstream file;
-    file.open(CM::GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::app);
+    file.open(CM::GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::trunc);
 
     file << "Allocated blocks: " << this->GetAllocatedBlocks() << std::endl;
 
     for (auto pair : this->_blocks)
     {
-        file << "Block descriptor: " << pair.first << std::endl;
+        file << "Block descriptor: " << pair.first << ", size: " << pair.second->GetPayloadLength() << std::endl;
         char * buffer = reinterpret_cast<char *>(pair.second->GetPayload());
         for (int i = 0; i < pair.second->size; i++)
         {

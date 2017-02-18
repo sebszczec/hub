@@ -75,6 +75,7 @@ void TelnetServer::Start()
                 auto bytes = connection->rcv(buffer, 128);
                 if (bytes > 0)
                 {
+                    block->SetPayloadLength(bytes);
                     std::stringstream temp_stream;
                     for(int i = 0; i< bytes; ++i)
                         temp_stream << " " << std::hex << (int)buffer[i];
