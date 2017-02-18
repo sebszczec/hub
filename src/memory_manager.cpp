@@ -1,6 +1,7 @@
 #include "memory_manager.hpp"
 #include "configuration_manager.hpp"
 #include <fstream>
+#include "logger.hpp"
 
 MemoryManager * MemoryManager::_instance = nullptr;
 int MemoryManager::_descriptorGenerator = 0;
@@ -68,6 +69,9 @@ void MemoryManager::DumpMemory()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
+
+    auto name = CM::GetResource(CMV::MemoryDumpName).ToString();
+    Logger::Log("MemoryManager: dumping the memory to " + name);
 
     fstream file;
     file.open(CM::GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::app);
