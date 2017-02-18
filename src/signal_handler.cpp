@@ -1,21 +1,14 @@
 #include <csignal>
 #include "signal_handler.hpp"
 #include "logger.hpp"
-#include "configuration_manager.hpp"
-#include "iasync.hpp"
-#include "telnet_server.hpp"
-#include "command_manager.hpp"
+#include "system.hpp"
 
 std::map<int, std::string> SignalHandler::_signalNames;
 
 void SignalHandler::Handler(int signal_number)
 {
     Logger::LogError("Signal " + SignalHandler::_signalNames[signal_number] + " received, cleanning resources and quiting..");
-    CommandManager::ClearAllCommands();
-    TelnetServer::StopAllInstances();
-    IAsync::StopActiveJobs();
-    ConfigurationManager::ClearResources();
-    Logger::ClearResources();
+    System::Stop();
     exit(EXIT_FAILURE);
 }
 
