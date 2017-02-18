@@ -31,9 +31,9 @@ void TelnetServer::AddStream()
 
 void TelnetServer::RemoveStream(const inet_stream& stream)
 {
-    auto descriptor = connection.getfd();
+    auto descriptor = stream.getfd();
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
-    this->_readSet.remove_fd(connection);
+    this->_readSet.remove_fd(stream);
     this->_connectionManager.RemoveConnection(descriptor);
 }
 
