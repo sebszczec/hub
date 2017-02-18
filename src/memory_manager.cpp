@@ -1,4 +1,6 @@
 #include "memory_manager.hpp"
+#include "configuration_manager.hpp"
+#include <fstream>
 
 MemoryManager * MemoryManager::_instance = nullptr;
 int MemoryManager::_descriptorGenerator = 0;
@@ -60,4 +62,28 @@ void MemoryManager::DeleteBlock(int descriptor)
 
     delete block->second;
     this->_blocks.erase(block);
+}
+
+void MemoryManager::DumpMemory()
+{
+    using CM = ConfigurationManager;
+    using CMV = CM::Variable;
+
+    fstream file;
+    file.open(CM::GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::app);
+
+    file << "Allocated blocks: " << this->GetAllocatedBlocks() << std::endl;
+
+    for (auto pair : this->_blocks)
+    {
+        file << "Block descriptor: " << pair.first << std::endl;
+        char * buffer = reinterpret_cast<char *>(pair.second->GetPayload());
+        for (int i = 0; i < pair.second->size; i++)
+        {
+            file << buffer[i];
+        }
+        file << std::endl;
+    }
+
+    file.close();
 }

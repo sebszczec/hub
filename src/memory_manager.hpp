@@ -7,9 +7,13 @@ using namespace std;
 
 class Block
 {
+public:
+    static const int size = 128;
+
 private:
     int _descriptor;
-    char _buffer[128] = { 0 };
+    char _buffer[size] = { 0 };
+
 public:
     Block(int descriptor)
     : _descriptor(descriptor)
@@ -50,6 +54,8 @@ public:
     {
         return this->_allocatedBlocks;
     }
+
+    void DumpMemory();
 };
 
 #endif

@@ -37,6 +37,8 @@ bool System::Start()
 
 void System::Stop()
 {
+    MemoryManager::GetInstance()->DumpMemory();
+
     CommandManager::ClearAllCommands();
     TelnetServer::StopAllInstances();
     IAsync::StopActiveJobs();
