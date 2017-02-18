@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include "configuration_manager.hpp"
+#include "memory_manager.hpp"
 
 int TelnetServer::_idGenerator = 0;
 map<int, TelnetServer *> TelnetServer::_instances;
@@ -64,7 +65,8 @@ void TelnetServer::Start()
             }
             else
             {
-                char buffer[128] = {0};
+                auto block = MemoryManager::GetInstance()->GetFreeBlock();
+                char * buffer = reinterpret_cast<char *>(block->GetPayload());
                 auto connection = dynamic_cast<inet_stream *>(socket);
                 auto descriptor = connection->getfd();
 
