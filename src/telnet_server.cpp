@@ -19,14 +19,14 @@ TelnetServer::~TelnetServer()
 
 void TelnetServer::AddNewConnection()
 {
-    auto connection = this->_server->accept();
-    auto descriptor = connection->getfd();
+    auto stream = this->_server->accept();
+    auto descriptor = stream->getfd();
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
-    this->_readSet.add_fd(*connection, LIBSOCKET_READ);
-    this->_connectionManager.AddConnection(connection);
+    this->_readSet.add_fd(*stream, LIBSOCKET_READ);
+    this->_connectionManager.AddConnection(stream);
 
-    *connection << "Welcome\n";
+    *stream << "Welcome\n";
 }
 
 void TelnetServer::RemoveConnection(const inet_stream& connection)
