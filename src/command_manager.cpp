@@ -22,3 +22,23 @@ void CommandManager::ClearAllCommands()
 
     CommandManager::_commands.clear();
 }
+
+bool CommandManager::ExecuteCommand(const string & command, string & result)
+{
+    auto item = CommandManager::_commands.find(command);
+    if (item == CommandManager::_commands.end())
+    {
+        Logger::LogError("CommandManager: command " + command + " not found");
+        return false;
+    }
+
+    if (!item->second->Execute())
+    {
+        Logger::LogError("CommandManager: command " + command + " executed with error");
+        return false;
+    }
+
+    result = item->second->GetResult();
+
+    return true;
+}

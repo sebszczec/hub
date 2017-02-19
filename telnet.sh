@@ -6,6 +6,8 @@ send -- "Test message1\r"
 sleep 0.1
 send -- "Test message2\r"
 sleep 0.1
+send -- ".uptime\r"
+sleep 0.1
 send -- "\35\r"
 expect "telnet>"
 send -- "close\r" 

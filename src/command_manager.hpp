@@ -15,6 +15,7 @@ public:
 
     static void RegisterCommand(ICommand * command);
     static void ClearAllCommands();
+    static bool ExecuteCommand(const string & command, string & result);
 };
 
 #endif
