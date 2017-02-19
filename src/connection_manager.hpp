@@ -2,38 +2,11 @@
 #define __CONNECTION_MANAGER_HPP
 
 #include <libsocket/inetserverstream.hpp>
-#include "memory_manager.hpp"
 #include <map>
+#include "connection.hpp"
 
 using namespace std;
 using libsocket::inet_stream;
-
-class Connection
-{
-    int _socketFd = 0;
-    inet_stream * _stream = nullptr;
-
-public:
-    Connection(int socketFd, inet_stream * stream)
-    : _socketFd(socketFd), _stream(stream)
-    {}
-
-    ~Connection()
-    {
-        if (this->_stream == nullptr)
-        {
-            return;
-        }
-
-        delete this->_stream;
-        this->_stream = nullptr;
-    }
-
-    void HandleData(Block * block)
-    {
-
-    }
-};
 
 class ConnectionManager
 {
@@ -43,7 +16,14 @@ public:
     ConnectionManager() = default;
     ~ConnectionManager() = default;
 
-    void AddConnection(inet_stream * stream);
+    template <typename CONNECTION_TYPE>
+    void AddConnection(inet_stream * stream)
+    {
+        auto descriptor = stream->getfd();
+        auto connection = new CONNECTION_TYPE(descriptor, stream);
+        this->_connections[descriptor] = connection;
+    }
+
     void RemoveConnection(int socketFd);
     Connection * GetConnection(int socketFd);
     void ClearAllConnections();

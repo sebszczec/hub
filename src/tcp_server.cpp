@@ -24,7 +24,7 @@ void TcpServer::AddStream()
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*stream, LIBSOCKET_READ);
-    this->_connectionManager.AddConnection(stream);
+    this->_connectionManager.AddConnection<TelnetConnection>(stream);
 
     *stream << "Welcome\n";
 }
@@ -37,22 +37,51 @@ void TcpServer::RemoveStream(const inet_stream& stream)
     this->_connectionManager.RemoveConnection(descriptor);
 }
 
-void TcpServer::Start()
-{    
-    Logger::Log(this->_prefix + ": starting on port " + this->_port);
-    this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
-    this->_readSet.add_fd(*(this->_server), LIBSOCKET_READ);
+void TcpServer::HandleIncommingData(inet_socket * socket)
+{
+    auto block = MemoryManager::GetInstance()->GetFreeBlock();
+    char * buffer = reinterpret_cast<char *>(block->GetPayload());
+    auto stream = dynamic_cast<inet_stream *>(socket);
+    auto socketFd = stream->getfd();
 
+    auto bytes = stream->rcv(buffer, 128);
+    if (bytes > 0)
+    {                    
+        std::stringstream temp_stream;
+        for(int i = 0; i< bytes; ++i)
+            temp_stream << " " << std::hex << (int)buffer[i];
+        string data = temp_stream.str();
+
+        Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
+
+        string message(buffer, bytes - 2);
+        Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
+
+        block->SetPayloadLength(bytes);
+        auto connection = this->_connectionManager.GetConnection(socketFd);
+        connection->HandleData(block);
+    }
+    else if (bytes == 0)
+    {
+        this->RemoveStream(*stream);
+        MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
+    }
+    else
+    {
+        Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
+        MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
+    }
+}
+
+void TcpServer::ListenLoop()
+{
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
     long long delay = CM::GetResource(CMV::TelnetPooling).ToInt();
 
-    this->_working = true;
     while (this->_working)
     {
-        libsocket::selectset<inet_socket>::ready_socks readyPair;
-
-        readyPair = this->_readSet.wait(delay);
+        auto readyPair = this->_readSet.wait(delay);
 
         while(!readyPair.first.empty())
         {
@@ -64,43 +93,24 @@ void TcpServer::Start()
             if (socket->getfd() == this->_server->getfd())
             {
                 this->AddStream();
+                continue;
             }
-            else
-            {
-                auto block = MemoryManager::GetInstance()->GetFreeBlock();
-                char * buffer = reinterpret_cast<char *>(block->GetPayload());
-                auto stream = dynamic_cast<inet_stream *>(socket);
-                auto socketFd = stream->getfd();
 
-                auto bytes = stream->rcv(buffer, 128);
-                if (bytes > 0)
-                {                    
-                    std::stringstream temp_stream;
-                    for(int i = 0; i< bytes; ++i)
-                        temp_stream << " " << std::hex << (int)buffer[i];
-                    string data = temp_stream.str();
-
-                    Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
-
-                    string message(buffer, bytes - 2);
-                    Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
-
-                    block->SetPayloadLength(bytes);
-                    auto connection = this->_connectionManager.GetConnection(socketFd);
-                    connection->HandleData(block);
-                }
-                else if (bytes == 0)
-                {
-                    this->RemoveStream(*stream);
-                }
-                else
-                {
-                    Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
-                }
-            }
+            this->HandleIncommingData(socket);    
         }
     }
 
+}
+
+void TcpServer::Start()
+{    
+    Logger::Log(this->_prefix + ": starting on port " + this->_port);
+    this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
+    this->_readSet.add_fd(*(this->_server), LIBSOCKET_READ);
+
+    this->_working = true;
+    this->ListenLoop();
+    
     Logger::LogDebug(this->_prefix + ": Out of the while() loop");
 }
 

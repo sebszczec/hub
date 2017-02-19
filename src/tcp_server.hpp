@@ -31,6 +31,9 @@ private:
 
     ConnectionManager _connectionManager;
 
+    void ListenLoop();
+    void HandleIncommingData(inet_socket * socket);
+
 public:
     TcpServer() = delete;
 
