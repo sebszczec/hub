@@ -5,6 +5,7 @@
 #include <thread>
 #include "configuration_manager.hpp"
 #include "memory_manager.hpp"
+#include "telnet_connection.hpp"
 
 int TcpServer::_idGenerator = 0;
 map<int, TcpServer *> TcpServer::_instances;

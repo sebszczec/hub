@@ -3,7 +3,7 @@
 
 #include <libsocket/inetserverstream.hpp>
 #include <map>
-#include "connection.hpp"
+#include "iconnection.hpp"
 
 using namespace std;
 using libsocket::inet_stream;
@@ -11,7 +11,7 @@ using libsocket::inet_stream;
 class ConnectionManager
 {
 private:
-    map<int, Connection *> _connections;
+    map<int, IConnection *> _connections;
 public:
     ConnectionManager() = default;
     ~ConnectionManager() = default;
@@ -25,7 +25,7 @@ public:
     }
 
     void RemoveConnection(int socketFd);
-    Connection * GetConnection(int socketFd);
+    IConnection * GetConnection(int socketFd);
     void ClearAllConnections();
 };
 

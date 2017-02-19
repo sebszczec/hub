@@ -1,19 +1,8 @@
-#include "connection.hpp"
+#include "telnet_connection.hpp"
 #include "logger.hpp"
 #include "command_manager.hpp"
 
-Connection::~Connection()
-{
-    if (this->_stream == nullptr)
-    {
-        return;
-    }
-
-    delete this->_stream;
-    this->_stream = nullptr;
-}
-
-string TelnetConnection::ExtractCommand(const string& message)
+string && TelnetConnection::ExtractCommand(const string& message)
 {
     auto position = message.find(' ');
     if (position == string::npos)
@@ -26,7 +15,7 @@ string TelnetConnection::ExtractCommand(const string& message)
         throw TelnetConnection::CommandParseException();
     }
 
-    return message.substr(0, position);
+    return std::move(message.substr(0, position));
 }
 
 void TelnetConnection::HandleData(Block * block)
