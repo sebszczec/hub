@@ -6,7 +6,7 @@
 #include "command_manager.hpp"
 #include "uptime_command.hpp"
 #include "iasync.hpp"
-#include "telnet_server.hpp"
+#include "tcp_server.hpp"
 #include "command_manager.hpp"
 #include "memory_manager.hpp"
 
