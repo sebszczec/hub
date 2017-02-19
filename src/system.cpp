@@ -40,7 +40,7 @@ void System::Stop()
     MemoryManager::GetInstance()->DumpMemory();
 
     CommandManager::ClearAllCommands();
-    TelnetServer::StopAllInstances();
+    TcpServer::StopAllInstances();
     IAsync::StopActiveJobs();
     ConfigurationManager::ClearResources();
     MemoryManager::DeleteInstance();

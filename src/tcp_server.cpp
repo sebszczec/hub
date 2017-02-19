@@ -6,18 +6,18 @@
 #include "configuration_manager.hpp"
 #include "memory_manager.hpp"
 
-int TelnetServer::_idGenerator = 0;
-map<int, TelnetServer *> TelnetServer::_instances;
+int TcpServer::_idGenerator = 0;
+map<int, TcpServer *> TcpServer::_instances;
 
-TelnetServer::~TelnetServer()
+TcpServer::~TcpServer()
 {
     this->Stop();
 
-    auto item = TelnetServer::_instances.find(this->_id);
-    TelnetServer::_instances.erase(item);
+    auto item = TcpServer::_instances.find(this->_id);
+    TcpServer::_instances.erase(item);
 }
 
-void TelnetServer::AddStream()
+void TcpServer::AddStream()
 {
     auto stream = this->_server->accept();
     auto descriptor = stream->getfd();
@@ -29,7 +29,7 @@ void TelnetServer::AddStream()
     *stream << "Welcome\n";
 }
 
-void TelnetServer::RemoveStream(const inet_stream& stream)
+void TcpServer::RemoveStream(const inet_stream& stream)
 {
     auto descriptor = stream.getfd();
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
@@ -37,7 +37,7 @@ void TelnetServer::RemoveStream(const inet_stream& stream)
     this->_connectionManager.RemoveConnection(descriptor);
 }
 
-void TelnetServer::Start()
+void TcpServer::Start()
 {    
     Logger::Log(this->_prefix + ": starting on port " + this->_port);
     this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
@@ -104,7 +104,7 @@ void TelnetServer::Start()
     Logger::LogDebug(this->_prefix + ": Out of the while() loop");
 }
 
-void TelnetServer::Stop()
+void TcpServer::Stop()
 {
     Logger::Log(this->_prefix + ": stopped ");
 
@@ -128,9 +128,9 @@ void TelnetServer::Stop()
 }
 
 
-void TelnetServer::StopAllInstances()
+void TcpServer::StopAllInstances()
 {
-    for (auto & pair : TelnetServer::_instances)
+    for (auto & pair : TcpServer::_instances)
     {
         auto & instance = pair.second;
         instance->Stop();

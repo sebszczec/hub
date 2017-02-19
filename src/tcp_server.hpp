@@ -15,7 +15,7 @@ using libsocket::inet_stream;
 using libsocket::inet_stream_server;
 using libsocket::selectset;
 
-class TelnetServer
+class TcpServer
 {
 private:
     string _prefix;
@@ -27,28 +27,28 @@ private:
     int _id = 0;
 
     static int _idGenerator;
-    static map<int, TelnetServer *> _instances;
+    static map<int, TcpServer *> _instances;
 
     ConnectionManager _connectionManager;
 
 public:
-    TelnetServer() = delete;
+    TcpServer() = delete;
 
-    TelnetServer(const string& port)
-    : _id(TelnetServer::_idGenerator++), _port(port)
+    TcpServer(const string& port)
+    : _id(TcpServer::_idGenerator++), _port(port)
     {
-        TelnetServer::_instances[this->_id] = this;
-        this->_prefix = "TelnetServer[" + std::to_string(this->_id) + "]";
+        TcpServer::_instances[this->_id] = this;
+        this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";
     }
 
-    TelnetServer(string&& port)
-    : _id(TelnetServer::_idGenerator++), _port(port)
+    TcpServer(string&& port)
+    : _id(TcpServer::_idGenerator++), _port(port)
     {
-        TelnetServer::_instances[this->_id] = this;
-        this->_prefix = "TelnetServer[" + std::to_string(this->_id) + "]";
+        TcpServer::_instances[this->_id] = this;
+        this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";
     }
 
-    ~TelnetServer();
+    ~TcpServer();
 
     inline string GetExtendedPrefix(int descriptor)
     {
