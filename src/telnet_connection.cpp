@@ -2,7 +2,7 @@
 #include "logger.hpp"
 #include "command_manager.hpp"
 
-string && TelnetConnection::ExtractCommand(const string& message)
+string TelnetConnection::ExtractCommand(const string& message)
 {
     auto position = message.find(' ');
     if (position == string::npos)
@@ -15,7 +15,7 @@ string && TelnetConnection::ExtractCommand(const string& message)
         throw TelnetConnection::CommandParseException();
     }
 
-    return std::move(message.substr(0, position));
+    return message.substr(0, position);
 }
 
 void TelnetConnection::HandleData(Block * block)

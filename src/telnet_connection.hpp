@@ -6,7 +6,7 @@
 class TelnetConnection : public IConnection
 {
 protected:
-    string && ExtractCommand(const string&);
+    string ExtractCommand(const string&);
 public:
     class CommandParseException : public std::exception
     {  
