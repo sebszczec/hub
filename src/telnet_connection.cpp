@@ -2,7 +2,7 @@
 #include "logger.hpp"
 #include "command_manager.hpp"
 
-string TelnetConnection::ExtractCommand(const string& message)
+bool TelnetConnection::ExtractCommand(const string& message, string & result)
 {
     auto position = message.find(' ');
     if (position == string::npos)
@@ -12,10 +12,11 @@ string TelnetConnection::ExtractCommand(const string& message)
 
     if (position == string::npos)
     {
-        throw TelnetConnection::CommandParseException();
+        return false;
     }
 
-    return message.substr(0, position);
+    result = message.substr(0, position);
+    return true;
 }
 
 void TelnetConnection::HandleData(Block * block)
@@ -30,7 +31,13 @@ void TelnetConnection::HandleData(Block * block)
 
     if (message[0] == '.')
     {
-        auto command = this->ExtractCommand(message);
+        string command = "";
+        if (!this->ExtractCommand(message, command))
+        {
+            Logger::LogError("TelnetConnection: cannot extract command from " + message);
+            return;
+        }
+
         Logger::LogDebug("TelnetConnection: got command " + command);
 
         string result = "";

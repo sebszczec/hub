@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "memory_manager_test.hpp"
 #include "system_test.hpp"
+#include "telnet_connection_test.hpp"
 #include "uptime_command_test.hpp"
 
 int main(int ac, char* av[])
