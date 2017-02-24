@@ -70,11 +70,11 @@ void MemoryManager::DumpMemory()
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
 
-    auto name = CM::GetResource(CMV::MemoryDumpName).ToString();
+    auto name = CM::GetInstance()->GetResource(CMV::MemoryDumpName).ToString();
     Logger::Log("MemoryManager: dumping the memory to " + name);
 
     fstream file;
-    file.open(CM::GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::trunc);
+    file.open(CM::GetInstance()->GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::trunc);
 
     file << "Allocated blocks: " << this->GetAllocatedBlocks() << std::endl;
 

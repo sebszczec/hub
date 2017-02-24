@@ -115,16 +115,20 @@ public:
         MemoryDumpName
     };
 
-    static bool LoadResources();
-    static IResource & GetResource(ConfigurationManager::Variable variableName);
-    static void ClearResources();
+    static ConfigurationManager * GetInstance();
+
+    bool LoadResources();
+    IResource & GetResource(ConfigurationManager::Variable variableName);
+    void ClearResources();
 
 private:
-    ConfigurationManager() = delete;
-    ~ConfigurationManager() = delete;
+    ConfigurationManager() = default;
+    ~ConfigurationManager();
 
-    static Config _configFile;
+    static ConfigurationManager * _instance;
+
+    Config _configFile;
 
     using ResourceDictionary = map<ConfigurationManager::Variable, IResource *>;
-    static ResourceDictionary _resources;
+    ResourceDictionary _resources;
 };

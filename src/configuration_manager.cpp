@@ -5,8 +5,26 @@
 using CM = ConfigurationManager;
 using CMV = CM::Variable;
 
-Config CM::_configFile;
-CM::ResourceDictionary CM::_resources;
+ConfigurationManager * CM::_instance = nullptr;
+
+CM::~ConfigurationManager()
+{
+    if (CM::_instance != nullptr)
+    {
+        delete CM::_instance;
+        CM::_instance = nullptr;
+    }
+}
+
+ConfigurationManager * CM::GetInstance()
+{
+    if(CM::_instance == nullptr)
+    {
+        CM::_instance = new ConfigurationManager();
+    }
+
+    return CM::_instance;
+}
 
 bool CM::LoadResources()
 {

@@ -78,7 +78,7 @@ void TcpServer::ListenLoop()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    long long delay = CM::GetResource(CMV::TelnetPooling).ToInt();
+    long long delay = CM::GetInstance()->GetResource(CMV::TelnetPooling).ToInt();
 
     while (this->_working)
     {
@@ -121,7 +121,7 @@ void TcpServer::Stop()
 
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    int delay = CM::GetResource(CMV::TelnetCooling).ToInt();
+    int delay = CM::GetInstance()->GetResource(CMV::TelnetCooling).ToInt();
     
     this->_working = false;
     using DelayMS = std::chrono::duration<int, std::milli>;

@@ -16,17 +16,19 @@ bool System::Start()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    if (!CM::LoadResources())
+    auto configurationManager = CM::GetInstance();
+    
+    if (!configurationManager->LoadResources())
     {
         return false;
     }
 
     Logger::Initilize(
-    CM::GetResource(CMV::LogFileName).ToString(), 
-    CM::GetResource(CMV::LogResolution).ToInt(), 
-    (LogLevel)CM::GetResource(CMV::LogLevel).ToInt());
+    configurationManager->GetResource(CMV::LogFileName).ToString(), 
+    configurationManager->GetResource(CMV::LogResolution).ToInt(), 
+    (LogLevel)configurationManager->GetResource(CMV::LogLevel).ToInt());
 
-    Daemon::Initilize(CM::GetResource(CMV::IsDaemon).ToBool());
+    Daemon::Initilize(configurationManager->GetResource(CMV::IsDaemon).ToBool());
 
     SignalHandler::RegisterExitSignals();
 
@@ -42,7 +44,7 @@ void System::Stop()
     CommandManager::GetInstance()->ClearAllCommands();
     TcpServer::StopAllInstances();
     IAsync::StopActiveJobs();
-    ConfigurationManager::ClearResources();
+    ConfigurationManager::GetInstance()->ClearResources();
     MemoryManager::DeleteInstance();
     Logger::ClearResources();
 }

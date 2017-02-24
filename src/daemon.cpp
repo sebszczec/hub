@@ -86,7 +86,7 @@ void Daemon::SavePidToFile()
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
 
-    auto name = CM::GetResource(CMV::PidFileName).ToString();
+    auto name = CM::GetInstance()->GetResource(CMV::PidFileName).ToString();
     fstream file;
     file.open(name, fstream::out | fstream::trunc);
     file << to_string(Daemon::_pid) << endl;
