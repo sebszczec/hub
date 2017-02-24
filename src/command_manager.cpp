@@ -1,7 +1,25 @@
 #include "command_manager.hpp"
 #include "logger.hpp"
 
-std::map<std::string, ICommand *> CommandManager::_commands;
+CommandManager * CommandManager::_instance = nullptr;
+
+CommandManager::~CommandManager()
+{
+    if (CommandManager::_instance != nullptr)
+    { 
+        delete CommandManager::_instance;
+    }
+}
+
+CommandManager * CommandManager::GetInstance()
+{
+    if (CommandManager::_instance == nullptr)
+    {
+        CommandManager::_instance = new CommandManager();
+    }
+
+    return CommandManager::_instance;
+}
 
 void CommandManager::RegisterCommand(ICommand * command)
 {

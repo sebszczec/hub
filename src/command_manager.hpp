@@ -8,14 +8,18 @@
 class CommandManager
 {
 private:
-    static std::map<std::string, ICommand *> _commands;
-public:
-    CommandManager() = delete;
-    ~CommandManager() = delete;
+    CommandManager() = default;
+    ~CommandManager();
 
-    static void RegisterCommand(ICommand * command);
-    static void ClearAllCommands();
-    static bool ExecuteCommand(const string & command, string & result);
+    static CommandManager * _instance;
+    std::map<std::string, ICommand *> _commands;
+
+public:
+    static CommandManager * GetInstance();
+
+    void RegisterCommand(ICommand * command);
+    void ClearAllCommands();
+    bool ExecuteCommand(const string & command, string & result);
 };
 
 #endif

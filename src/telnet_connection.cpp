@@ -41,7 +41,7 @@ void TelnetConnection::HandleData(Block * block)
         Logger::LogDebug("TelnetConnection: got command " + command);
 
         string result = "";
-        if (CommandManager::ExecuteCommand(command, result))
+        if (CommandManager::GetInstance()->ExecuteCommand(command, result))
         {
             Logger::LogDebug("TelnetConnection: command execution result: " + result);
             *this->_stream << result << "\n";

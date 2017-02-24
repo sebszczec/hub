@@ -39,7 +39,7 @@ void System::Stop()
 {
     MemoryManager::GetInstance()->DumpMemory();
 
-    CommandManager::ClearAllCommands();
+    CommandManager::GetInstance()->ClearAllCommands();
     TcpServer::StopAllInstances();
     IAsync::StopActiveJobs();
     ConfigurationManager::ClearResources();
@@ -54,5 +54,5 @@ system_clock::duration System::UpTime()
 
 void System::RegisterCommands()
 {
-    CommandManager::RegisterCommand(new UptimeCommand());
+    CommandManager::GetInstance()->RegisterCommand(new UptimeCommand());
 }
