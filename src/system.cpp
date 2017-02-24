@@ -41,7 +41,7 @@ void System::Stop()
 {
     MemoryManager::GetInstance()->DumpMemory();
 
-    CommandManager::GetInstance()->ClearAllCommands();
+    CommandManager::ClearInstance();
     TcpServer::StopAllInstances();
     IAsync::StopActiveJobs();
     ConfigurationManager::ClearInstance();

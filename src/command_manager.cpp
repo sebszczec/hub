@@ -5,8 +5,13 @@ CommandManager * CommandManager::_instance = nullptr;
 
 CommandManager::~CommandManager()
 {
+    this->ClearAllCommands();
+}
+
+void CommandManager::ClearInstance()
+{
     if (CommandManager::_instance != nullptr)
-    { 
+    {
         delete CommandManager::_instance;
         CommandManager::_instance = nullptr;
     }

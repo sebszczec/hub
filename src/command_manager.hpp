@@ -11,14 +11,16 @@ private:
     CommandManager() = default;
     ~CommandManager();
 
+    void ClearAllCommands();
+
     static CommandManager * _instance;
     std::map<std::string, ICommand *> _commands;
 
 public:
     static CommandManager * GetInstance();
+    static void ClearInstance();
 
     void RegisterCommand(ICommand * command);
-    void ClearAllCommands();
     bool ExecuteCommand(const string & command, string & result);
 };
 
