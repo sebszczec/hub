@@ -75,8 +75,6 @@ bool CM::LoadResources()
     string memoryDumpName = this->_configFile.lookup("memory_dump_name");
     this->_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);
 
-    this->_configFile.~Config();
-
     return true;
 }
 
