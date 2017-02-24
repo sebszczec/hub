@@ -44,7 +44,7 @@ void System::Stop()
     CommandManager::GetInstance()->ClearAllCommands();
     TcpServer::StopAllInstances();
     IAsync::StopActiveJobs();
-    ConfigurationManager::GetInstance()->ClearResources();
+    ConfigurationManager::ClearInstance();
     MemoryManager::DeleteInstance();
     Logger::ClearResources();
 }

@@ -116,14 +116,16 @@ public:
     };
 
     static ConfigurationManager * GetInstance();
+    static void ClearInstance();
 
     bool LoadResources();
     IResource & GetResource(ConfigurationManager::Variable variableName);
-    void ClearResources();
 
 private:
     ConfigurationManager() = default;
     ~ConfigurationManager();
+
+    void ClearResources();
 
     static ConfigurationManager * _instance;
 

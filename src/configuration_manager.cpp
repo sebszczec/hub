@@ -9,11 +9,7 @@ ConfigurationManager * CM::_instance = nullptr;
 
 CM::~ConfigurationManager()
 {
-    if (CM::_instance != nullptr)
-    {
-        delete CM::_instance;
-        CM::_instance = nullptr;
-    }
+    this->_instance->ClearResources();
 }
 
 ConfigurationManager * CM::GetInstance()
@@ -24,6 +20,15 @@ ConfigurationManager * CM::GetInstance()
     }
 
     return CM::_instance;
+}
+
+void CM::ClearInstance()
+{
+    if (CM::_instance != nullptr)
+    {
+        delete CM::_instance;
+        CM::_instance = nullptr;
+    }
 }
 
 bool CM::LoadResources()
