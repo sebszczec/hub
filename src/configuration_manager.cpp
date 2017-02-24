@@ -30,7 +30,7 @@ bool CM::LoadResources()
 {
     try
     {
-        CM::_configFile.readFile("settings.cfg");
+        this->_configFile.readFile("settings.cfg");
     }
     catch (const FileIOException &exception)
     {
@@ -43,48 +43,48 @@ bool CM::LoadResources()
         return false;
     }
 
-    string logName = CM::_configFile.lookup("log_name");
-    CM::_resources[CMV::LogFileName] = new StringResource(logName);
+    string logName = this->_configFile.lookup("log_name");
+    this->_resources[CMV::LogFileName] = new StringResource(logName);
 
-    int logLevel = CM::_configFile.lookup("log_level");
-    CM::_resources[CMV::LogLevel] = new IntResource(logLevel);
+    int logLevel = this->_configFile.lookup("log_level");
+    this->_resources[CMV::LogLevel] = new IntResource(logLevel);
 
-    int logResolution = CM::_configFile.lookup("log_resolution");
-    CM::_resources[CMV::LogResolution] = new IntResource(logResolution);
+    int logResolution = this->_configFile.lookup("log_resolution");
+    this->_resources[CMV::LogResolution] = new IntResource(logResolution);
 
-    string pidName = CM::_configFile.lookup("pid_name");
-    CM::_resources[CMV::PidFileName] = new StringResource(pidName);
+    string pidName = this->_configFile.lookup("pid_name");
+    this->_resources[CMV::PidFileName] = new StringResource(pidName);
 
-    int isDaemon = CM::_configFile.lookup("daemon");
-    CM::_resources[CMV::IsDaemon] = new BoolResource(isDaemon == 1);
+    int isDaemon = this->_configFile.lookup("daemon");
+    this->_resources[CMV::IsDaemon] = new BoolResource(isDaemon == 1);
 
-    string telnetPort = CM::_configFile.lookup("telnet_port");
-    CM::_resources[CMV::TelnetPort] = new StringResource(telnetPort);
+    string telnetPort = this->_configFile.lookup("telnet_port");
+    this->_resources[CMV::TelnetPort] = new StringResource(telnetPort);
 
-    int telnetPooling = CM::_configFile.lookup("telnet_pooling");
-    CM::_resources[CMV::TelnetPooling] = new IntResource(telnetPooling);
+    int telnetPooling = this->_configFile.lookup("telnet_pooling");
+    this->_resources[CMV::TelnetPooling] = new IntResource(telnetPooling);
 
-    int telnetCooling = CM::_configFile.lookup("telnet_cooling");
-    CM::_resources[CMV::TelnetCooling] = new IntResource(telnetCooling);
+    int telnetCooling = this->_configFile.lookup("telnet_cooling");
+    this->_resources[CMV::TelnetCooling] = new IntResource(telnetCooling);
 
-    string memoryDumpName = CM::_configFile.lookup("memory_dump_name");
-    CM::_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);
+    string memoryDumpName = this->_configFile.lookup("memory_dump_name");
+    this->_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);
 
     return true;
 }
 
 IResource & CM::GetResource(CMV variableName)
 {
-    return  *CM::_resources[variableName];
+    return  *this->_resources[variableName];
 }
 
 void CM::ClearResources()
 {
     Logger::Log("ConfigurationManager: cleaning resources");;
-    for (auto &pair : CM::_resources)
+    for (auto &pair : this->_resources)
     {
         delete pair.second;
     }
 
-    CM::_resources.clear();
+    this->_resources.clear();
 }
