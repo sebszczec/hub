@@ -3,16 +3,22 @@
 
 #include <libsocket/inetserverstream.hpp>
 #include <map>
+#include <exception>
 #include "iconnection.hpp"
 
 using namespace std;
 using libsocket::inet_stream;
+
+class ConnectionNotFoundException : public exception
+{
+};
 
 class ConnectionManager
 {
 private:
     map<int, IConnection *> _connections;
 public:
+
     ConnectionManager() = default;
     ~ConnectionManager() = default;
 

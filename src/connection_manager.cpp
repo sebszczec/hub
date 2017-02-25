@@ -25,7 +25,11 @@ void ConnectionManager::ClearAllConnections()
 IConnection * ConnectionManager::GetConnection(int socketFd)
 {
     auto item = this->_connections.find(socketFd);
-    assert(item != this->_connections.end());
+    
+    if (item == this->_connections.end())
+    {
+        throw ConnectionNotFoundException();
+    }
 
     return item->second;
 }

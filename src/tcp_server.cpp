@@ -59,19 +59,27 @@ void TcpServer::HandleIncommingData(inet_socket * socket)
         Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
 
         block->SetPayloadLength(bytes);
-        auto connection = this->_connectionManager.GetConnection(socketFd);
-        connection->HandleData(block);
+
+        try 
+        {
+            auto connection = this->_connectionManager.GetConnection(socketFd);
+            connection->HandleData(block);
+        }
+        catch (const ConnectionNotFoundException &)
+        {
+            Logger::LogError(this->GetExtendedPrefix(socketFd) + ": connection for socket FD not found");
+        }
     }
     else if (bytes == 0)
     {
-        this->RemoveStream(*stream);
-        MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
+        this->RemoveStream(*stream);        
     }
     else
     {
         Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
-        MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
     }
+
+    MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
 }
 
 void TcpServer::ListenLoop()
