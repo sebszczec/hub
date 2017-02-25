@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(test)
 
 # test sources
-set (SOURCE_FILES connection_manager_test.cpp memory_manager_test.cpp system_test.cpp telnet_connection_test.cpp uptime_command_test.cpp)
+set (SOURCE_FILES connection_manager_test.cpp delegate_test.cpp memory_manager_test.cpp system_test.cpp telnet_connection_test.cpp uptime_command_test.cpp)
 add_library(testing ${SOURCE_FILES})
 
 
