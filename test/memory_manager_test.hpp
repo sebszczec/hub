@@ -70,4 +70,16 @@ TEST_F(MemoryManagerTest, InvalidBlockSize)
     EXPECT_EQ(0, _sut->GetAllocatedBlocks());
 }
 
+TEST_F(MemoryManagerTest, ValidBlockSize)
+{
+    auto block1 = _sut->GetFreeBlock();
+    auto maxSize = block1->GetMaxSize();
+
+    EXPECT_NO_THROW(block1->SetPayloadLength(maxSize));
+    EXPECT_EQ(maxSize, block1->GetPayloadLength());
+
+    _sut->DeleteBlock(block1->GetDescriptor());
+    EXPECT_EQ(0, _sut->GetAllocatedBlocks());
+}
+
 #endif

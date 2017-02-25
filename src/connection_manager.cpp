@@ -33,3 +33,8 @@ IConnection * ConnectionManager::GetConnection(int socketFd)
 
     return item->second;
 }
+
+unsigned int ConnectionManager::GetNumberOfConnections()
+{
+    return this->_connections.size();
+}
