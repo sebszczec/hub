@@ -38,11 +38,11 @@ void TcpServer::RemoveStream(const inet_stream& stream)
     this->_connectionManager.RemoveConnection(descriptor);
 }
 
-void TcpServer::HandleIncommingData(inet_socket * socket)
+void TcpServer::HandleIncommingData(inet_socket & socket)
 {
     auto block = MemoryManager::GetInstance()->GetFreeBlock();
     char * buffer = reinterpret_cast<char *>(block->GetPayload());
-    auto stream = dynamic_cast<inet_stream *>(socket);
+    auto stream = dynamic_cast<inet_stream *>(&socket);
     auto socketFd = stream->getfd();
 
     auto bytes = stream->rcv(buffer, 128);
@@ -105,7 +105,7 @@ void TcpServer::ListenLoop()
                 continue;
             }
 
-            this->HandleIncommingData(socket);    
+            this->HandleIncommingData(*socket);    
         }
     }
 
