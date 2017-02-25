@@ -21,7 +21,7 @@ public:
 
     string Register() override;
     string PrintHelp() override;
-    bool Execute() override;
+    bool Execute(const CommandArgument &) override;
     string GetResult() override;
 };
 

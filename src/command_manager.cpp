@@ -47,7 +47,7 @@ void CommandManager::ClearAllCommands()
     this->_commands.clear();
 }
 
-bool CommandManager::ExecuteCommand(const string & command, string & result)
+bool CommandManager::ExecuteCommand(const string & command, const CommandArgument &arg, string & result)
 {
     auto item = this->_commands.find(command);
     if (item == this->_commands.end())
@@ -56,7 +56,7 @@ bool CommandManager::ExecuteCommand(const string & command, string & result)
         return false;
     }
 
-    if (!item->second->Execute())
+    if (!item->second->Execute(arg))
     {
         Logger::LogError("CommandManager: command " + command + " executed with error");
         return false;

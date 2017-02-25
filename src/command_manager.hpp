@@ -21,7 +21,7 @@ public:
     static void ClearInstance();
 
     void RegisterCommand(ICommand * command);
-    bool ExecuteCommand(const string & command, string & result);
+    bool ExecuteCommand(const string & command, const CommandArgument &, string & result);
 };
 
 #endif

@@ -13,7 +13,7 @@ string UptimeCommand::PrintHelp()
     return "Shows how long applications works";
 }
     
-bool UptimeCommand::Execute()
+bool UptimeCommand::Execute(const CommandArgument &)
 {
     Logger::LogDebug(this->_name + " called");
 

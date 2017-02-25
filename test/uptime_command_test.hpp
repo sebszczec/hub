@@ -40,8 +40,9 @@ TEST_F(UptimeCommandTest, PrintHelp)
 TEST_F(UptimeCommandTest, Execute)
 {
     string expect = "";
+    CommandArgument arg;
 
-    EXPECT_TRUE(sut->Execute());
+    EXPECT_TRUE(sut->Execute(arg));
     auto result = sut->GetResult();
     
     EXPECT_STRNE(expect.c_str(), result.c_str());
@@ -50,6 +51,7 @@ TEST_F(UptimeCommandTest, Execute)
 TEST_F(UptimeCommandTest, GetResult_empty)
 {
     string expect = "";
+    
     auto result = sut->GetResult();
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }

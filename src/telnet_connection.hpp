@@ -2,11 +2,14 @@
 #define __TELNET_CONNECTION_HPP
 
 #include "iconnection.hpp"
+#include "icommand.hpp"
 
 class TelnetConnection : public IConnection
 {
 protected:
-    bool ExtractCommand(const string&, string &);
+    bool ExtractCommand(const string&, string &, CommandArgument & arg);
+    void ExtractParameters(const string&, CommandArgument & arg);
+
 public:
     class CommandParseException : public std::exception
     {  
