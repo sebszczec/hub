@@ -59,4 +59,15 @@ TEST_F(MemoryManagerTest, DeleteWrongDescriptor)
     EXPECT_EQ(0, _sut->GetAllocatedBlocks());
 }
 
+TEST_F(MemoryManagerTest, InvalidBlockSize)
+{
+    auto block1 = _sut->GetFreeBlock();
+    auto maxSize = block1->GetMaxSize();
+
+    ASSERT_THROW(block1->SetPayloadLength(maxSize + 1), InvalidLengthException);
+
+    _sut->DeleteBlock(block1->GetDescriptor());
+    EXPECT_EQ(0, _sut->GetAllocatedBlocks());
+}
+
 #endif

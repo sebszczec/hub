@@ -6,6 +6,10 @@
 
 using namespace std;
 
+class InvalidLengthException : public exception
+{
+};
+
 class Block
 {
 public:
@@ -22,7 +26,7 @@ public:
     {
     }
 
-    int GetDescriptor()
+    int GetDescriptor() const
     {
         return this->_descriptor;
     }
@@ -32,15 +36,23 @@ public:
         return &this->_buffer[0];
     }
 
-    int GetPayloadLength()
+    int GetPayloadLength() const
     {
         return this->_length;
     }
 
     void SetPayloadLength(int length)
     {
-        assert(length <= size);
+        if (length > size)
+        {
+            throw InvalidLengthException();
+        }
         this->_length = length;
+    }
+
+    int GetMaxSize() const
+    {
+        return size;
     }
 };
 
