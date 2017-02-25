@@ -8,6 +8,7 @@
 #include <libsocket/select.hpp>
 #include <map>
 #include "connection_manager.hpp"
+#include "delegate.hpp"
 
 using namespace std;
 using libsocket::inet_socket;
@@ -52,6 +53,9 @@ public:
     }
 
     ~TcpServer();
+
+    Delegate OnAddConnection;
+    Delegate OnRemoveConnection;
 
     inline string GetExtendedPrefix(int descriptor)
     {

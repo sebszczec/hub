@@ -25,9 +25,11 @@ void TcpServer::AddStream()
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*stream, LIBSOCKET_READ);
+    
     this->_connectionManager.AddConnection<TelnetConnection>(*stream);
-
     *stream << "Welcome\n";
+
+    this->OnAddConnection.Run();
 }
 
 void TcpServer::RemoveStream(const inet_stream& stream)
@@ -36,6 +38,8 @@ void TcpServer::RemoveStream(const inet_stream& stream)
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
     this->_readSet.remove_fd(stream);
     this->_connectionManager.RemoveConnection(descriptor);
+
+    this->OnRemoveConnection.Run();
 }
 
 void TcpServer::HandleIncommingData(inet_socket & socket)

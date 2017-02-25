@@ -22,7 +22,7 @@ public:
 
     void Run()
     {
-        for (auto item : this->_methods)
+        for (auto & item : this->_methods)
         {
             item();
         }
