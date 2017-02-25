@@ -1,6 +1,7 @@
 #include "uptime_command.hpp"
 #include "system.hpp"
 #include "logger.hpp"
+#include <sstream>
 
 string UptimeCommand::Register()
 {
@@ -23,7 +24,9 @@ bool UptimeCommand::Execute()
     auto minutes = std::chrono::duration_cast<UptimeCommand::Minutes>(uptime).count();
     auto hours = std::chrono::duration_cast<UptimeCommand::Hours>(uptime).count();
 
-    this->_result = std::to_string(hours) + " hours, " + std::to_string(minutes) + " minutes, " + std::to_string(seconds) + " seconds, " + std::to_string(milliseconds) + " milliseconds";
+    std::stringstream stream; 
+    stream << std::to_string(hours) << " hours, " << std::to_string(minutes) << " minutes, " << std::to_string(seconds) << " seconds, " << std::to_string(milliseconds) << " milliseconds";
+    this->_result = stream.str();
 
     return true;
 }
