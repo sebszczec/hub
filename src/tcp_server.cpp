@@ -25,7 +25,7 @@ void TcpServer::AddStream()
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*stream, LIBSOCKET_READ);
-    this->_connectionManager.AddConnection<TelnetConnection>(stream);
+    this->_connectionManager.AddConnection<TelnetConnection>(*stream);
 
     *stream << "Welcome\n";
 }

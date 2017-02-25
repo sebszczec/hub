@@ -6,6 +6,7 @@
 
 class OverridedTelnetConnection : public TelnetConnection
 {
+private:
 public:
     OverridedTelnetConnection()
     : TelnetConnection(0, nullptr, nullptr)

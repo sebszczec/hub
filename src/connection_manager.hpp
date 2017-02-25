@@ -23,10 +23,10 @@ public:
     ~ConnectionManager() = default;
 
     template <typename CONNECTION_TYPE>
-    void AddConnection(inet_stream * stream)
+    void AddConnection(inet_stream & stream)
     {
-        auto descriptor = stream->getfd();
-        auto connection = new CONNECTION_TYPE(descriptor, stream, this);
+        auto descriptor = stream.getfd();
+        auto connection = new CONNECTION_TYPE(descriptor, &stream, this);
         this->_connections[descriptor] = connection;
     }
 

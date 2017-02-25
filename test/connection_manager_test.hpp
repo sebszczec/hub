@@ -36,7 +36,7 @@ TEST_F(ConnectionManagerTest, GetConnection)
 {
     int sockFd = -1;
     inet_stream * stream = new inet_stream();   
-    _sut->AddConnection<TelnetConnection>(stream);
+    _sut->AddConnection<TelnetConnection>(*stream);
 
     EXPECT_NO_THROW(_sut->GetConnection(sockFd));
     EXPECT_EQ(1, _sut->GetNumberOfConnections());

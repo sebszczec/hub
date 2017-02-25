@@ -2,7 +2,6 @@
 #define __MEMORY_MANAGER_HPP
 
 #include <map>
-#include <cassert>
 
 using namespace std;
 
