@@ -37,6 +37,11 @@ public:
             item(argument);
         }
     }
+
+    void Clear()
+    {
+        this->_methods.clear();
+    }
 };
 
 #endif

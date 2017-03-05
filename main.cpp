@@ -7,7 +7,7 @@
 #include "worker.hpp"
 #include "timer.hpp"
 #include "signal_handler.hpp"
-#include "telnet_server.hpp"
+#include "tcp_server.hpp"
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
     //     Logger::LogDebug("Keep alive message from timer.");
     // });
 
-    TelnetServer telnetServer(CM::GetInstance()->GetResource(CMV::TelnetPort).ToString());
+    TcpServer telnetServer(CM::GetInstance()->GetResource(CMV::TelnetPort).ToString());
     Worker telnetWorker(false);
     telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
 

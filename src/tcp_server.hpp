@@ -16,29 +16,6 @@ using libsocket::inet_stream;
 using libsocket::inet_stream_server;
 using libsocket::selectset;
 
-class TcpServer;
-
-class TcpServerDelegateArgument : public DelegateArgument
-{
-private:
-public:
-    TcpServerDelegateArgument(TcpServer * sender, inet_stream * stream)
-    {
-        Sender = reinterpret_cast<void *>(sender);
-        Arguments.push_back(reinterpret_cast<void *>(stream));
-    }
-
-    TcpServer * GetSender()
-    {
-        return reinterpret_cast<TcpServer *>(&Sender);
-    }
-
-    inet_stream * GetStream()
-    {
-        return reinterpret_cast<inet_stream *>(Arguments[0]);
-    }
-};
-
 class TcpServer
 {
 private:
@@ -70,9 +47,6 @@ public:
 
     ~TcpServer();
 
-    Delegate OnAddConnection;
-    Delegate OnRemoveConnection;
-
     inline string GetExtendedPrefix(int descriptor)
     {
         return this->_prefix + "[" + std::to_string(descriptor) + "]";
@@ -102,7 +76,7 @@ public:
     }
 
     void AddStream();
-    void RemoveStream(const inet_stream& stream);
+    void RemoveStream(inet_stream * stream);
 
     static void StopAllInstances();
 };

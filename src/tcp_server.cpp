@@ -5,7 +5,7 @@
 #include <thread>
 #include "configuration_manager.hpp"
 #include "memory_manager.hpp"
-// #include "telnet_connection.hpp"
+#include "telnet_connection.hpp"
 
 int TcpServer::_idGenerator = 0;
 map<int, TcpServer *> TcpServer::_instances;
@@ -25,23 +25,17 @@ void TcpServer::AddStream()
                 
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*stream, LIBSOCKET_READ);
-    
-    // this->_connectionManager.AddConnection<TelnetConnection>(*stream);
-    // *stream << "Welcome\n";
 
-    TcpServerDelegateArgument arg(this, stream);
-    this->OnAddConnection.Run(arg);
+    this->_connectionManager.AddConnection<TelnetConnection>(*stream);
+    *stream << "Welcome\n";
 }
 
-void TcpServer::RemoveStream(const inet_stream& stream)
+void TcpServer::RemoveStream(inet_stream * stream)
 {
-    auto descriptor = stream.getfd();
+    auto descriptor = stream->getfd();
     Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
-    this->_readSet.remove_fd(stream);
+    this->_readSet.remove_fd(*stream);
     this->_connectionManager.RemoveConnection(descriptor);
-
-    DelegateArgument arg;
-    this->OnRemoveConnection.Run(arg);
 }
 
 void TcpServer::HandleIncommingData(inet_socket & socket)
@@ -78,7 +72,7 @@ void TcpServer::HandleIncommingData(inet_socket & socket)
     }
     else if (bytes == 0)
     {
-        this->RemoveStream(*stream);        
+        this->RemoveStream(stream);        
     }
     else
     {
