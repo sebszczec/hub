@@ -1,14 +1,20 @@
 #include "telnet_server.hpp"
 #include "telnet_connection.hpp"
 
-void TelnetServer::AddConnection(ConnectionManager & manager, inet_stream & stream)
+TelnetServer::TelnetServer(ConnectionManager & connectionManager)
+: _connectionManager(&connectionManager)
 {
-    manager.AddConnection<TelnetConnection>(stream);
+
+}
+
+void TelnetServer::AddConnection(inet_stream & stream)
+{
+    this->_connectionManager->AddConnection<TelnetConnection>(stream);
     stream << "Welcome\n";
 }
 
-void TelnetServer::RemoveConnection(ConnectionManager & manager, inet_stream & stream)
+void TelnetServer::RemoveConnection(inet_stream & stream)
 {
     auto descriptor = stream.getfd();
-    manager.RemoveConnection(descriptor);
+    this->_connectionManager->RemoveConnection(descriptor);
 }

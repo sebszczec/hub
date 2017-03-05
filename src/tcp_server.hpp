@@ -46,7 +46,7 @@ private:
         Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
         this->_readSet.add_fd(*stream, LIBSOCKET_READ);
 
-        this->_impl.AddConnection(this->_connectionManager, *stream);
+        this->_impl.AddConnection(*stream);
     }
 
     void RemoveStream(inet_stream * stream)
@@ -55,7 +55,7 @@ private:
         Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
         this->_readSet.remove_fd(*stream);
 
-        this->_impl.RemoveConnection(this->_connectionManager, *stream);
+        this->_impl.RemoveConnection(*stream);
     }
 
     void ListenLoop()
@@ -134,7 +134,7 @@ public:
     TcpServer() = delete;
 
     TcpServer(const string& port)
-    : _id(TcpServer::_idGenerator++), _port(port)
+    : _id(TcpServer::_idGenerator++), _port(port), _impl(_connectionManager)
     {
         TcpServer::_instances[this->_id] = this;
         this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";

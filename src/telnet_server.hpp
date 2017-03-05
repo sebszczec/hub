@@ -9,11 +9,13 @@ using libsocket::inet_stream;
 
 class TelnetServer
 {
+private:
+    ConnectionManager * _connectionManager;
 public:
-    TelnetServer() = default;
+    TelnetServer(ConnectionManager & connectionManager);
 
-    void AddConnection(ConnectionManager & manager, inet_stream & stream);
-    void RemoveConnection(ConnectionManager & manager, inet_stream & stream);
+    void AddConnection(inet_stream & stream);
+    void RemoveConnection(inet_stream & stream);
 };
 
 #endif
