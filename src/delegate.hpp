@@ -18,22 +18,21 @@ using namespace std::placeholders;
 class Delegate
 {
 private:
-    vector<function<void(DelegateArgument *)>> _methods;
+    vector<function<void(DelegateArgument &)>> _methods;
 public:
     Delegate() = default;
     ~Delegate() = default;
 
     template <class Function, class... ARGS>
-    void AddMethod(Function&& function, DelegateArgument * argument, ARGS&&... args)
+    void AddMethod(Function&& function, DelegateArgument & argument, ARGS&&... args)
     {
         this->_methods.push_back(bind(function, _1, args...));
     }
 
-    void Run(DelegateArgument * argument)
+    void Run(DelegateArgument & argument)
     {
         for (auto & item : this->_methods)
         {
-            std::cout << "Execution place, argument.Sender = " << argument->Sender << std::endl;
             item(argument);
         }
     }

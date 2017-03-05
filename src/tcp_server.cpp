@@ -30,7 +30,7 @@ void TcpServer::AddStream()
     *stream << "Welcome\n";
 
     DelegateArgument arg;
-    this->OnAddConnection.Run(&arg);
+    this->OnAddConnection.Run(arg);
 }
 
 void TcpServer::RemoveStream(const inet_stream& stream)
@@ -41,7 +41,7 @@ void TcpServer::RemoveStream(const inet_stream& stream)
     this->_connectionManager.RemoveConnection(descriptor);
 
     DelegateArgument arg;
-    this->OnRemoveConnection.Run(&arg);
+    this->OnRemoveConnection.Run(arg);
 }
 
 void TcpServer::HandleIncommingData(inet_socket & socket)

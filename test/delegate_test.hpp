@@ -12,21 +12,22 @@ class DelegateTest : public testing::Test
 
 };
 
-// TEST_F(DelegateTest, addMethodAndRunNoArgs)
-// {
-//     Delegate delegate;
-//     int b = 100;
+TEST_F(DelegateTest, addMethodAndRunNoArgs)
+{
+    Delegate delegate;
+    int b = 100;
+    DelegateArgument arg;
 
-//     delegate.AddMethod([&b]()
-//         {
-//             b++;
-//         });
+    delegate.AddMethod([&b](DelegateArgument & argument)
+        {
+            b++;
+        }, arg);
 
-//     DelegateArgument arg;
-//     delegate.Run(arg);
+    DelegateArgument argumentToRun;
+    delegate.Run(argumentToRun);
 
-//     EXPECT_EQ(101, b);
-// }
+    EXPECT_EQ(101, b);
+}
 
 TEST_F(DelegateTest, addMethodAndRun)
 {
@@ -35,42 +36,42 @@ TEST_F(DelegateTest, addMethodAndRun)
     int tmp = 20;
     DelegateArgument arg;
 
-    delegate.AddMethod([&b](DelegateArgument * argument, int a)
+    delegate.AddMethod([&b](DelegateArgument & argument, int a)
         {
-            std::cout << argument->Sender << std::endl;
-            argument->Sender = 1;
+            argument.Sender = 1;
             b += a;
-        }, &arg, tmp);
+        }, arg, tmp);
     
     DelegateArgument argumentToRun;
     argumentToRun.Sender = 10;
-    delegate.Run(&argumentToRun);
+    delegate.Run(argumentToRun);
 
     EXPECT_EQ(1, argumentToRun.Sender);
     EXPECT_EQ(100 + tmp, b);
 }
 
-// TEST_F(DelegateTest, addTwoMethodsAndRun)
-// {
-//     Delegate delegate;
-//     int b = 100;
-//     int c = 1;
+TEST_F(DelegateTest, addTwoMethodsAndRun)
+{
+    Delegate delegate;
+    int b = 100;
+    int c = 1;
+    DelegateArgument arg;
 
-//     delegate.AddMethod([&b]()
-//         {
-//             b++;
-//         });
+    delegate.AddMethod([&b](DelegateArgument & argument)
+        {
+            b++;
+        }, arg);
 
-//     delegate.AddMethod([&c](int a)
-//         {
-//             c -= a;
-//         }, 10);
+    delegate.AddMethod([&c](DelegateArgument & argument, int a)
+        {
+            c -= a;
+        }, arg, 10);
 
-//     DelegateArgument arg;
-//     delegate.Run(arg);
+    DelegateArgument argumentToRun;
+    delegate.Run(argumentToRun);
 
-//     EXPECT_EQ(101, b);
-//     EXPECT_EQ(-9, c);
-// }
+    EXPECT_EQ(101, b);
+    EXPECT_EQ(-9, c);
+}
 
 #endif
