@@ -11,3 +11,8 @@ IConnection::~IConnection()
     delete this->_stream;
     this->_stream = nullptr;
 }
+
+inet_stream & IConnection::GetStream()
+{
+    return *this->_stream;
+}

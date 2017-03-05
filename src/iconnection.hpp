@@ -24,6 +24,8 @@ public:
     virtual ~IConnection();
 
     virtual void HandleData(Block * block) = 0;
+
+    inet_stream & GetStream();
 };
 
 #endif

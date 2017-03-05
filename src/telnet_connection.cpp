@@ -1,6 +1,7 @@
 #include "telnet_connection.hpp"
 #include "logger.hpp"
 #include "command_manager.hpp"
+#include "connection_manager.hpp"
 
 void TelnetConnection::ExtractParameters(const string &message, CommandArgument & arg)
 {
@@ -68,5 +69,18 @@ void TelnetConnection::HandleData(Block * block)
             Logger::LogDebug("TelnetConnection: command execution result: " + result);
             *this->_stream << result << "\n";
         }
+
+        return;
+    }
+
+    // send message to others
+    for (auto & item : this->_parent->GetConnections())
+    {
+        if (item.first == this->_socketFd)
+        {
+            continue;
+        }
+
+        item.second->GetStream() << message;
     }
 }

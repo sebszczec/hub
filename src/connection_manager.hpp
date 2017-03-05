@@ -32,6 +32,7 @@ public:
 
     void RemoveConnection(int socketFd);
     IConnection * GetConnection(int socketFd);
+    map<int, IConnection *> & GetConnections();
     void ClearAllConnections();
     unsigned int  GetNumberOfConnections();
 };
