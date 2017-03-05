@@ -5,7 +5,7 @@
 #include <thread>
 #include "configuration_manager.hpp"
 #include "memory_manager.hpp"
-#include "telnet_connection.hpp"
+// #include "telnet_connection.hpp"
 
 int TcpServer::_idGenerator = 0;
 map<int, TcpServer *> TcpServer::_instances;
@@ -26,10 +26,10 @@ void TcpServer::AddStream()
     Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
     this->_readSet.add_fd(*stream, LIBSOCKET_READ);
     
-    this->_connectionManager.AddConnection<TelnetConnection>(*stream);
-    *stream << "Welcome\n";
+    // this->_connectionManager.AddConnection<TelnetConnection>(*stream);
+    // *stream << "Welcome\n";
 
-    DelegateArgument arg;
+    TcpServerDelegateArgument arg(this, stream);
     this->OnAddConnection.Run(arg);
 }
 

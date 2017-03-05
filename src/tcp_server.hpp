@@ -16,6 +16,29 @@ using libsocket::inet_stream;
 using libsocket::inet_stream_server;
 using libsocket::selectset;
 
+class TcpServer;
+
+class TcpServerDelegateArgument : public DelegateArgument
+{
+private:
+public:
+    TcpServerDelegateArgument(TcpServer * sender, inet_stream * stream)
+    {
+        Sender = reinterpret_cast<void *>(sender);
+        Arguments.push_back(reinterpret_cast<void *>(stream));
+    }
+
+    TcpServer * GetSender()
+    {
+        return reinterpret_cast<TcpServer *>(&Sender);
+    }
+
+    inet_stream * GetStream()
+    {
+        return reinterpret_cast<inet_stream *>(Arguments[0]);
+    }
+};
+
 class TcpServer
 {
 private:
@@ -72,6 +95,11 @@ public:
 
     void Start();
     void Stop();
+
+    ConnectionManager & GetConnectionManager()
+    {
+        return this->_connectionManager;
+    }
 
     void AddStream();
     void RemoveStream(const inet_stream& stream);

@@ -11,6 +11,7 @@ class DelegateArgument
 {
 public:
     void * Sender;
+    vector<void *> Arguments;
 };
 
 using namespace std::placeholders;
