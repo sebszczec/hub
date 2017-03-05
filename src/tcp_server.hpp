@@ -46,8 +46,7 @@ private:
         Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
         this->_readSet.add_fd(*stream, LIBSOCKET_READ);
 
-        this->_connectionManager.template AddConnection<TelnetConnection>(*stream);
-        *stream << "Welcome\n";
+        this->_impl.AddConnection(this->_connectionManager, *stream);
     }
 
     void RemoveStream(inet_stream * stream)
@@ -56,7 +55,7 @@ private:
         Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
         this->_readSet.remove_fd(*stream);
 
-        this->_connectionManager.RemoveConnection(descriptor);
+        this->_impl.RemoveConnection(this->_connectionManager, *stream);
     }
 
     void ListenLoop()
