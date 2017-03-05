@@ -38,15 +38,15 @@ TEST_F(DelegateTest, addMethodAndRun)
 
     delegate.AddMethod([&b](DelegateArgument & argument, int a)
         {
-            argument.Sender = 1;
+            argument.Sender = (void *)0xdeadbeef;
             b += a;
         }, arg, tmp);
     
     DelegateArgument argumentToRun;
-    argumentToRun.Sender = 10;
+    argumentToRun.Sender = nullptr;
     delegate.Run(argumentToRun);
 
-    EXPECT_EQ(1, argumentToRun.Sender);
+    EXPECT_TRUE(argumentToRun.Sender == (void *)0xdeadbeef);
     EXPECT_EQ(100 + tmp, b);
 }
 

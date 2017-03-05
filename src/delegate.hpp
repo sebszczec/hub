@@ -10,7 +10,7 @@ using namespace std;
 class DelegateArgument
 {
 public:
-    int Sender;
+    void * Sender;
 };
 
 using namespace std::placeholders;
