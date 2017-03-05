@@ -1,3 +1,6 @@
+#ifndef __LOGGER_HPP
+#define __LOGGER_HPP
+
 #include <string>
 #include <fstream>
 #include <mutex>
@@ -38,3 +41,4 @@ public:
     static LogLevel GetLogLevel() { return Logger::_logLevel; }
     static void SetLogLevel (LogLevel value ) { Logger::_logLevel = value; }
 };
+#endif

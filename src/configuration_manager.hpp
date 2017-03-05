@@ -1,3 +1,6 @@
+#ifndef __CONFIGURATION_MANAGER_HPP
+#define __CONFIGURATION_MANAGER_HPP
+
 #include <libconfig.h++>
 #include <string>
 #include <exception>
@@ -134,3 +137,5 @@ private:
     using ResourceDictionary = map<ConfigurationManager::Variable, IResource *>;
     ResourceDictionary _resources;
 };
+
+#endif

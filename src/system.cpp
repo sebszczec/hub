@@ -9,6 +9,7 @@
 #include "tcp_server.hpp"
 #include "command_manager.hpp"
 #include "memory_manager.hpp"
+#include "telnet_server.hpp"
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
@@ -42,7 +43,7 @@ void System::Stop()
     MemoryManager::GetInstance()->DumpMemory();
 
     CommandManager::ClearInstance();
-    TcpServer::StopAllInstances();
+    TcpServer<TelnetServer>::StopAllInstances();
     IAsync::StopActiveJobs();
     ConfigurationManager::ClearInstance();
     MemoryManager::DeleteInstance();
