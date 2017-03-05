@@ -24,8 +24,12 @@ bool UptimeCommand::Execute(const CommandArgument &)
     auto minutes = std::chrono::duration_cast<UptimeCommand::Minutes>(uptime).count();
     auto hours = std::chrono::duration_cast<UptimeCommand::Hours>(uptime).count();
 
+    auto _minutes = minutes - 60 * hours;
+    auto _seconds = seconds - 60 * minutes;
+    auto _milliseconds = milliseconds - 1000 * seconds;
+
     std::stringstream stream; 
-    stream << std::to_string(hours) << " hours, " << std::to_string(minutes) << " minutes, " << std::to_string(seconds) << " seconds, " << std::to_string(milliseconds) << " milliseconds";
+    stream << std::to_string(hours) << " hours, " << std::to_string(_minutes) << " minutes, " << std::to_string(_seconds) << " seconds, " << std::to_string(_milliseconds) << " milliseconds";
     this->_result = stream.str();
 
     return true;

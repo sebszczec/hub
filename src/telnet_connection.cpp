@@ -74,6 +74,7 @@ void TelnetConnection::HandleData(Block * block)
     }
 
     // send message to others
+    Logger::LogDebug("TelnetConnection: sending to other users: " + message);
     for (auto & item : this->_parent->GetConnections())
     {
         if (item.first == this->_socketFd)
