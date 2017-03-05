@@ -38,6 +38,27 @@ private:
     static int _idGenerator;
     static map<int, TcpServer *> _instances;
 
+    void AddStream()
+    {
+        auto stream = this->_server->accept();
+        auto descriptor = stream->getfd();
+                    
+        Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
+        this->_readSet.add_fd(*stream, LIBSOCKET_READ);
+
+        this->_connectionManager.template AddConnection<TelnetConnection>(*stream);
+        *stream << "Welcome\n";
+    }
+
+    void RemoveStream(inet_stream * stream)
+    {
+        auto descriptor = stream->getfd();
+        Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
+        this->_readSet.remove_fd(*stream);
+
+        this->_connectionManager.RemoveConnection(descriptor);
+    }
+
     void ListenLoop()
     {
         using CM = ConfigurationManager;
@@ -181,32 +202,6 @@ public:
             this->_server = nullptr;
             this->_connectionManager.ClearAllConnections();
         }
-    }
-
-    ConnectionManager & GetConnectionManager()
-    {
-        return this->_connectionManager;
-    }
-
-    void AddStream()
-    {
-        auto stream = this->_server->accept();
-        auto descriptor = stream->getfd();
-                    
-        Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
-        this->_readSet.add_fd(*stream, LIBSOCKET_READ);
-
-        this->_connectionManager.template AddConnection<TelnetConnection>(*stream);
-        *stream << "Welcome\n";
-    }
-
-    void RemoveStream(inet_stream * stream)
-    {
-        auto descriptor = stream->getfd();
-        Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
-        this->_readSet.remove_fd(*stream);
-
-        this->_connectionManager.RemoveConnection(descriptor);
     }
 
     static void StopAllInstances()
