@@ -45,13 +45,6 @@ public:
         this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";
     }
 
-    TcpServer(string&& port)
-    : _id(TcpServer::_idGenerator++), _port(port)
-    {
-        TcpServer::_instances[this->_id] = this;
-        this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";
-    }
-
     ~TcpServer();
 
     Delegate OnAddConnection;

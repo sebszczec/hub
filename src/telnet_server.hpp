@@ -5,7 +5,8 @@
 
 class TelnetServer : public TcpServer
 {
-
+public:
+    TelnetServer(const string& port);
 };
 
 #endif

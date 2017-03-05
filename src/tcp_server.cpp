@@ -29,7 +29,8 @@ void TcpServer::AddStream()
     this->_connectionManager.AddConnection<TelnetConnection>(*stream);
     *stream << "Welcome\n";
 
-    this->OnAddConnection.Run();
+    DelegateArgument arg;
+    this->OnAddConnection.Run(&arg);
 }
 
 void TcpServer::RemoveStream(const inet_stream& stream)
@@ -39,7 +40,8 @@ void TcpServer::RemoveStream(const inet_stream& stream)
     this->_readSet.remove_fd(stream);
     this->_connectionManager.RemoveConnection(descriptor);
 
-    this->OnRemoveConnection.Run();
+    DelegateArgument arg;
+    this->OnRemoveConnection.Run(&arg);
 }
 
 void TcpServer::HandleIncommingData(inet_socket & socket)
