@@ -30,8 +30,8 @@ include_directories(src)
 add_executable(hub main.cpp)
 
 # unit tests
-add_subdirectory(test)
-include_directories(test)
+add_subdirectory(unit_test)
+include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
