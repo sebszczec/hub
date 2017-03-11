@@ -103,7 +103,7 @@ private:
 
             Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
 
-            string message(buffer, bytes - 2);
+            string message(buffer, bytes - 1);
             Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
 
             block->SetPayloadLength(bytes);
