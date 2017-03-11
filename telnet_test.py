@@ -1,5 +1,5 @@
 import sys
-from testing.telnet import Telnet
+from testing.lib.telnet import Telnet
 
 telnet = Telnet("localhost", 1235, 0.1)
 telnet.connect()
