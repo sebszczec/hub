@@ -1,21 +1,10 @@
 import sys
-import telnetlib
+from testing.telnet import Telnet
 
-HOST = "localhost"
-PORT = 1235
+telnet = Telnet("localhost", 1235, 0.1)
+telnet.connect()
 
-tn = telnetlib.Telnet(HOST, PORT)
-
-timeout = 0.1
-expected = "Welcome"
-result = tn.read_until(expected, timeout)
-
-if result == expected:
+if telnet.expect("Welcome"):
     print "Success"
-else:
-    print "Failure"
-    sys.exit(1)
 
-print "Sending commands"
-tn.write("test\n")
-tn.write("exit\n")
+telnet.close()
