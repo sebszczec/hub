@@ -17,9 +17,8 @@ class TestRunner(object):
 
         if test.run() is False:
             print name + " FAILED"
-            return False
-
-        print name + " PASSED"
+        else:
+            print name + " PASSED"
 
         if test.teardown() is False:
             print name + " teardown FAILED"

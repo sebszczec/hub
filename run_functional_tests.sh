@@ -8,8 +8,13 @@ valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-cal
 echo "Giving ${DELAY} seconds for app to work"
 sleep ${DELAY}
 
+# dry run
+./telnet.sh
+
+# functional tests
 python functional_tests.py
 RESULT=$?
+
 
 PID=`cat hub.pid`
 echo "Killing hub PID: ${PID}"
