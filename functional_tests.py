@@ -8,7 +8,8 @@ class TestRunner(object):
 
     def runTest(self, test):
         name = test.getName()
-            
+        testResult = True
+
         if test.setup() is False:
             print name + " setup FAILED"
             return False
@@ -17,6 +18,7 @@ class TestRunner(object):
 
         if test.run() is False:
             print name + " FAILED"
+            testResult = False
         else:
             print name + " PASSED"
 
@@ -25,7 +27,7 @@ class TestRunner(object):
             return False
 
         print name + " teardwond PASSED"
-        return True
+        return testResult
 
     def run(self, tests):
         result = True
