@@ -5,6 +5,7 @@ class Telnet(object):
         self.host = host
         self.port = port
         self.timeout = timeout
+        self.connection = None
 
     def connect(self):
         self.connection = telnetlib.Telnet(self.host, self.port)
