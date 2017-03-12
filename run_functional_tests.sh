@@ -8,12 +8,11 @@ valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-cal
 echo "Giving ${DELAY} seconds for app to work"
 sleep ${DELAY}
 
-for i in {1..5}
-do
-    echo "Running telnet.sh script ${i}"
-    ./telnet.sh
-done
+python ./functional_tests.py
+RESULT=$?
 
 PID=`cat hub.pid`
 echo "Killing hub PID: ${PID}"
 kill $PID
+
+exit $RESULT
