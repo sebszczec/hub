@@ -8,7 +8,7 @@ valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-cal
 echo "Giving ${DELAY} seconds for app to work"
 sleep ${DELAY}
 
-python ./functional_tests.py
+python functional_tests.py
 RESULT=$?
 
 PID=`cat hub.pid`
