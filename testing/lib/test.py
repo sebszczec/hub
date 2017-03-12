@@ -1,8 +1,8 @@
 import sys
 
 class Test(object):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = type(self).__name__
 
     def setup(self):
         return True
@@ -11,6 +11,9 @@ class Test(object):
         return True
 
     def run(self):
-        print "Starting test: " + self.name
         return True
+
+    def getName(self):
+        return self.name
+
         
