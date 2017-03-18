@@ -14,11 +14,12 @@ class Telnet(object):
         self.connection.close()
 
     def expect(self, message):
-        if message == self.connection.read_until(message, self.timeout):
-            return True
-        else:
+        index, mo, response = self.connection.expect(message, self.timeout)
+        if index == -1:
             return False
+        else:
+            return True
 
     def send(self, message):
-        message = message + "\n"
+        message = message + "\r"
         self.connection.write(message)
