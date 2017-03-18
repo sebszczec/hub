@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TEST=0
+TEST=""
 SEED=0
 
 function printHelp {
@@ -36,7 +36,7 @@ key="$1"
 
 case $key in
     -t|--test)
-    TEST="$2"
+    TEST="-t $2"
     shift # past argument
     ;;
     -r|--random)
@@ -68,7 +68,7 @@ sleep ${DELAY}
 echo ""
 
 # functional tests
-python functional_tests.py
+python functional_tests.py $TEST
 RESULT=$?
 
 

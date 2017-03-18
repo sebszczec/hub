@@ -9,14 +9,26 @@ tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest() ]
 parser = argparse.ArgumentParser()
 parser.add_argument("-l", "--testlist", help="prints list of available tests",
                     action="store_true")
+parser.add_argument("-t", "--test", help= "run selected test")
 
 args = parser.parse_args()
 if args.testlist:
     print("Available tests:")
     for test in tests:
-        print " - " + test.getName()
+        print " " + test.getName()
     exit(0)
 
+if args.test:
+    found = False
+    for key in tests:
+        if key.getName() == args.test:
+            tests = [ key ]
+            found = True
+            break
+
+    if found is False:
+        print "Test " + args.test + " not found"
+        exit(1)
 
 runner = TestRunner()
 runner.run(tests)
