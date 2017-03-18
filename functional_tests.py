@@ -1,9 +1,22 @@
+import argparse
 import sys
 from junit_xml import TestSuite, TestCase
 from testing.telnet_test import *
 from testing.test_runner import *
 
 tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest() ]
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-l", "--testlist", help="prints list of available tests",
+                    action="store_true")
+
+args = parser.parse_args()
+if args.testlist:
+    print("Available tests:")
+    for test in tests:
+        print " - " + test.getName()
+    exit(0)
+
 
 runner = TestRunner()
 runner.run(tests)

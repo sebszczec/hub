@@ -1,5 +1,8 @@
 #!/bin/bash
 
+TEST=0
+SEED=0
+
 function printHelp {
     echo "Functional Tests Framework"
     echo "-h|--help - prints help"
@@ -14,6 +17,7 @@ key="$1"
 
 case $key in
     -l|--testlist)
+    python functional_tests.py -l 
     ;;
     -h|--help)
     printHelp
@@ -39,9 +43,6 @@ case $key in
     SEED="$2"
     shift # past argument
     ;;
-    -l|--testlist)
-    shift # past argument
-    ;;
     -h|--help)
     printHelp
     exit 0
@@ -64,6 +65,7 @@ sleep ${DELAY}
 
 # dry run
 ./telnet.sh
+echo ""
 
 # functional tests
 python functional_tests.py
