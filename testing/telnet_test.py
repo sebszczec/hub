@@ -28,14 +28,26 @@ class TelnetUptimeCommandTest(TelnetTest):
         result = self.connection.expect([r"[0-9]+ hours, [0-9]+ minutes, [0-9]+ seconds, [0-9]+ milliseconds"])
         return result
 
-class TelnetTalkWithOtherSession(TelnetTest):
+class TelnetTalkWithOtherSessionTest(TelnetTest):
     def run(self):
         Test.run(self)
         connection2 = Telnet("localhost", 1235, 0.1)
         connection2.connect()
         connection2.expect(["Welcome"])
-        message = "MESSAGE"
-        connection2.send(message)
-        result = self.connection.expect([message])
+        message1 = "MESSAGE1"
+        message2 = "MESSAGE2"
+        
+        connection2.send(message1)
+        result1 = self.connection.expect([message1])
+        
+        self.connection.send(message2)
+        result2 = connection2.expect([message2])
+        
         connection2.close()
-        return result
+        return result1 and result2
+
+class TelnetNotReadingTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        message = "MESSAGE"
+        self.connection.send(message)

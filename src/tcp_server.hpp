@@ -93,7 +93,17 @@ private:
         auto stream = dynamic_cast<inet_stream *>(&socket);
         auto socketFd = stream->getfd();
 
-        auto bytes = stream->rcv(buffer, 128);
+        int bytes = 0;
+        try 
+        {
+            bytes = stream->rcv(buffer, 128);
+        }
+        catch (const libsocket::socket_exception &e)
+        {
+            // std::cout << e.mesg;
+            Logger::LogError(this->GetExtendedPrefix(socketFd) + ": " + e.mesg);
+        }
+
         if (bytes > 0)
         {                    
             std::stringstream temp_stream;
