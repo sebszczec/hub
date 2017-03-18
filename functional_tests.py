@@ -1,4 +1,5 @@
 import argparse
+import random
 import sys
 from junit_xml import TestSuite, TestCase
 from testing.telnet_test import *
@@ -10,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-l", "--testlist", help="prints list of available tests",
                     action="store_true")
 parser.add_argument("-t", "--test", help= "run selected test")
+parser.add_argument("-r", "--random", type=int, help= "run tests in random order with seed (seed==0 will generate seed)")
 
 args = parser.parse_args()
 if args.testlist:
@@ -29,6 +31,16 @@ if args.test:
     if found is False:
         print "Test " + args.test + " not found"
         exit(1)
+
+if args.random is not None:
+    seed = args.random
+    if seed == 0:
+        seed = random.randint(1, 1024)
+    
+    random.seed(seed)
+    print "Used seed: %d" % seed
+    random.shuffle(tests)
+
 
 runner = TestRunner()
 runner.run(tests)

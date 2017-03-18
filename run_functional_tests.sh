@@ -1,13 +1,12 @@
 #!/bin/bash
 
-TEST=""
-SEED=0
+ARGS=""
 
 function printHelp {
     echo "Functional Tests Framework"
     echo "-h|--help - prints help"
     echo "-l|--testlist - prints list of available tests"
-    echo "-r|--random SEED - runs tests in random order with SEED"
+    echo "-r|--random SEED - runs tests in random order with SEED (SEED==0 will generate SEED)"
     echo "-t|--test test_name - runs test_name"
 }
 
@@ -36,16 +35,12 @@ key="$1"
 
 case $key in
     -t|--test)
-    TEST="-t $2"
-    shift # past argument
+    ARGS="-t $2"
+    break
     ;;
     -r|--random)
-    SEED="$2"
-    shift # past argument
-    ;;
-    -h|--help)
-    printHelp
-    exit 0
+    ARGS="-r $2"
+    break
     ;;
     *)
     echo "Unknown argument $key"
@@ -68,7 +63,7 @@ sleep ${DELAY}
 echo ""
 
 # functional tests
-python functional_tests.py $TEST
+python functional_tests.py $ARGS
 RESULT=$?
 
 
