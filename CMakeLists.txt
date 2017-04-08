@@ -36,4 +36,4 @@ add_executable(ut test.cpp)
 
 # linking
 TARGET_LINK_LIBRARIES(hub production config++ socket++)
-TARGET_LINK_LIBRARIES(ut production testing config++ gtest socket++)
+TARGET_LINK_LIBRARIES(ut production testing config++ socket++ /usr/lib/libgtest.a)
