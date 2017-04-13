@@ -4,6 +4,8 @@ project (hub)
 # enable C++14 standard
 set(CMAKE_CXX_STANDARD 14)  
 
+set(CMAKE_CXX_COMPILE_OBJECT "$(USE_DISTCC) <CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+
 # extra compilation flags
 # -g - generates debug symbols
 SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -g")
