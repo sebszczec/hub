@@ -16,6 +16,8 @@ private:
     unsigned int _idGenerator = 0;
     map<unsigned int, Context *> _contextContainer;
 
+    void ClearAllContexts();
+    
 public:
     static ContextManager * GetInstance();
     static void ClearInstance();

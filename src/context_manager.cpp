@@ -12,10 +12,22 @@ ContextManager * ContextManager::GetInstance()
     return ContextManager::_instance;
 }
 
+void ContextManager::ClearAllContexts()
+{
+    for (auto &item : this->_contextContainer)
+    {
+        delete item.second;
+    }
+
+    this->_contextContainer.clear();
+}
+
 void ContextManager::ClearInstance()
 {
     if (ContextManager::_instance != nullptr)
     {
+        ContextManager::_instance->ClearAllContexts();
+        
         delete ContextManager::_instance;
         ContextManager::_instance = nullptr;
     }

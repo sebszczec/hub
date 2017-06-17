@@ -43,4 +43,17 @@ TEST_F(ContextManagerTest, CreateContext)
     EXPECT_EQ(0u, _sut->GetActiveCountextCount());
 }
 
+TEST_F(ContextManagerTest, RecoveryCleaning)
+{
+    EXPECT_EQ(0u, _sut->GetActiveCountextCount());
+    
+    auto context = _sut->CreateContext();
+    context = _sut->CreateContext();
+    context = _sut->CreateContext();
+    EXPECT_EQ(3u, _sut->GetActiveCountextCount());
+
+    ContextManager::ClearInstance();
+    EXPECT_EQ(0u, _sut->GetActiveCountextCount());
+}
+
 #endif
