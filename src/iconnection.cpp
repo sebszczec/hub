@@ -4,6 +4,7 @@
 IConnection::~IConnection()
 {
     ContextManager::GetInstance()->DeleteContext(this->_context);
+    this->_context = nullptr;
 
     if (this->_stream == nullptr)
     {

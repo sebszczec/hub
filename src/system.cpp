@@ -5,6 +5,7 @@
 #include "signal_handler.hpp"
 #include "command_manager.hpp"
 #include "context_manager.hpp"
+#include "login_command.hpp"
 #include "uptime_command.hpp"
 #include "iasync.hpp"
 #include "tcp_server.hpp"
@@ -63,4 +64,5 @@ system_clock::duration System::UpTime()
 void System::RegisterCommands()
 {
     CommandManager::GetInstance()->RegisterCommand(new UptimeCommand());
+    CommandManager::GetInstance()->RegisterCommand(new LoginCommand());
 }
