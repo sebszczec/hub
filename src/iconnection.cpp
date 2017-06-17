@@ -3,6 +3,8 @@
 
 IConnection::~IConnection()
 {
+    ContextManager::GetInstance()->DeleteContext(this->_context);
+
     if (this->_stream == nullptr)
     {
         return;
@@ -15,4 +17,9 @@ IConnection::~IConnection()
 inet_stream & IConnection::GetStream()
 {
     return *this->_stream;
+}
+
+Context * IConnection::GetContext()
+{
+    return this->_context;
 }
