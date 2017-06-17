@@ -5,7 +5,7 @@ Database * Database::_instance = nullptr;
 
 Database::Database()
 {
-    auto result = sqlite3_open("test.db", &this->_database);
+    auto result = sqlite3_open("hub_database.db", &this->_database);
 
     if (result == 0)
     {
@@ -39,5 +39,6 @@ void Database::ClearInstance()
     if (Database::_instance != nullptr)
     {
         delete Database::_instance;
+        Database::_instance = nullptr;
     } 
 }

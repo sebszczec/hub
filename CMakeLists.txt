@@ -26,6 +26,12 @@ IF(NOT SOCKET_LIB)
   MESSAGE(FATAL_ERROR "libsocket++ library not found")
 ENDIF()
 
+# check if sqlite3 is present
+FIND_LIBRARY(SQLITE_LIB sqlite3)
+IF(NOT SQLITE_LIB)
+  MESSAGE(FATAL_ERROR "sqlite3 library not found")
+ENDIF()
+
 # sources
 add_subdirectory(src)
 include_directories(src)
@@ -37,5 +43,5 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub production config++ socket++)
-TARGET_LINK_LIBRARIES(ut production testing config++ socket++ /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(hub production config++ sqlite3 socket++)
+TARGET_LINK_LIBRARIES(ut production testing config++ sqlite3 socket++ /usr/lib/libgtest.a)

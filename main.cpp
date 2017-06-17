@@ -34,7 +34,6 @@ int main()
     Worker telnetWorker(false);
     telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
 
-
     /* The Big Loop */
     while (1) 
     {

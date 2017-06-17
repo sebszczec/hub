@@ -4,10 +4,12 @@
 #include "daemon.hpp"
 #include "signal_handler.hpp"
 #include "command_manager.hpp"
+#include "context_manager.hpp"
 #include "uptime_command.hpp"
 #include "iasync.hpp"
 #include "tcp_server.hpp"
 #include "command_manager.hpp"
+#include "database.hpp"
 #include "memory_manager.hpp"
 #include "telnet_server.hpp"
 
@@ -30,19 +32,22 @@ bool System::Start()
     (LogLevel)configurationManager->GetResource(CMV::LogLevel).ToInt());
 
     Daemon::Initilize(configurationManager->GetResource(CMV::IsDaemon).ToBool());
-
     SignalHandler::RegisterExitSignals();
-
     System::RegisterCommands();
+    
+    auto db = Database::GetInstance();
+    (void)db;
 
     return true;
 }
 
 void System::Stop()
 {
+    Database::ClearInstance();
     MemoryManager::GetInstance()->DumpMemory();
 
     CommandManager::ClearInstance();
+    ContextManager::ClearInstance();
     TcpServer<TelnetServer>::StopAllInstances();
     IAsync::StopActiveJobs();
     ConfigurationManager::ClearInstance();
