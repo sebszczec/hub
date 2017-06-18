@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 # sources
 set (SOURCE_FILES command_manager.cpp configuration_manager.cpp connection_manager.cpp context.cpp context_manager.cpp daemon.cpp database.cpp delegate.cpp 
-    hub.cpp iasync.cpp iconnection.cpp logger.cpp login_command.cpp memory_manager.cpp signal_handler.cpp system.cpp telnet_connection.cpp tcp_server.cpp 
-    telnet_server.cpp timer.cpp uptime_command.cpp worker.cpp)
+    help_command.cpp hub.cpp iasync.cpp iconnection.cpp logger.cpp login_command.cpp memory_manager.cpp signal_handler.cpp system.cpp telnet_connection.cpp 
+    tcp_server.cpp telnet_server.cpp timer.cpp uptime_command.cpp worker.cpp)
 add_library(production ${SOURCE_FILES})
 
 
