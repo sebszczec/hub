@@ -1,3 +1,17 @@
+class FontColor:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+class TestMarker:
+    PASSED = FontColor.OKBLUE + "[PASSED]" + FontColor.ENDC
+    FAILED = FontColor.FAIL + "[FAILED]" + FontColor.ENDC
+
 class TestRunner(object):
     def __init__(self):
         self.results = {}
@@ -7,22 +21,22 @@ class TestRunner(object):
         testResult = True
 
         if test.setup() is False:
-            print name + " setup FAILED"
+            print TestMarker.FAILED + "[Setup]....." + FontColor.OKGREEN + name  + FontColor.ENDC
             return False
         
-        print name + " setup PASSED"
+        print TestMarker.PASSED +  "[Setup]....." + FontColor.OKGREEN + name  + FontColor.ENDC
 
         if test.run() is False:
-            print name + " FAILED"
+            print TestMarker.FAILED + "[Test]......" + FontColor.OKGREEN + name  + FontColor.ENDC
             testResult = False
         else:
-            print name + " PASSED"
+            print TestMarker.PASSED +  "[Test]......" + FontColor.OKGREEN + name  + FontColor.ENDC
 
         if test.teardown() is False:
-            print name + " teardown FAILED"
+            print TestMarker.FAILED + "[Teardown].." + FontColor.OKGREEN + name  + FontColor.ENDC
             return False
 
-        print name + " teardwond PASSED"
+        print TestMarker.PASSED + "[Teardown].." + FontColor.OKGREEN + name  + FontColor.ENDC
         return testResult
 
     def run(self, tests):
