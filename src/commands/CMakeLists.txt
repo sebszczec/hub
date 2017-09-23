@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/commands)
+include_directories(${CMAKE_SOURCE_DIR}/src/system)
 
 # sources
 set (SOURCE_FILES command_manager.cpp help_command.cpp login_command.cpp uptime_command.cpp)

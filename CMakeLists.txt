@@ -39,6 +39,7 @@ include_directories(src/commands)
 include_directories(src/database)
 include_directories(src/tools)
 include_directories(src/network)
+include_directories(src/system)
 add_executable(hub main.cpp)
 
 # unit tests
@@ -47,5 +48,5 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub production commands database network tools config++ sqlite3 socket++)
-TARGET_LINK_LIBRARIES(ut production commands database network tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(hub system commands database network tools config++ sqlite3 socket++)
+TARGET_LINK_LIBRARIES(ut system commands database network tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)

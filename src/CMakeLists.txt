@@ -15,12 +15,10 @@ include_directories(network)
 add_subdirectory(tools)
 include_directories(tools)
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
+add_subdirectory(system)
+include_directories(system)
 
-# sources
-set (SOURCE_FILES configuration_manager.cpp daemon.cpp logger.cpp memory_manager.cpp signal_handler.cpp system.cpp)
 
-add_library(production ${SOURCE_FILES})
 
 
 
