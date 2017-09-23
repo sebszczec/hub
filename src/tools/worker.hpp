@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace tools 
+{
+
 class Worker : public IAsync
 {
 
@@ -63,3 +66,6 @@ public:
         this->StartThreadLooped(function, args...);
     }
 };
+
+} // namespace tools
+

@@ -31,7 +31,7 @@ int main()
     // });
 
     TcpServer<TelnetServer> telnetServer(CM::GetInstance()->GetResource(CMV::TelnetPort).ToString());
-    Worker telnetWorker(false);
+    tools::Worker telnetWorker(false);
     telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
 
     /* The Big Loop */

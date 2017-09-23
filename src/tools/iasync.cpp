@@ -4,6 +4,9 @@
 
 using namespace std;
 
+namespace tools
+{
+
 int IAsync::_idGenerator = 0;
 map <int, IAsync *> IAsync::_activeJobs;
 
@@ -42,3 +45,5 @@ void IAsync::Deregister()
     auto item = IAsync::_activeJobs.find(this->_id);
     IAsync::_activeJobs.erase(item);
 }
+
+} // namespace tools

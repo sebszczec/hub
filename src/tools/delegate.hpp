@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace tools
+{
+
 class DelegateArgument
 {
 public:
@@ -43,5 +46,7 @@ public:
         this->_methods.clear();
     }
 };
+
+} // namespace tools
 
 #endif

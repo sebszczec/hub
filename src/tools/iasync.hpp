@@ -6,6 +6,9 @@
 
 using namespace std;
 
+namespace tools
+{
+
 class IAsync
 {
 public:
@@ -57,5 +60,8 @@ public:
         this->_isLooped = false;
     }
 };
+
+} // namespace tools
+
 
 #endif // __I_ASYNC

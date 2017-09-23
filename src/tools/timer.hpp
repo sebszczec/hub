@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace tools
+{
+
 class Timer : public IAsync
 {
 private:
@@ -67,3 +70,5 @@ public:
         this->StartThreadLooped(function, args...);
     }
 };
+
+} // namespace tools

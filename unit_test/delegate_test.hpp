@@ -6,6 +6,8 @@
 #include <iostream>
 
 using namespace std;
+using tools::Delegate;
+using tools::DelegateArgument;
 
 class DelegateTest : public testing::Test
 {
