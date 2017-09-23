@@ -59,6 +59,7 @@ void TelnetConnection::HandleData(Block * block)
         if (!this->ExtractCommand(message, command, arg))
         {
             Logger::LogError("TelnetConnection: cannot extract command from " + message);
+            *this->_stream << command << ": command does not exist!\n";
             return;
         }
 
@@ -67,7 +68,7 @@ void TelnetConnection::HandleData(Block * block)
         if (CommandManager::GetInstance()->ExecuteCommand(command, arg, result))
         {
             Logger::LogDebug("TelnetConnection: command execution result: " + result);
-            *this->_stream << result << "\n";
+            *this->_stream << command << ": " << result << "\n";
         }
 
         return;
