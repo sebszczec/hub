@@ -76,6 +76,7 @@ SqlResult Database::GetTable(const string & tableName)
     {
         auto message = sqlite3_errmsg(this->_database);
         Logger::LogError("SQLite: wrong query, sqlite3 fault: " + string(message));
+        sqlite3_finalize(statement);
         throw SqlStatementException(message);
     }
 
@@ -93,6 +94,7 @@ SqlResult Database::GetTable(const string & tableName)
         {
             auto message = sqlite3_errmsg(this->_database);
             Logger::LogError("SQLite: error while reading, sqlite3 fault: " + string(message));
+            sqlite3_finalize(statement);
             throw SqlFetchRowErrorException(message);
         }
 
@@ -106,6 +108,7 @@ SqlResult Database::GetTable(const string & tableName)
         result.push_back(row);
     }
 
+    sqlite3_finalize(statement);
     return result;
 }
 
