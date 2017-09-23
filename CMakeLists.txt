@@ -36,6 +36,7 @@ ENDIF()
 add_subdirectory(src)
 include_directories(src)
 include_directories(src/commands)
+include_directories(src/database)
 include_directories(src/tools)
 add_executable(hub main.cpp)
 

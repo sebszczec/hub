@@ -1,6 +1,13 @@
 #ifndef __DATABASE_HPP
 #define __DATABASE_HPP
+
+#include <list>
+#include <map>
 #include <sqlite3.h>
+
+using namespace std;
+
+using SqlResult = list<map<string, void *>>;
 
 class Database
 {
@@ -11,6 +18,8 @@ private:
     sqlite3 * _database;
 
     static Database * _instance;
+
+    list<map<string, string>> test;
 
 public:
 

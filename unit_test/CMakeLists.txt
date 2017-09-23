@@ -11,7 +11,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/tools)
 
 
 # test sources
-set (SOURCE_FILES connection_manager_test.cpp context_manager_test.cpp delegate_test.cpp help_command_test.cpp memory_manager_test.cpp system_test.cpp 
+set (SOURCE_FILES connection_manager_test.cpp context_manager_test.cpp database_test.hpp delegate_test.cpp help_command_test.cpp memory_manager_test.cpp system_test.cpp 
     telnet_connection_test.cpp uptime_command_test.cpp)
 add_library(testing ${SOURCE_FILES})
 
