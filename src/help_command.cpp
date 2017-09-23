@@ -22,8 +22,8 @@ bool HelpCommand::Execute(const CommandArgument &arg)
 
     if (size > 1)
     {
-        this->_result = "";
-        return false;
+        this->_result = "Wrong argument number";
+        return true;
     }
 
     auto commandManager = CommandManager::GetInstance();

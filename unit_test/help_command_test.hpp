@@ -51,9 +51,9 @@ TEST_F(HelpCommandTest, TooManyArgs)
     arg.Args.push_back("one");
     arg.Args.push_back("two");
 
-    string expect = "";
+    string expect = "Wrong argument number";
 
-    EXPECT_FALSE(sut->Execute(arg));
+    EXPECT_TRUE(sut->Execute(arg));
     
     auto result = sut->GetResult();
     EXPECT_STREQ(expect.c_str(), result.c_str());

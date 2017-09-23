@@ -32,5 +32,5 @@ class TelnetHelpCommandTooManyArgsTest(TelnetTest):
     def run(self):
         Test.run(self)
         self.connection.send(".help one two")
-        result = self.connection.expect([r""])
+        result = self.connection.expect([r"Wrong argument number"])
         return result
