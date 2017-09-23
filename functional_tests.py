@@ -3,9 +3,11 @@ import random
 import sys
 from junit_xml import TestSuite, TestCase
 from testing.telnet_test import *
+from testing.telnet_command_test import *
 from testing.test_runner import *
 
-tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest() ]
+tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest(), TelnetHelpCommandTest(), 
+    TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest() ]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-l", "--testlist", help="prints list of available tests",

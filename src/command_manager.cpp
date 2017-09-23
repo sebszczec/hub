@@ -77,3 +77,15 @@ bool CommandManager::ExecuteCommand(const string & command, const CommandArgumen
 
     return true;
 }
+
+bool CommandManager::GetCommandHelp(const string & command, string & result)
+{
+    auto found = SearchCommand(command);
+    if (found == nullptr)
+    {
+        return false;
+    }
+
+    result = found->PrintHelp();
+    return true;
+}

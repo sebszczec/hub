@@ -21,13 +21,6 @@ class TelnetConnectionTest(TelnetTest):
         result = self.connection.expect(["Welcome"])
         return result
 
-class TelnetUptimeCommandTest(TelnetTest):
-    def run(self):
-        Test.run(self)
-        self.connection.send(".uptime")
-        result = self.connection.expect([r"[0-9]+ hours, [0-9]+ minutes, [0-9]+ seconds, [0-9]+ milliseconds"])
-        return result
-
 class TelnetTalkWithOtherSessionTest(TelnetTest):
     def run(self):
         Test.run(self)

@@ -24,6 +24,7 @@ public:
 
     void RegisterCommand(ICommand * command);
     bool ExecuteCommand(const string & command, const CommandArgument &, string & result);
+    bool GetCommandHelp(const string & command, string & result);
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "help_command.hpp"
+#include "command_manager.hpp"
 
 string HelpCommand::Register()
 {
@@ -13,13 +14,25 @@ string HelpCommand::PrintHelp()
 bool HelpCommand::Execute(const CommandArgument &arg)
 {
     auto && size = arg.Args.size();
-    if (size == 0 || size > 1)
+    if (size == 0)
     {
         this->_result = this->PrintHelp();
+        return true;
+    }
+
+    if (size > 1)
+    {
+        this->_result = "";
         return false;
     }
 
-    this->_result = "SUCCESS!";
+    auto commandManager = CommandManager::GetInstance();
+    auto & command = arg.Args[0];
+    if (!commandManager->GetCommandHelp(command, this->_result))
+    {
+        return false;
+    }
+
     return true;
 }
 

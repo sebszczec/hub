@@ -5,6 +5,7 @@
 #include "signal_handler.hpp"
 #include "command_manager.hpp"
 #include "context_manager.hpp"
+#include "help_command.hpp"
 #include "login_command.hpp"
 #include "uptime_command.hpp"
 #include "iasync.hpp"
@@ -65,4 +66,5 @@ void System::RegisterCommands()
 {
     CommandManager::GetInstance()->RegisterCommand(new UptimeCommand());
     CommandManager::GetInstance()->RegisterCommand(new LoginCommand());
+    CommandManager::GetInstance()->RegisterCommand(new HelpCommand());
 }
