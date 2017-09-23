@@ -27,9 +27,9 @@ template <class Impl>
 class TcpServer
 {
 private:
-    string _prefix;
+    string _prefix = "";
     string _host = "127.0.0.1";
-    string _port;
+    string _port = "";
     inet_stream_server * _server = nullptr;
     selectset<inet_socket> _readSet;
     bool _working = false;
@@ -146,7 +146,7 @@ public:
     TcpServer() = delete;
 
     TcpServer(const string& port)
-    : _id(TcpServer::_idGenerator++), _port(port), _impl(_connectionManager)
+    : _port(port), _id(TcpServer::_idGenerator++), _impl(_connectionManager)
     {
         TcpServer::_instances[this->_id] = this;
         this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";

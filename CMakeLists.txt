@@ -8,7 +8,7 @@ set(CMAKE_CXX_COMPILE_OBJECT "$(USE_DISTCC) <CMAKE_CXX_COMPILER> <DEFINES> <INCL
 
 # extra compilation flags
 # -g - generates debug symbols
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -g")
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -g -O0 -Wall -fprofile-arcs -ftest-coverage")
 
 # check if libconfig is present
 FIND_LIBRARY(CONFIG_LIB config++)
