@@ -5,6 +5,7 @@
 #include "help_command.hpp"
 
 using commands::HelpCommand;
+using commands::CommandArgument;
 
 class HelpCommandTest : public testing::Test
 {

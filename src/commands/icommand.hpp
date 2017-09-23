@@ -6,6 +6,9 @@
 
 using namespace std;
 
+namespace commands
+{
+
 class CommandArgument
 {
 public:
@@ -25,5 +28,7 @@ public:
     virtual bool Execute(const CommandArgument &) = 0;
     virtual string GetResult() = 0;
 };
+
+} // namespace commands
 
 #endif

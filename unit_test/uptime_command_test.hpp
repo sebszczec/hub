@@ -6,6 +6,9 @@
 #include <iostream>
 #include <thread>
 
+using commands::UptimeCommand;
+using commands::CommandArgument;
+
 class UptimeCommandTest : public testing::Test
 {
 public:

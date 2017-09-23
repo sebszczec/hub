@@ -1,6 +1,9 @@
 #include "command_manager.hpp"
 #include "logger.hpp"
 
+using commands::ICommand;
+using commands::CommandArgument;
+
 CommandManager * CommandManager::_instance = nullptr;
 
 CommandManager::~CommandManager()

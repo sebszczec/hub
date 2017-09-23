@@ -4,6 +4,8 @@
 #include "iconnection.hpp"
 #include "icommand.hpp"
 
+using commands::CommandArgument;
+
 class TelnetConnection : public IConnection
 {
 protected:

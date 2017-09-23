@@ -22,6 +22,6 @@ public:
     string GetResult() override;
 };
 
-}
+} // namespace commands
 
 #endif

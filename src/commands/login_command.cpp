@@ -1,5 +1,8 @@
 #include "login_command.hpp"
 
+namespace commands
+{
+
 string LoginCommand::Register()
 {
     return this->_name;
@@ -19,3 +22,5 @@ string LoginCommand::GetResult()
 {
     return "access granted.";
 }
+
+} // namespace commands

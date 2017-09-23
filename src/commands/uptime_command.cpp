@@ -3,6 +3,9 @@
 #include "logger.hpp"
 #include <sstream>
 
+namespace commands
+{
+
 string UptimeCommand::Register()
 {
     return this->_name;
@@ -39,3 +42,5 @@ string UptimeCommand::GetResult()
 {
     return this->_result;
 }
+
+} // namespace commands

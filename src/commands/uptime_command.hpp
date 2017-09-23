@@ -5,6 +5,9 @@
 #include <string>
 #include <chrono>
 
+namespace commands
+{
+
 class UptimeCommand : public ICommand
 {
 private:
@@ -24,5 +27,7 @@ public:
     bool Execute(const CommandArgument &) override;
     string GetResult() override;
 };
+
+} // namespace commands
 
 #endif

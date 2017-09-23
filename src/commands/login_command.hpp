@@ -6,6 +6,9 @@
 
 using namespace std;
 
+namespace commands
+{
+
 class LoginCommand : public ICommand
 {
 private:
@@ -20,5 +23,7 @@ public:
     bool Execute(const CommandArgument &) override;
     string GetResult() override;
 };
+
+} // namespace commands
 
 #endif

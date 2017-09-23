@@ -14,16 +14,16 @@ private:
     void ClearAllCommands();
 
     static CommandManager * _instance;
-    std::map<std::string, ICommand *> _commands;
+    std::map<std::string, commands::ICommand *> _commands;
 
-    ICommand * SearchCommand(const string & command);
+    commands::ICommand * SearchCommand(const string & command);
 
 public:
     static CommandManager * GetInstance();
     static void ClearInstance();
 
-    void RegisterCommand(ICommand * command);
-    bool ExecuteCommand(const string & command, const CommandArgument &, string & result);
+    void RegisterCommand(commands::ICommand * command);
+    bool ExecuteCommand(const string & command, const commands::CommandArgument &, string & result);
     bool GetCommandHelp(const string & command, string & result);
 };
 
