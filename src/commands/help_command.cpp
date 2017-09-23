@@ -1,6 +1,9 @@
 #include "help_command.hpp"
 #include "command_manager.hpp"
 
+namespace commands
+{
+
 string HelpCommand::Register()
 {
     return ".help";
@@ -40,3 +43,5 @@ string HelpCommand::GetResult()
 {
     return this->_result;
 }
+
+} // namespace commands

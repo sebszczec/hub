@@ -3,6 +3,9 @@
 
 #include "icommand.hpp"
 
+namespace commands
+{
+
 class HelpCommand : public ICommand
 {
 private:
@@ -19,5 +22,6 @@ public:
     string GetResult() override;
 };
 
+}
 
 #endif

@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 #include "help_command.hpp"
 
+using commands::HelpCommand;
+
 class HelpCommandTest : public testing::Test
 {
 public:

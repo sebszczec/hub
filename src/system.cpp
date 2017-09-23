@@ -15,6 +15,8 @@
 #include "memory_manager.hpp"
 #include "telnet_server.hpp"
 
+using namespace commands;
+
 system_clock::time_point System::_timeNow = system_clock::now();
 
 bool System::Start()
