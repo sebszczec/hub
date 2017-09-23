@@ -36,6 +36,7 @@ ENDIF()
 add_subdirectory(src)
 include_directories(src)
 include_directories(src/commands)
+include_directories(src/tools)
 add_executable(hub main.cpp)
 
 # unit tests
@@ -44,5 +45,5 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub production commands database config++ sqlite3 socket++)
-TARGET_LINK_LIBRARIES(ut production commands database testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(hub production commands database tools config++ sqlite3 socket++)
+TARGET_LINK_LIBRARIES(ut production commands database tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
