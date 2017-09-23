@@ -7,6 +7,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/database)
 
 # sources
-set (SOURCE_FILES database.cpp)
+set (SOURCE_FILES database.cpp db_exceptions.cpp)
 
 add_library(database ${SOURCE_FILES})
