@@ -47,22 +47,33 @@ void CommandManager::ClearAllCommands()
     this->_commands.clear();
 }
 
-bool CommandManager::ExecuteCommand(const string & command, const CommandArgument &arg, string & result)
+ICommand * CommandManager::SearchCommand(const string & command)
 {
     auto item = this->_commands.find(command);
     if (item == this->_commands.end())
     {
         Logger::LogError("CommandManager: command " + command + " not found");
+        return nullptr;
+    }
+
+    return item->second;
+}
+
+bool CommandManager::ExecuteCommand(const string & command, const CommandArgument &arg, string & result)
+{
+    auto found = SearchCommand(command);
+    if (found == nullptr)
+    {
         return false;
     }
 
-    if (!item->second->Execute(arg))
+    if (!found->Execute(arg))
     {
         Logger::LogError("CommandManager: command " + command + " executed with error");
         return false;
     }
 
-    result = item->second->GetResult();
+    result = found->GetResult();
 
     return true;
 }

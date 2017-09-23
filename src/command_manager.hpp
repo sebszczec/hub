@@ -16,6 +16,8 @@ private:
     static CommandManager * _instance;
     std::map<std::string, ICommand *> _commands;
 
+    ICommand * SearchCommand(const string & command);
+
 public:
     static CommandManager * GetInstance();
     static void ClearInstance();
