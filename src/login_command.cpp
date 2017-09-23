@@ -7,7 +7,7 @@ string LoginCommand::Register()
 
 string LoginCommand::PrintHelp()
 {
-    return "Login to system";
+    return "login to system";
 }
 
 bool LoginCommand::Execute(const CommandArgument &)
@@ -17,5 +17,5 @@ bool LoginCommand::Execute(const CommandArgument &)
 
 string LoginCommand::GetResult()
 {
-    return "Access granted.";
+    return "access granted.";
 }

@@ -8,7 +8,7 @@ string HelpCommand::Register()
 
 string HelpCommand::PrintHelp()
 {
-    return "Shows help info about command, i.e. .help <command>";
+    return "shows help info about command, i.e. .help <command>";
 }
 
 bool HelpCommand::Execute(const CommandArgument &arg)
@@ -22,7 +22,7 @@ bool HelpCommand::Execute(const CommandArgument &arg)
 
     if (size > 1)
     {
-        this->_result = "Wrong argument number";
+        this->_result = "wrong argument number";
         return true;
     }
 

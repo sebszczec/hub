@@ -10,7 +10,7 @@ string UptimeCommand::Register()
     
 string UptimeCommand::PrintHelp()
 {
-    return "Shows how long applications works";
+    return "shows how long applications works";
 }
     
 bool UptimeCommand::Execute(const CommandArgument &)

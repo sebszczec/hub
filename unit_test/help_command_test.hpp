@@ -29,7 +29,7 @@ TEST_F(HelpCommandTest, Register)
 
 TEST_F(HelpCommandTest, PrintHelp)
 {
-    string expect = "Shows help info about command, i.e. .help <command>";
+    string expect = "shows help info about command, i.e. .help <command>";
     auto result = sut->PrintHelp();
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
@@ -37,7 +37,7 @@ TEST_F(HelpCommandTest, PrintHelp)
 TEST_F(HelpCommandTest, NoArg)
 {
     CommandArgument arg;
-    string expect = "Shows help info about command, i.e. .help <command>";
+    string expect = "shows help info about command, i.e. .help <command>";
 
     EXPECT_TRUE(sut->Execute(arg));
     
@@ -51,7 +51,7 @@ TEST_F(HelpCommandTest, TooManyArgs)
     arg.Args.push_back("one");
     arg.Args.push_back("two");
 
-    string expect = "Wrong argument number";
+    string expect = "wrong argument number";
 
     EXPECT_TRUE(sut->Execute(arg));
     
