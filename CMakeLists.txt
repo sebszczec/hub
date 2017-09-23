@@ -44,5 +44,5 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub production commands config++ sqlite3 socket++)
-TARGET_LINK_LIBRARIES(ut production commands testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(hub production commands database config++ sqlite3 socket++)
+TARGET_LINK_LIBRARIES(ut production commands database testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
