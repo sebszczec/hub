@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 #include "context_manager.hpp"
 
+using namespace network;
+
 class ContextManagerTest : public testing::Test 
 {
 protected:

@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 #include "telnet_connection.hpp"
 
+using namespace network;
+
 class OverridedTelnetConnection : public TelnetConnection
 {
 private:

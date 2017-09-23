@@ -9,12 +9,16 @@ include_directories(commands)
 add_subdirectory(database)
 include_directories(database)
 
+add_subdirectory(network)
+include_directories(network)
+
 add_subdirectory(tools)
 include_directories(tools)
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 # sources
-set (SOURCE_FILES configuration_manager.cpp connection_manager.cpp context.cpp context_manager.cpp daemon.cpp iconnection.cpp 
-    logger.cpp memory_manager.cpp signal_handler.cpp system.cpp telnet_connection.cpp tcp_server.cpp telnet_server.cpp)
+set (SOURCE_FILES configuration_manager.cpp daemon.cpp logger.cpp memory_manager.cpp signal_handler.cpp system.cpp)
 
 add_library(production ${SOURCE_FILES})
 

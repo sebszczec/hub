@@ -10,6 +10,8 @@
 #include "tcp_server.hpp"
 #include "telnet_server.hpp"
 
+using namespace network;
+
 int main()
 {
     using CM = ConfigurationManager;

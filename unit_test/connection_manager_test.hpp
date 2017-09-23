@@ -5,6 +5,8 @@
 #include "connection_manager.hpp"
 #include "telnet_connection.hpp"
 
+using namespace network;
+
 class ConnectionManagerTest : public testing::Test 
 {
 protected:

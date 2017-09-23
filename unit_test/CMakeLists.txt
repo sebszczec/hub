@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(test)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/commands)
+include_directories(${CMAKE_SOURCE_DIR}/src/network)
 include_directories(${CMAKE_SOURCE_DIR}/src/tools)
 
 

@@ -17,6 +17,7 @@
 
 using namespace commands;
 using namespace database;
+using namespace network;
 using namespace tools;
 
 system_clock::time_point System::_timeNow = system_clock::now();
