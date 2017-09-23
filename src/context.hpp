@@ -4,7 +4,7 @@
 class Context
 {
 private:
-    unsigned int _id;
+    unsigned int _id = -1;
 public:
     Context(unsigned int id);
     
