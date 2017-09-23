@@ -2,12 +2,12 @@
 
 string HelpCommand::Register()
 {
-    return "";
+    return ".help";
 }
 
 string HelpCommand::PrintHelp()
 {
-    return "";
+    return "Shows help info about command, i.e. .help <command>";
 }
 
 bool HelpCommand::Execute(const CommandArgument &)

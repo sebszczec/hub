@@ -34,5 +34,4 @@ TEST_F(HelpCommandTest, PrintHelp)
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
 
-
 #endif
