@@ -11,6 +11,9 @@
 #include <fstream>
 #include "configuration_manager.hpp"
 
+namespace machine
+{
+
 pid_t Daemon::_pid = 0;
 pid_t Daemon::_sid = 0;
 
@@ -94,3 +97,5 @@ void Daemon::SavePidToFile()
 
     Logger::LogDebug("Daemon: PID saved to " + name);
 }
+
+} // namespace machine

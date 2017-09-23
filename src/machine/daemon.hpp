@@ -1,4 +1,10 @@
+#ifndef __DAEMON_HPP
+#define __DAEMON_HPP
+
 #include <sys/types.h>
+
+namespace machine
+{
 
 class Daemon
 {
@@ -22,3 +28,7 @@ public:
 
     static void Initilize(bool goBackground);
 };
+
+} // namespace machine
+
+#endif

@@ -32,7 +32,7 @@ public:
 
     virtual ~IConnection();
 
-    virtual void HandleData(Block * block) = 0;
+    virtual void HandleData(machine::Block * block) = 0;
 
     inet_stream & GetStream();
     Context * GetContext();

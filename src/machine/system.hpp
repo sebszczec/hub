@@ -6,6 +6,9 @@
 
 using namespace std::chrono;
 
+namespace machine
+{
+
 class System
 {
     System() = delete;
@@ -21,5 +24,7 @@ public:
 
     static system_clock::duration UpTime();
 };
+
+} // namespace machine
 
 #endif 

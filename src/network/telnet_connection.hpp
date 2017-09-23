@@ -26,7 +26,7 @@ public:
 
     ~TelnetConnection() = default;
 
-    void HandleData(Block * block) override;
+    void HandleData(machine::Block * block) override;
 };
 
 } // namespace network

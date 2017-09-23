@@ -7,16 +7,16 @@
 class MemoryManagerTest : public testing::Test 
 {
 protected:
-    MemoryManager * _sut = nullptr;
+    machine::MemoryManager * _sut = nullptr;
 public:
     void SetUp() override
     {
-        _sut = MemoryManager::GetInstance();
+        _sut = machine::MemoryManager::GetInstance();
     }
 
     void TearDown() override
     {
-        MemoryManager::DeleteInstance();
+        machine::MemoryManager::DeleteInstance();
         _sut = nullptr;
     }
 
@@ -64,7 +64,7 @@ TEST_F(MemoryManagerTest, InvalidBlockSize)
     auto block1 = _sut->GetFreeBlock();
     auto maxSize = block1->GetMaxSize();
 
-    ASSERT_THROW(block1->SetPayloadLength(maxSize + 1), InvalidLengthException);
+    ASSERT_THROW(block1->SetPayloadLength(maxSize + 1), machine::InvalidLengthException);
 
     _sut->DeleteBlock(block1->GetDescriptor());
     EXPECT_EQ(0, _sut->GetAllocatedBlocks());

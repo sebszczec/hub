@@ -12,7 +12,7 @@ map <int, IAsync *> IAsync::_activeJobs;
 
 void IAsync::StopActiveJobs()
 {
-    Logger::Log("IAsync: stopping active workers");
+    machine::Logger::Log("IAsync: stopping active workers");
 
     auto maxDelay = IAsync::DelayMS(0);
 

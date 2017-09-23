@@ -3,6 +3,8 @@
 #include <cstring>
 #include <iostream>
 
+using namespace machine;
+
 namespace database
 {
 

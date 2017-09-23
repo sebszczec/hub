@@ -4,6 +4,9 @@
 #include <sstream>
 #include <iomanip>
 
+namespace machine
+{
+
 std::string Logger::_filename = "";
 int Logger::_flushResolution = 0;
 int Logger::_flushCounter = 0;
@@ -89,3 +92,5 @@ void Logger::Log(const std::string &text)
         Logger::Log("INF", text);
     }
 }
+
+} // namespace machine

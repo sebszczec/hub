@@ -3,6 +3,8 @@
 #include "logger.hpp"
 #include <sstream>
 
+using namespace machine;
+
 namespace commands
 {
 

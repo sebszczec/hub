@@ -11,6 +11,7 @@
 #include "telnet_server.hpp"
 
 using namespace network;
+using namespace machine;
 
 int main()
 {

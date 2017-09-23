@@ -5,6 +5,9 @@
 #include <fstream>
 #include <mutex>
 
+namespace machine
+{
+
 enum LogLevel
 {
     Debug,
@@ -41,4 +44,8 @@ public:
     static LogLevel GetLogLevel() { return Logger::_logLevel; }
     static void SetLogLevel (LogLevel value ) { Logger::_logLevel = value; }
 };
+
+}  // namespace machine
+
 #endif
+

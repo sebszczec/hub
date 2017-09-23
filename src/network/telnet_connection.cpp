@@ -3,6 +3,8 @@
 #include "command_manager.hpp"
 #include "connection_manager.hpp"
 
+using machine::Logger;
+
 namespace network
 {
 
@@ -44,7 +46,7 @@ bool TelnetConnection::ExtractCommand(const string& message, string & result, Co
     return true;
 }
 
-void TelnetConnection::HandleData(Block * block)
+void TelnetConnection::HandleData(machine::Block * block)
 {
     if (block->GetPayloadLength() == 0)
     {

@@ -3,6 +3,7 @@
 
 using commands::ICommand;
 using commands::CommandArgument;
+using namespace machine;
 
 CommandManager * CommandManager::_instance = nullptr;
 

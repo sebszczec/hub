@@ -45,7 +45,7 @@ private:
         auto stream = this->_server->accept();
         auto descriptor = stream->getfd();
                     
-        Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
+        machine::Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
         this->_readSet.add_fd(*stream, LIBSOCKET_READ);
 
         this->_impl.AddConnection(*stream);
@@ -54,7 +54,7 @@ private:
     void RemoveStream(inet_stream * stream)
     {
         auto descriptor = stream->getfd();
-        Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
+        machine::Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
         this->_readSet.remove_fd(*stream);
 
         this->_impl.RemoveConnection(*stream);
@@ -62,7 +62,7 @@ private:
 
     void ListenLoop()
     {
-        using CM = ConfigurationManager;
+        using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
         long long delay = CM::GetInstance()->GetResource(CMV::TelnetPooling).ToInt();
 
@@ -72,7 +72,7 @@ private:
 
             while(!readyPair.first.empty())
             {
-                Logger::LogDebug(this->_prefix + ": new trigger, proceeding");
+                machine::Logger::LogDebug(this->_prefix + ": new trigger, proceeding");
 
                 auto socket = readyPair.first.back();
                 readyPair.first.pop_back();
@@ -90,7 +90,7 @@ private:
 
     void HandleIncommingData(inet_socket & socket)
     {
-        auto block = MemoryManager::GetInstance()->GetFreeBlock();
+        auto block = machine::MemoryManager::GetInstance()->GetFreeBlock();
         char * buffer = reinterpret_cast<char *>(block->GetPayload());
         auto stream = dynamic_cast<inet_stream *>(&socket);
         auto socketFd = stream->getfd();
@@ -103,7 +103,7 @@ private:
         catch (const libsocket::socket_exception &e)
         {
             // std::cout << e.mesg;
-            Logger::LogError(this->GetExtendedPrefix(socketFd) + ": " + e.mesg);
+            machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": " + e.mesg);
         }
 
         if (bytes > 0)
@@ -113,10 +113,10 @@ private:
                 temp_stream << " " << std::hex << (int)buffer[i];
             string data = temp_stream.str();
 
-            Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
+            machine::Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
 
             string message(buffer, bytes - 1);
-            Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
+            machine::Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
 
             block->SetPayloadLength(bytes);
 
@@ -127,7 +127,7 @@ private:
             }
             catch (const ConnectionNotFoundException &)
             {
-                Logger::LogError(this->GetExtendedPrefix(socketFd) + ": connection for socket FD not found");
+                machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": connection for socket FD not found");
             }
         }
         else if (bytes == 0)
@@ -136,10 +136,10 @@ private:
         }
         else
         {
-            Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
+            machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
         }
 
-        MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
+        machine::MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
     }
 
 public:
@@ -182,21 +182,21 @@ public:
 
     void Start()
     {    
-        Logger::Log(this->_prefix + ": starting on port " + this->_port);
+        machine::Logger::Log(this->_prefix + ": starting on port " + this->_port);
         this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
         this->_readSet.add_fd(*(this->_server), LIBSOCKET_READ);
 
         this->_working = true;
         this->ListenLoop();
 
-        Logger::LogDebug(this->_prefix + ": Out of the while() loop");
+        machine::Logger::LogDebug(this->_prefix + ": Out of the while() loop");
     }
 
     void Stop()
     {
-        Logger::Log(this->_prefix + ": stopped ");
+        machine::Logger::Log(this->_prefix + ": stopped ");
 
-        using CM = ConfigurationManager;
+        using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
         int delay = CM::GetInstance()->GetResource(CMV::TelnetCooling).ToInt();
         

@@ -15,8 +15,8 @@ include_directories(network)
 add_subdirectory(tools)
 include_directories(tools)
 
-add_subdirectory(system)
-include_directories(system)
+add_subdirectory(machine)
+include_directories(machine)
 
 
 

@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8.9)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR}/src/system)
+include_directories(${CMAKE_SOURCE_DIR}/src/machine)
 include_directories(${CMAKE_SOURCE_DIR}/src/tools)
 
 # sources

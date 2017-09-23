@@ -5,6 +5,9 @@
 
 using namespace std;
 
+namespace machine
+{
+
 class InvalidLengthException : public exception
 {
 };
@@ -81,5 +84,7 @@ public:
 
     void DumpMemory();
 };
+
+} // namespace machine
 
 #endif

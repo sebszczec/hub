@@ -20,6 +20,9 @@ using namespace database;
 using namespace network;
 using namespace tools;
 
+namespace machine
+{
+
 system_clock::time_point System::_timeNow = system_clock::now();
 
 bool System::Start()
@@ -73,3 +76,5 @@ void System::RegisterCommands()
     CommandManager::GetInstance()->RegisterCommand(new LoginCommand());
     CommandManager::GetInstance()->RegisterCommand(new HelpCommand());
 }
+
+} // namespace machine

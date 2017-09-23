@@ -1,6 +1,9 @@
 #include <string>
 #include <map>
 
+namespace machine
+{
+
 class SignalHandler
 {
     SignalHandler() = delete;
@@ -12,3 +15,5 @@ class SignalHandler
 public:
     static void RegisterExitSignals();
 };
+
+} // namespace machine

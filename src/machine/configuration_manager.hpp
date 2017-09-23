@@ -9,6 +9,9 @@
 using namespace libconfig;
 using namespace std;
 
+namespace machine
+{
+
 class WrongTypeException : public exception
 {
 
@@ -138,5 +141,7 @@ private:
     using ResourceDictionary = map<ConfigurationManager::Variable, IResource *>;
     ResourceDictionary _resources;
 };
+
+} // namespace machine
 
 #endif

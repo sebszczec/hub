@@ -2,6 +2,9 @@
 #include <iostream>
 #include "logger.hpp"
 
+namespace machine
+{
+
 using CM = ConfigurationManager;
 using CMV = CM::Variable;
 
@@ -96,3 +99,6 @@ void CM::ClearResources()
 
     this->_resources.clear();
 }
+
+} // namespace machine
+

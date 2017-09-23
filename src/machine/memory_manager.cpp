@@ -3,6 +3,9 @@
 #include <fstream>
 #include "logger.hpp"
 
+namespace machine
+{
+
 MemoryManager * MemoryManager::_instance = nullptr;
 int MemoryManager::_descriptorGenerator = 0;
 
@@ -91,3 +94,5 @@ void MemoryManager::DumpMemory()
 
     file.close();
 }
+
+} // namespace machine

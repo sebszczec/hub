@@ -6,8 +6,8 @@
 
 TEST(SystemTest, UpTime)
 {
-    auto zero = System::DelayUS(0);
-    auto uptime = System::UpTime();
+    auto zero = machine::System::DelayUS(0);
+    auto uptime = machine::System::UpTime();
 
     EXPECT_TRUE(uptime > zero);
 }

@@ -3,6 +3,9 @@
 #include "logger.hpp"
 #include "system.hpp"
 
+namespace machine
+{
+
 std::map<int, std::string> SignalHandler::_signalNames;
 
 void SignalHandler::Handler(int signal_number)
@@ -24,3 +27,5 @@ void SignalHandler::RegisterExitSignals()
         signal(pair.first, SignalHandler::Handler);
     }
 }
+
+} // namespace machine
