@@ -7,7 +7,7 @@ from testing.telnet_command_test import *
 from testing.test_runner import *
 
 tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest(), TelnetHelpCommandTest(), 
-    TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest() ]
+    TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest() ]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-l", "--testlist", help="prints list of available tests",

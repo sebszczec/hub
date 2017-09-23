@@ -71,7 +71,7 @@ void TelnetConnection::HandleData(Block * block)
         }
         else
         {
-            *this->_stream << command << ": command does not exit!\n";
+            *this->_stream << command << ": command does not exist!\n";
         }
 
         return;
