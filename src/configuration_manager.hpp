@@ -115,7 +115,8 @@ public:
         TelnetPort,
         TelnetPooling,
         TelnetCooling,
-        MemoryDumpName
+        MemoryDumpName,
+        DatabaseFileName
     };
 
     static ConfigurationManager * GetInstance();
