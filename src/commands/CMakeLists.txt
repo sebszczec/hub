@@ -7,6 +7,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/commands)
 
 # sources
-set (SOURCE_FILES help_command.cpp login_command.cpp uptime_command.cpp)
+set (SOURCE_FILES command_manager.cpp help_command.cpp login_command.cpp uptime_command.cpp)
 
 add_library(commands ${SOURCE_FILES})
