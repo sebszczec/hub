@@ -34,3 +34,10 @@ class TelnetHelpCommandTooManyArgsTest(TelnetTest):
         self.connection.send(".help one two")
         result = self.connection.expect([r".help: wrong argument number"])
         return result
+
+class TelnetUnknownTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        self.connection.send(".unknown")
+        result = self.connection.expect([r".unknown: command does not exist!"])
+        return result
