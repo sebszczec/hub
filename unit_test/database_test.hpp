@@ -5,6 +5,8 @@
 #include "database.hpp"
 #include <iostream>
 
+using database::Database;
+
 class DatabaseTest : public testing::Test
 {
 public:

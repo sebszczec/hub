@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace database
+{
+
 using SqlResult = list<map<string, void *>>;
 
 class Database
@@ -26,5 +29,7 @@ public:
     static Database * GetInstance();
     static void ClearInstance();
 };
+
+} // namespace database
 
 #endif

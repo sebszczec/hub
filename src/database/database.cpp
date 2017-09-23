@@ -1,6 +1,9 @@
 #include "database.hpp"
 #include "logger.hpp"
 
+namespace database
+{
+
 Database * Database::_instance = nullptr;
 
 Database::Database()
@@ -42,3 +45,5 @@ void Database::ClearInstance()
         Database::_instance = nullptr;
     } 
 }
+
+} // namespace database

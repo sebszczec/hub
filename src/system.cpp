@@ -16,6 +16,7 @@
 #include "telnet_server.hpp"
 
 using namespace commands;
+using namespace database;
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
