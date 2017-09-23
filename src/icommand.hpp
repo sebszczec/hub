@@ -18,6 +18,8 @@ public:
 class ICommand
 {
 public:
+    virtual ~ICommand() = default;
+
     virtual string Register() = 0;
     virtual string PrintHelp() = 0;
     virtual bool Execute(const CommandArgument &) = 0;
