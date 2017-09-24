@@ -1,7 +1,7 @@
 #ifndef __USER_HPP
 #define __USER_HPP
 
-#include "access_state.hpp"
+#include "access_level.hpp"
 
 namespace account
 {
@@ -9,12 +9,12 @@ namespace account
 class User
 {
 private:
-    AccessState _accessState;
+    AccessLevel _accessLevel;
 public:
     User() = default;
     ~User() = default;
 
-    AccessState & GetAccessState();
+    AccessLevel & GetAccessLevel();
 };
 
 } // namespace account

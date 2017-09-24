@@ -7,6 +7,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/account)
 
 # sources
-set (SOURCE_FILES access_state.cpp account_manager.cpp user.cpp)
+set (SOURCE_FILES access_level.cpp account_manager.cpp user.cpp)
 
 add_library(account ${SOURCE_FILES})

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "access_level.hpp"
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
     virtual string PrintHelp() = 0;
     virtual bool Execute(const CommandArgument &) = 0;
     virtual string GetResult() = 0;
+    virtual account::AccessLevel::Level GetAccessLevel() = 0;
 };
 
 } // namespace commands

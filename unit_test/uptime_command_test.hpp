@@ -59,4 +59,9 @@ TEST_F(UptimeCommandTest, GetResult_empty)
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
 
+TEST_F(UptimeCommandTest, AccessLevel)
+{
+    EXPECT_EQ(account::AccessLevel::Level::User, sut->GetAccessLevel());
+}
+
 #endif

@@ -44,4 +44,9 @@ string HelpCommand::GetResult()
     return this->_result;
 }
 
+account::AccessLevel::Level HelpCommand::GetAccessLevel()
+{
+    return account::AccessLevel::Level::NotLogged;
+}
+
 } // namespace commands

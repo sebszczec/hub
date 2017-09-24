@@ -45,4 +45,9 @@ string UptimeCommand::GetResult()
     return this->_result;
 }
 
+account::AccessLevel::Level UptimeCommand::GetAccessLevel()
+{
+    return account::AccessLevel::Level::User;
+}
+
 } // namespace commands

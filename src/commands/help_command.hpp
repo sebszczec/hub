@@ -20,6 +20,7 @@ public:
     string PrintHelp() override;
     bool Execute(const CommandArgument &) override;
     string GetResult() override;
+    account::AccessLevel::Level GetAccessLevel() override;
 };
 
 } // namespace commands

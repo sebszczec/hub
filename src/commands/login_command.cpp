@@ -23,4 +23,9 @@ string LoginCommand::GetResult()
     return "access granted.";
 }
 
+account::AccessLevel::Level LoginCommand::GetAccessLevel()
+{
+    return account::AccessLevel::Level::NotLogged;
+}
+
 } // namespace commands

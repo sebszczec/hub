@@ -62,4 +62,9 @@ TEST_F(HelpCommandTest, TooManyArgs)
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
 
+TEST_F(HelpCommandTest, AccessLevel)
+{
+    EXPECT_EQ(account::AccessLevel::Level::NotLogged, sut->GetAccessLevel());
+}
+
 #endif

@@ -39,6 +39,7 @@ ENDIF()
 # sources
 add_subdirectory(src)
 include_directories(src)
+include_directories(src/account)
 include_directories(src/commands)
 include_directories(src/database)
 include_directories(src/tools)
@@ -52,5 +53,5 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub machine commands database network tools config++ sqlite3 socket++)
-TARGET_LINK_LIBRARIES(ut machine commands database network tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(hub machine account commands database network tools config++ sqlite3 socket++)
+TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)

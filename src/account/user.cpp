@@ -3,9 +3,9 @@
 namespace account
 {
 
-AccessState & User::GetAccessState()
+AccessLevel & User::GetAccessLevel()
 {
-    return this->_accessState;
+    return this->_accessLevel;
 }
 
 } // namespace account
