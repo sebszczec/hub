@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 2.8.9)
 # enable C++14 standard
 set(CMAKE_CXX_STANDARD 14)  
 
+add_subdirectory(account)
+include_directories(account)
+
 add_subdirectory(commands)
 include_directories(commands)
 
