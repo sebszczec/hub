@@ -76,6 +76,14 @@ bool CommandManager::ExecuteCommand(const string & command, const CommandArgumen
         return false;
     }
 
+    if (found->GetAccessLevel() != arg.RequestorAccessLevel)
+    {
+        Logger::LogError("CommandManager: no access to run " + command);
+        result.ErrorMessage = "no access to run " + command;
+        result.Success = false;
+        return false;
+    }
+
     if (!found->Execute(arg))
     {
         Logger::LogError("CommandManager: command " + command + " executed with error");

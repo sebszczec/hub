@@ -4,7 +4,8 @@ class TelnetUptimeCommandTest(TelnetTest):
     def run(self):
         Test.run(self)
         self.connection.send(".uptime")
-        result = self.connection.expect([r".uptime: [0-9]+ hours, [0-9]+ minutes, [0-9]+ seconds, [0-9]+ milliseconds"])
+#        result = self.connection.expect([r".uptime: [0-9]+ hours, [0-9]+ minutes, [0-9]+ seconds, [0-9]+ milliseconds"])
+        result = self.connection.expect([r"no access to run .uptime"])
         return result
 
 class TelnetHelpCommandTest(TelnetTest):

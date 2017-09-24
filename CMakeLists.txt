@@ -53,5 +53,5 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub machine account commands database network tools config++ sqlite3 socket++)
+TARGET_LINK_LIBRARIES(hub machine commands database network tools config++ sqlite3 socket++ account)
 TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)

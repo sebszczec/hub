@@ -17,6 +17,7 @@ public:
     ~CommandArgument() = default;
 
     vector<string> Args;
+    account::AccessLevel::Level RequestorAccessLevel = account::AccessLevel::Level::NotLogged;
 };
 
 class ICommand

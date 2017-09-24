@@ -15,7 +15,7 @@ using libsocket::inet_stream;
 
 class IConnection
 {
-private:
+protected:
     Context * _context = nullptr;
 
 protected:
