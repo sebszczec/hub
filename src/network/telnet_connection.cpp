@@ -58,8 +58,9 @@ void TelnetConnection::HandleData(machine::Block * block)
 
     if (message[0] == '.')
     {
-        string command = "", result = "";
-        CommandArgument arg;
+        string command = "";
+        commands::CommandExecutionResult result;
+        commands::CommandArgument arg;
 
         if (!this->ExtractCommand(message, command, arg))
         {
@@ -69,14 +70,14 @@ void TelnetConnection::HandleData(machine::Block * block)
 
         Logger::LogDebug("TelnetConnection: got command " + command);
 
-        if (CommandManager::GetInstance()->ExecuteCommand(command, arg, result))
+        if (commands::CommandManager::GetInstance()->ExecuteCommand(command, arg, result))
         {
-            Logger::LogDebug("TelnetConnection: command execution result: " + result);
-            *this->_stream << command << ": " << result << "\n";
+            Logger::LogDebug("TelnetConnection: command execution result: " + result.Result);
+            *this->_stream << command << ": " << result.Result << "\n";
         }
         else
         {
-            *this->_stream << command << ": command does not exist!\n";
+            *this->_stream << command << ": "<< result.ErrorMessage << "\n";
         }
 
         return;

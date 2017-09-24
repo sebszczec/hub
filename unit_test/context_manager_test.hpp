@@ -45,6 +45,12 @@ TEST_F(ContextManagerTest, CreateContext)
     EXPECT_EQ(0u, _sut->GetActiveCountextCount());
 }
 
+TEST_F(ContextManagerTest, ContextContent)
+{
+    auto context = _sut->CreateContext();
+    EXPECT_EQ(account::AccessLevel::Level::NotLogged, context->GetUser().GetAccessLevel().GetLevel());
+}
+
 TEST_F(ContextManagerTest, RecoveryCleaning)
 {
     EXPECT_EQ(0u, _sut->GetActiveCountextCount());

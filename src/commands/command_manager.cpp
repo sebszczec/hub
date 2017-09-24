@@ -5,6 +5,9 @@ using commands::ICommand;
 using commands::CommandArgument;
 using namespace machine;
 
+namespace commands
+{
+
 CommandManager * CommandManager::_instance = nullptr;
 
 CommandManager::~CommandManager()
@@ -63,21 +66,26 @@ ICommand * CommandManager::SearchCommand(const string & command)
     return item->second;
 }
 
-bool CommandManager::ExecuteCommand(const string & command, const CommandArgument &arg, string & result)
+bool CommandManager::ExecuteCommand(const string & command, const CommandArgument &arg, CommandExecutionResult & result)
 {
     auto found = SearchCommand(command);
     if (found == nullptr)
     {
+        result.ErrorMessage = "command does not exist!";
+        result.Success = false;
         return false;
     }
 
     if (!found->Execute(arg))
     {
         Logger::LogError("CommandManager: command " + command + " executed with error");
+        result.ErrorMessage = "error during command execution";
+        result.Success = false;
         return false;
     }
 
-    result = found->GetResult();
+    result.Result = found->GetResult();
+    result.Success = true;
 
     return true;
 }
@@ -93,3 +101,6 @@ bool CommandManager::GetCommandHelp(const string & command, string & result)
     result = found->PrintHelp();
     return true;
 }
+
+} // namespace commands
+

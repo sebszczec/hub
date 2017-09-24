@@ -5,6 +5,17 @@
 #include <map>
 #include <string>
 
+namespace commands
+{
+
+class CommandExecutionResult
+{
+public:
+    bool Success = false;
+    string Result = "";
+    string ErrorMessage = "";
+};
+
 class CommandManager
 {
 private:
@@ -23,8 +34,10 @@ public:
     static void ClearInstance();
 
     void RegisterCommand(commands::ICommand * command);
-    bool ExecuteCommand(const string & command, const commands::CommandArgument &, string & result);
+    bool ExecuteCommand(const string & command, const commands::CommandArgument &, CommandExecutionResult & result);
     bool GetCommandHelp(const string & command, string & result);
 };
+
+} // namepace commands
 
 #endif
