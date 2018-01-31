@@ -11,7 +11,7 @@ void ConnectionManager::RemoveConnection(int socketFd)
         return;
     }
 
-    delet item->second;
+    delete item->second;
     this->_connections.erase(item);
 }
 
