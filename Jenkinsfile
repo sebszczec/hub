@@ -17,5 +17,10 @@ pipeline {
                 sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut"' 
             }
         }
+        stage('Run FT'){
+            steps {
+                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./run_functional_tests.sh"'
+            }
+        }
     }
 }
