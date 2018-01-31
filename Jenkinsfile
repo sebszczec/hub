@@ -12,9 +12,9 @@ pipeline {
 	        sh 'make -f makefile.docker build_hub'
 	    }
 	}
-        stage('Run UT'){
+        stage('Run UT (+Valgrind)'){
             steps {
-                sh 'make -f makefile.docker run_ut' 
+                sh 'make -f makefile.docker run_vut' 
 		junit "test_detail.xml"
             }
         }

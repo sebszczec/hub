@@ -53,7 +53,7 @@ done
 DELAY=2
 
 echo "Starting Valgrind"
-valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-callers=50 --trace-children=yes --xml=yes --xml-file=valgrind_result.xml ./hub &
+valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-callers=50 --trace-children=yes --xml=yes --xml-file=valgrind_ft_result.xml ./hub &
 
 echo "Giving ${DELAY} seconds for app to work"
 sleep ${DELAY}
