@@ -4,7 +4,7 @@ build_docker_image:
 build_hub:
 	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make"
 run_ut:
-	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut"
+	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut --gtest_output=xml"
 
 run_ft:
 	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./run_functional_tests.sh"
