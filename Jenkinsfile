@@ -7,9 +7,14 @@ pipeline {
                 sh 'docker build -t ci_hub .' 
             }
         }
+	stage('Build HUB'){
+	    steps {
+	        sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make"'
+	    }
+	}
         stage('Run UT'){
             steps {
-                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make && ./ut"' 
+                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut"' 
             }
         }
     }
