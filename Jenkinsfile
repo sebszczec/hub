@@ -4,22 +4,22 @@ pipeline {
     stages {
         stage('Build docker image') { 
             steps { 
-                sh 'docker build -t ci_hub .' 
+                sh 'make -f makefile.docker build_docker_image' 
             }
         }
 	stage('Build HUB'){
 	    steps {
-	        sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make"'
+	        sh 'make -f makefile.docker build_hub'
 	    }
 	}
         stage('Run UT'){
             steps {
-                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut"' 
+                sh 'make -f makefile.docker run_ut' 
             }
         }
         stage('Run FT'){
             steps {
-                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./run_functional_tests.sh"'
+                sh 'make -f makefile.docker run_ft'
             }
         }
     }

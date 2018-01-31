@@ -1,0 +1,14 @@
+build_docker_image:
+	docker build -t ci_hub .
+
+build_hub:
+	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make"
+run_ut:
+	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut"
+
+run_ft:
+	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./run_functional_tests.sh"
+
+run_interactive:
+	docker run -P -v "${WORKSPACE}:/root/repo" -t -i ci_hub /bin/bash
+
