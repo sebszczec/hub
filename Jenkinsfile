@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Run UT'){
             steps {
-                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make && ./ut' 
+                sh 'docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make && ./ut"' 
             }
         }
     }
