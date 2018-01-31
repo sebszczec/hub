@@ -21,6 +21,7 @@ pipeline {
         stage('Run FT'){
             steps {
                 sh 'make -f makefile.docker run_ft'
+		junit "functional_tests.xml"
             }
         }
     }
