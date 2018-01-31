@@ -15,6 +15,7 @@ pipeline {
         stage('Run UT'){
             steps {
                 sh 'make -f makefile.docker run_ut' 
+		junit "test_detail.xml"
             }
         }
         stage('Run FT'){
