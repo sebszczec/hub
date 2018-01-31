@@ -8,7 +8,7 @@ RUN pip install --upgrade pip
 RUN pip install junit_xml
 
 RUN git config --global user.name "Seba"
-RUN git config --global user.name "sebszczec@wp.pl"
+RUN git config --global user.email "sebszczec@wp.pl"
 
 WORKDIR /usr/src/gtest
 RUN cmake . && \
