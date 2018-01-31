@@ -5,7 +5,7 @@ project (hub)
 set(CMAKE_CXX_STANDARD 14)  
 
 # Allows to use distcc for cloud computing
-set(CMAKE_CXX_COMPILE_OBJECT "$(USE_DISTCC) <CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+# set(CMAKE_CXX_COMPILE_OBJECT "$(USE_DISTCC) <CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
 
 # extra compilation flags
 # -g - generates debug symbols
