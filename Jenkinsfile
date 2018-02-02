@@ -16,6 +16,7 @@ pipeline {
 	    steps {
 	    	sh 'make -f makefile.docker generate_cobertura'
 		sh 'make -f makefile.docker generate_cloc'
+		sloccountPublish encoding: '', pattern: ''
 	    }
 	}
         stage('Run UT (+Valgrind)'){
