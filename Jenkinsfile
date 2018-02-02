@@ -14,7 +14,7 @@ pipeline {
 	}
 	stage('Generate cobertura'){
 	    steps {
-	    	sh 'make -f makefile.docker generate_cobertura'
+	    	sh 'make -f makefile.docker generate_cobertura'i
 	    }
 	}
         stage('Run UT (+Valgrind)'){
@@ -29,5 +29,10 @@ pipeline {
 		junit "functional_tests.xml"
             }
         }
+    }
+    post {
+        always {
+	    step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'ut_cobertura.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])i
+	}
     }
 }
