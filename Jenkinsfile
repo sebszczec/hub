@@ -16,7 +16,7 @@ pipeline {
 	    steps {
 	    	sh 'make -f makefile.docker generate_cobertura'
 	    }
-	|
+	}
         stage('Run UT (+Valgrind)'){
             steps {
                 sh 'make -f makefile.docker run_vut' 
