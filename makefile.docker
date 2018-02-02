@@ -5,7 +5,7 @@ build_hub:
 	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && cmake /root/repo && make"
 
 generate_cobertura:
-	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./generate_cobertura.sh"
+	docker run -P -v "${WORKSPACE}:/root/repo" -e WORKSPACE="/root/repo" ci_hub /bin/bash -c "cd repo && ./generate_cobertura.sh"
 
 run_ut:
 	docker run -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./ut --gtest_output=xml"
