@@ -16,7 +16,6 @@ pipeline {
 	    steps {
 	    	sh 'make -f makefile.docker generate_cobertura'
 		sh 'make -f makefile.docker generate_cloc'
-		sloccountPublish encoding: '', pattern: ''
 	    }
 	}
         stage('Run UT (+Valgrind)'){
@@ -35,6 +34,7 @@ pipeline {
     post {
         always {
 	    step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'ut_cobertura.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
+	    sloccountPublish encoding: '', pattern: ''
 	}
     }
 }
