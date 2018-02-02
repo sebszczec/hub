@@ -12,9 +12,10 @@ pipeline {
 	        sh 'make -f makefile.docker build_hub'
 	    }
 	}
-	stage('Generate cobertura'){
+	stage('Generate statistics'){
 	    steps {
 	    	sh 'make -f makefile.docker generate_cobertura'
+		sh 'make -f makefile.docker generate_cloc'
 	    }
 	}
         stage('Run UT (+Valgrind)'){
