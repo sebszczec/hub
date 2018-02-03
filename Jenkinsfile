@@ -12,12 +12,6 @@ pipeline {
 	        sh 'make -f makefile.docker build_hub'
 	    }
 	}
-	stage('Generate statistics'){
-	    steps {
-	    	sh 'make -f makefile.docker generate_cobertura'
-		sh 'make -f makefile.docker generate_cloc'
-	    }
-	}
         stage('Run UT (+Valgrind)'){
             steps {
                 sh 'make -f makefile.docker run_vut' 
@@ -28,6 +22,12 @@ pipeline {
             steps {
                 sh 'make -f makefile.docker run_ft'
 		junit "functional_tests.xml"
+            }
+        }
+        stage('Generate statistics'){
+            steps {
+                sh 'make -f makefile.docker generate_cobertura'
+                sh 'make -f makefile.docker generate_cloc'
             }
         }
     }
