@@ -35,6 +35,7 @@ pipeline {
         always {
 	    step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'ut_cobertura.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
 	    sloccountPublish encoding: '', pattern: ''
+	    archiveArtifacts artifacts: '*.xml', fingerprint: true
 	}
     }
 }
