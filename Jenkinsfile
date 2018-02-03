@@ -12,18 +12,18 @@ pipeline {
 	        sh 'make -f makefile.docker build_hub'
 	    }
 	}
-        stage('Run UT (+Valgrind)'){
-            steps {
-                sh 'make -f makefile.docker run_vut' 
-		junit "test_detail.xml"
-            }
-        }
-//        stage('Run FT'){
+//        stage('Run UT (+Valgrind)'){
 //            steps {
-//                sh 'make -f makefile.docker run_ft'
-//		junit "functional_tests.xml"
+//                sh 'make -f makefile.docker run_vut' 
+//		junit "test_detail.xml"
 //            }
 //        }
+        stage('Run FT'){
+            steps {
+                sh 'make -f makefile.docker run_ft'
+		junit "functional_tests.xml"
+            }
+        }
         stage('Generate statistics'){
             steps {
                 sh 'make -f makefile.docker generate_cobertura'
