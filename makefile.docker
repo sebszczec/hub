@@ -1,5 +1,6 @@
 ifeq (${IS_CYGWIN}, 1)
 WORKSPACE := $(shell cygpath -u ${WORKSPACE})
+$(shell dos2unix *.sh)
 endif
 
 build_docker_image:
