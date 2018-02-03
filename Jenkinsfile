@@ -12,12 +12,12 @@ pipeline {
 	        sh 'make -f makefile.docker build_hub'
 	    }
 	}
-//        stage('Run UT (+Valgrind)'){
-//            steps {
-//                sh 'make -f makefile.docker run_vut' 
-//		junit "test_detail.xml"
-//            }
-//        }
+        stage('Run UT (+Valgrind)'){
+            steps {
+                sh 'make -f makefile.docker run_vut' 
+		junit "test_detail.xml"
+            }
+        }
         stage('Run FT'){
             steps {
                 sh 'make -f makefile.docker run_ft'
