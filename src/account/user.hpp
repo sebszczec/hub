@@ -11,7 +11,7 @@ class User
 private:
     AccessLevel _accessLevel;
 public:
-    User() = default;
+    User();
     ~User() = default;
 
     AccessLevel & GetAccessLevel();

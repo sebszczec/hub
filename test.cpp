@@ -5,6 +5,7 @@
 #include "database_test.hpp"
 #include "delegate_test.hpp"
 #include "help_command_test.hpp"
+#include "login_command_test.hpp"
 #include "memory_manager_test.hpp"
 #include "system_test.hpp"
 #include "telnet_connection_test.hpp"
