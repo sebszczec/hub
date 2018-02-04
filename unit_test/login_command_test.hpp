@@ -1,5 +1,5 @@
 #ifndef __LOGIN_COMMAND_TEST_HPP
-#define __UPTIME_COMMAND_TEST_HPP
+#define __LOGIN_COMMAND_TEST_HPP
 
 #include <gtest/gtest.h>
 #include "login_command.hpp"
@@ -70,4 +70,4 @@ TEST_F(LoginCommandTest, AccessLevel)
     EXPECT_EQ(account::AccessLevel::Level::NotLogged, sut->GetAccessLevel());
 }
 
-#endif
+#endif // __LOGIN_COMMAND_TEST_HPP
