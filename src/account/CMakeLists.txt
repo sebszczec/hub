@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/account)
+include_directories(${CMAKE_SOURCE_DIR}/src/database)
+include_directories(${CMAKE_SOURCE_DIR}/src/machine)
 
 # sources
 set (SOURCE_FILES access_level.cpp account_manager.cpp user.cpp)

@@ -63,7 +63,7 @@ SqlResult Database::GetTable(const string & tableName)
 {
     if (!_connected)
     {
-        Logger::LogError("SQLite: trying to get table " + tableName + "when not connected to database");
+        Logger::LogError("SQLite: trying to get table " + tableName + " when not connected to database");
         throw NotDatabaseConnectionException();
     }
 

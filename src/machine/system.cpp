@@ -37,9 +37,10 @@ bool System::Start()
     }
 
     Logger::Initilize(
-    configurationManager->GetResource(CMV::LogFileName).ToString(), 
-    configurationManager->GetResource(CMV::LogResolution).ToInt(), 
-    (LogLevel)configurationManager->GetResource(CMV::LogLevel).ToInt());
+        configurationManager->GetResource(CMV::LogFileName).ToString(), 
+        configurationManager->GetResource(CMV::LogResolution).ToInt(), 
+        (LogLevel)configurationManager->GetResource(CMV::LogLevel).ToInt()
+    );
 
     Daemon::Initilize(configurationManager->GetResource(CMV::IsDaemon).ToBool());
     SignalHandler::RegisterExitSignals();
