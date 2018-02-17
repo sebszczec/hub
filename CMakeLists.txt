@@ -24,12 +24,6 @@ ENDIF()
 FIND_PACKAGE(GTest REQUIRED)
 INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
 
-# check if libsocket is present
-FIND_LIBRARY(SOCKET_LIB socket++)
-IF(NOT SOCKET_LIB)
-  MESSAGE(FATAL_ERROR "libsocket++ library not found")
-ENDIF()
-
 # check if sqlite3 is present
 FIND_LIBRARY(SQLITE_LIB sqlite3)
 IF(NOT SQLITE_LIB)
@@ -53,5 +47,7 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub machine commands database network tools config++ sqlite3 socket++ account)
-TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 socket++ /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(hub machine commands database network tools config++ sqlite3 
+  ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a account)
+TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 
+  ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a /usr/lib/libgtest.a)

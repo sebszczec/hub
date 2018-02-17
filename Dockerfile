@@ -17,12 +17,4 @@ RUN cmake . && \
     cp libgtest_main.a /usr/lib/libgtest_main.a
 
 WORKDIR /root
-RUN git clone https://github.com/sebszczec/libsocket.git
-
-WORKDIR /root/libsocket
-RUN cmake . && \
-    make && \
-    make install
-
-WORKDIR /root
 
