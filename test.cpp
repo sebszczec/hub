@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "logger.hpp"
 #include "access_level_test.hpp"
+#include "account_manager_test.hpp"
 #include "connection_manager_test.hpp"
 #include "context_manager_test.hpp"
 #include "database_test.hpp"

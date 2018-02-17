@@ -23,6 +23,9 @@ public:
     ~AccountManager() = default;
 
     void RefreshWithDB();
+
+    bool ValidateUser(std::string name, std::string password);
+    void ClearUserCache();
 };
 
 } // namespace account

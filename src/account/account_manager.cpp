@@ -24,8 +24,35 @@ namespace account
 
         for (auto & row : result)
         {
-            this->_userInDB[row["name"]].Username = row["name"];
-            this->_userInDB[row["name"]].Password = row["password"];
+            auto & key = row["name"];
+            this->_userInDB[key].Username = key;
+            this->_userInDB[key].Password = row["password"];
         }
     }
+
+    bool AccountManager::ValidateUser(std::string name, std::string password)
+    {
+        auto iterator = this->_userInDB.find(name);
+        if (iterator == this->_userInDB.end())
+        {
+            Logger::LogError("AccountManager: user " + name + " does not exist in DB");
+            return false;
+        }
+
+        if (iterator->second.Password.compare(password) != 0)
+        {
+            Logger::LogError("AccountManager: wrong password for user " + name);
+            return false;
+        }
+
+        Logger::Log("AccountManager: user " + name + " validated");
+
+        return true;
+    }
+
+    void AccountManager::ClearUserCache()
+    {
+        this->_userInDB.clear();
+    }
+
 }
