@@ -1,7 +1,9 @@
 #include "login_command.hpp"
 #include "logger.hpp"
+#include "account_manager.hpp"
 
 using namespace machine;
+using namespace account;
 
 namespace commands
 {
@@ -34,6 +36,18 @@ bool LoginCommand::Execute(const CommandArgument & commandArgument)
         this->_result = errorMessage;
         Logger::LogError(this->_name + " " + errorMessage);
         return false;
+    }
+
+    auto & name = commandArgument.Args[0];
+    auto & password = commandArgument.Args[1];
+
+    AccountManager accountManager;
+    accountManager.RefreshWithDB();
+
+    if (!accountManager.ValidateUser(name, password))
+    {
+       this->_result = "access danied"; 
+       return true;
     }
 
     this->_result = "access granted";

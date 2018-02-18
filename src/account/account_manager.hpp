@@ -24,7 +24,7 @@ public:
 
     void RefreshWithDB();
 
-    bool ValidateUser(std::string name, std::string password);
+    bool ValidateUser(const std::string & name, const std::string & password);
     void ClearUserCache();
 };
 

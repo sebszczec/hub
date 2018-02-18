@@ -30,7 +30,7 @@ namespace account
         }
     }
 
-    bool AccountManager::ValidateUser(std::string name, std::string password)
+    bool AccountManager::ValidateUser(const std::string & name, const std::string & password)
     {
         auto iterator = this->_userInDB.find(name);
         if (iterator == this->_userInDB.end())
