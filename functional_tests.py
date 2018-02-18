@@ -6,8 +6,11 @@ from testing.telnet_test import *
 from testing.telnet_command_test import *
 from testing.test_runner import *
 
-tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest(), TelnetHelpCommandTest(), 
-    TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest() ]
+tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest(), TelnetHelpLoginCommandTest(), TelnetHelpUptimeCommandTest(), 
+    TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest(), 
+    TelnetLoginNoArgTest(), TelnetLoginTooLessArgTest(), TelnetLoginTooManyArgTest()
+#    , TelnetLoginWrongUserTest(), TelnetLoginWrongPasswordTest(), TelnetLoginAccessGrantedTest() 
+    ]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-l", "--testlist", help="prints list of available tests",
@@ -48,12 +51,15 @@ runner = TestRunner()
 runner.run(tests)
 results = runner.getResults()
 
+passed = 0
 test_cases = []
 for key in results:
     tc = TestCase(key, 'hub.linux.bot', 0, '', '')
     
     if results[key] is False:
-        tc.add_failure_info('test failed')    
+        tc.add_failure_info('test failed')
+    else:
+        passed = passed + 1
 
     test_cases.append(tc)
 
@@ -62,5 +68,6 @@ suite = TestSuite("hub test suite", test_cases)
 with open('functional_tests.xml', 'w') as result_file:
     TestSuite.to_file(result_file, [suite], prettyprint=False)
 
+print "%d of %d passed" % (passed, len(results))
 exit(0)
 
