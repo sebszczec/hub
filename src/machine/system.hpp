@@ -15,6 +15,8 @@ class System
     System() = delete;
     ~System() = delete;
 
+    static ConfigurationManager * _configurationManager;
+
     static system_clock::time_point _timeNow;
     static void RegisterCommands();
 public:

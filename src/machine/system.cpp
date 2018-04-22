@@ -22,26 +22,28 @@ using namespace tools;
 namespace machine
 {
 
+ConfigurationManager * System::_configurationManager = nullptr;
+
 system_clock::time_point System::_timeNow = system_clock::now();
 
 bool System::Start()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    auto configurationManager = System::GetConfigurationManager();
+    System::_configurationManager = new ConfigurationManager();
     
-    if (!configurationManager->LoadResources())
+    if (!System::_configurationManager->LoadResources())
     {
         return false;
     }
 
     Logger::Initilize(
-        configurationManager->GetResource(CMV::LogFileName).ToString(), 
-        configurationManager->GetResource(CMV::LogResolution).ToInt(), 
-        (LogLevel)configurationManager->GetResource(CMV::LogLevel).ToInt()
+        System::_configurationManager->GetResource(CMV::LogFileName).ToString(), 
+        System::_configurationManager->GetResource(CMV::LogResolution).ToInt(), 
+        (LogLevel)System::_configurationManager->GetResource(CMV::LogLevel).ToInt()
     );
 
-    Daemon::Initilize(configurationManager->GetResource(CMV::IsDaemon).ToBool());
+    Daemon::Initilize(System::_configurationManager->GetResource(CMV::IsDaemon).ToBool());
     SignalHandler::RegisterExitSignals();
     System::RegisterCommands();
     
@@ -60,7 +62,6 @@ void System::Stop()
     ContextManager::ClearInstance();
     TcpServer<TelnetServer>::StopAllInstances();
     IAsync::StopActiveJobs();
-    ConfigurationManager::ClearInstance();
     MemoryManager::DeleteInstance();
     Logger::ClearResources();
 }
@@ -79,7 +80,7 @@ void System::RegisterCommands()
 
 ConfigurationManager * System::GetConfigurationManager()
 {
-    return ConfigurationManager::GetInstance2();
+    return System::_configurationManager;
 }
 
 } // namespace machine

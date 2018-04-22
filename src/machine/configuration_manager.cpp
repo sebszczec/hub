@@ -8,35 +8,9 @@ namespace machine
 using CM = ConfigurationManager;
 using CMV = CM::Variable;
 
-ConfigurationManager * CM::_instance = nullptr;
-
 CM::~ConfigurationManager()
 {
-    this->_instance->ClearResources();
-}
-
-ConfigurationManager * CM::GetInstance2()
-{
-    return ConfigurationManager::GetInstance();
-}
-
-ConfigurationManager * CM::GetInstance()
-{
-    if(CM::_instance == nullptr)
-    {
-        CM::_instance = new ConfigurationManager();
-    }
-
-    return CM::_instance;
-}
-
-void CM::ClearInstance()
-{
-    if (CM::_instance != nullptr)
-    {
-        delete CM::_instance;
-        CM::_instance = nullptr;
-    }
+    this->ClearResources();
 }
 
 bool CM::LoadResources()

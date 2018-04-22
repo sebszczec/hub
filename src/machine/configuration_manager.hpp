@@ -122,21 +122,14 @@ public:
         DatabaseFileName
     };
 
-    static ConfigurationManager * GetInstance2();
-    static void ClearInstance();
-
     bool LoadResources();
     IResource & GetResource(ConfigurationManager::Variable variableName);
 
-private:
     ConfigurationManager() = default;
     ~ConfigurationManager();
 
-    static ConfigurationManager * GetInstance();
-
+private:
     void ClearResources();
-
-    static ConfigurationManager * _instance;
 
     Config _configFile;
 
