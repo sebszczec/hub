@@ -43,10 +43,7 @@ bool LoginCommand::Execute(const CommandArgument & commandArgument)
     auto & name = commandArgument.Args[0];
     auto & password = commandArgument.Args[1];
 
-    AccountManager accountManager;
-    accountManager.RefreshWithDB();
-
-    if (!accountManager.ValidateUser(name, password))
+    if (!System::GetAccountManager()->ValidateUser(name, password))
     {
        this->_result = "access danied"; 
        return true;

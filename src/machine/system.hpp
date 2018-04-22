@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <ctime>
+#include "account_manager.hpp"
 #include "command_manager.hpp"
 #include "configuration_manager.hpp"
 #include "context_manager.hpp"
@@ -20,6 +21,7 @@ class System
     System() = delete;
     ~System() = delete;
 
+    static account::AccountManager * _accountManager;
     static ConfigurationManager * _configurationManager;
     static database::Database * _database;
     static commands::CommandManager * _commandManager;
@@ -35,6 +37,7 @@ public:
     static bool Start();
     static void Stop();
 
+    static account::AccountManager * GetAccountManager();
     static commands::CommandManager * GetCommandManager();
     static ConfigurationManager * GetConfigurationManager();
     static network::ContextManager * GetContextManager();
@@ -47,7 +50,8 @@ public:
      // Help methods for UTs
      static void InitializeMembersForUT()
      {
-         _commandManager = new commands::CommandManager();
+        _accountManager = new account::AccountManager();
+        _commandManager = new commands::CommandManager();
         _configurationManager = new ConfigurationManager();
         _contetxManager = new network::ContextManager();
         _database = new database::Database();
@@ -55,10 +59,17 @@ public:
         _memoryManager = new MemoryManager();
 
         _logger->Initilize("hub_ut.log", 1, machine::LogLevel::Debug);
+        System::_accountManager->RefreshWithDB();
      }
 
      static void FreeMembersForUT()
      {
+        if (_accountManager != nullptr)
+        {
+            delete _accountManager;
+            _accountManager = nullptr;
+        }
+
         if (_database != nullptr)
         {
             delete _database;

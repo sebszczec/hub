@@ -8,6 +8,7 @@
 #include "tcp_server.hpp"
 #include "telnet_server.hpp"
 
+using namespace account;
 using namespace commands;
 using namespace database;
 using namespace network;
@@ -16,6 +17,7 @@ using namespace tools;
 namespace machine
 {
 
+account::AccountManager * System::_accountManager = nullptr;
 CommandManager * System::_commandManager = nullptr;
 ConfigurationManager * System::_configurationManager = nullptr;
 ContextManager * System::_contetxManager = nullptr;
@@ -33,6 +35,7 @@ bool System::Start()
     System::_configurationManager = new ConfigurationManager();
     System::_contetxManager = new ContextManager();
     System::_database = new Database();
+    System::_accountManager = new AccountManager();
     System::_logger = new Logger();
     System::_memoryManager = new MemoryManager();
     
@@ -51,12 +54,20 @@ bool System::Start()
     SignalHandler::RegisterExitSignals();
     System::RegisterCommands();
 
+    System::_accountManager->RefreshWithDB();
+
     return true;
 }
 
 void System::Stop()
 {
     System::GetMemoryManager()->DumpMemory();
+
+    if (_accountManager != nullptr)
+    {
+        delete _accountManager;
+        _accountManager = nullptr;
+    }
 
     if (_database != nullptr)
     {
@@ -109,6 +120,11 @@ void System::RegisterCommands()
     System::_commandManager->RegisterCommand(new UptimeCommand());
     System::_commandManager->RegisterCommand(new LoginCommand());
     System::_commandManager->RegisterCommand(new HelpCommand());
+}
+
+AccountManager * System::GetAccountManager()
+{
+    return System::_accountManager;
 }
 
 CommandManager * System::GetCommandManager()
