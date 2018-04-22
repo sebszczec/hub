@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <ctime>
+#include "configuration_manager.hpp"
 
 using namespace std::chrono;
 
@@ -21,6 +22,8 @@ public:
 
     static bool Start();
     static void Stop();
+
+    static ConfigurationManager * GetConfigurationManager();
 
     static system_clock::duration UpTime();
 };

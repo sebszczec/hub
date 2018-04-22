@@ -9,7 +9,7 @@
 #include <thread>
 #include <map>
 #include <sstream>
-#include "configuration_manager.hpp"
+#include "system.hpp"
 #include "connection_manager.hpp"
 #include "logger.hpp"
 #include "telnet_connection.hpp"
@@ -64,7 +64,7 @@ private:
     {
         using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
-        long long delay = CM::GetInstance()->GetResource(CMV::TelnetPooling).ToInt();
+        long long delay = machine::System::GetConfigurationManager()->GetResource(CMV::TelnetPooling).ToInt();
 
         while (this->_working)
         {
@@ -198,7 +198,7 @@ public:
 
         using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
-        int delay = CM::GetInstance()->GetResource(CMV::TelnetCooling).ToInt();
+        int delay = machine::System::GetConfigurationManager()->GetResource(CMV::TelnetCooling).ToInt();
         
         this->_working = false;
         using DelayMS = std::chrono::duration<int, std::milli>;

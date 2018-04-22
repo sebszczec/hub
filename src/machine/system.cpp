@@ -1,5 +1,4 @@
 #include "system.hpp"
-#include "configuration_manager.hpp"
 #include "logger.hpp"
 #include "daemon.hpp"
 #include "signal_handler.hpp"
@@ -29,7 +28,7 @@ bool System::Start()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    auto configurationManager = CM::GetInstance();
+    auto configurationManager = System::GetConfigurationManager();
     
     if (!configurationManager->LoadResources())
     {
@@ -76,6 +75,11 @@ void System::RegisterCommands()
     CommandManager::GetInstance()->RegisterCommand(new UptimeCommand());
     CommandManager::GetInstance()->RegisterCommand(new LoginCommand());
     CommandManager::GetInstance()->RegisterCommand(new HelpCommand());
+}
+
+ConfigurationManager * System::GetConfigurationManager()
+{
+    return ConfigurationManager::GetInstance2();
 }
 
 } // namespace machine

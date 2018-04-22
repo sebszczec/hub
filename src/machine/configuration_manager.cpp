@@ -15,6 +15,11 @@ CM::~ConfigurationManager()
     this->_instance->ClearResources();
 }
 
+ConfigurationManager * CM::GetInstance2()
+{
+    return ConfigurationManager::GetInstance();
+}
+
 ConfigurationManager * CM::GetInstance()
 {
     if(CM::_instance == nullptr)

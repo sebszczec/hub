@@ -9,7 +9,7 @@
 #include <string.h>
 #include "logger.hpp"
 #include <fstream>
-#include "configuration_manager.hpp"
+#include "system.hpp"
 
 namespace machine
 {
@@ -89,7 +89,7 @@ void Daemon::SavePidToFile()
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
 
-    auto name = CM::GetInstance()->GetResource(CMV::PidFileName).ToString();
+    auto name = System::GetConfigurationManager()->GetResource(CMV::PidFileName).ToString();
     fstream file;
     file.open(name, fstream::out | fstream::trunc);
     file << to_string(Daemon::_pid) << endl;

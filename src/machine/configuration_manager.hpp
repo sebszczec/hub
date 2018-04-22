@@ -122,7 +122,7 @@ public:
         DatabaseFileName
     };
 
-    static ConfigurationManager * GetInstance();
+    static ConfigurationManager * GetInstance2();
     static void ClearInstance();
 
     bool LoadResources();
@@ -131,6 +131,8 @@ public:
 private:
     ConfigurationManager() = default;
     ~ConfigurationManager();
+
+    static ConfigurationManager * GetInstance();
 
     void ClearResources();
 

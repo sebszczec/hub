@@ -1,5 +1,5 @@
 #include "memory_manager.hpp"
-#include "configuration_manager.hpp"
+#include "system.hpp"
 #include <fstream>
 #include "logger.hpp"
 
@@ -72,12 +72,13 @@ void MemoryManager::DumpMemory()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
+    auto configurationManager = System::GetConfigurationManager();
 
-    auto name = CM::GetInstance()->GetResource(CMV::MemoryDumpName).ToString();
+    auto name = configurationManager->GetResource(CMV::MemoryDumpName).ToString();
     Logger::Log("MemoryManager: dumping the memory to " + name);
 
     fstream file;
-    file.open(CM::GetInstance()->GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::trunc);
+    file.open(configurationManager->GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::trunc);
 
     file << "Allocated blocks: " << this->GetAllocatedBlocks() << std::endl;
 
