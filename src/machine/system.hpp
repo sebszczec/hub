@@ -23,6 +23,7 @@ class System
     static database::Database * _database;
     static commands::CommandManager * _commandManager;
     static network::ContextManager * _contetxManager;
+    static MemoryManager * _memoryManager;
 
     static system_clock::time_point _timeNow;
     static void RegisterCommands();
@@ -47,6 +48,7 @@ public:
         _configurationManager = new ConfigurationManager();
         _contetxManager = new network::ContextManager();
         _database = new database::Database();
+        _memoryManager = new MemoryManager();
      }
 
      static void FreeMembersForUT()
@@ -73,6 +75,12 @@ public:
         {
             delete _contetxManager;
             _contetxManager = nullptr;
+        }
+
+        if (_memoryManager != nullptr)
+        {
+            delete _memoryManager;
+            _memoryManager = nullptr;
         }
      }
 };

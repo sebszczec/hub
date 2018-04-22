@@ -12,12 +12,12 @@ protected:
 public:
     void SetUp() override
     {
-        _sut = machine::System::GetMemoryManager();
+        _sut = new machine::MemoryManager();
     }
 
     void TearDown() override
     {
-        machine::MemoryManager::DeleteInstance();
+        delete _sut;
         _sut = nullptr;
     }
 

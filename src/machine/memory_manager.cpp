@@ -6,7 +6,6 @@
 namespace machine
 {
 
-MemoryManager * MemoryManager::_instance = nullptr;
 int MemoryManager::_descriptorGenerator = 0;
 
 MemoryManager::~MemoryManager()
@@ -18,30 +17,6 @@ MemoryManager::~MemoryManager()
 
     this->_blocks.clear();
     _allocatedBlocks = 0;
-}
-
-MemoryManager * MemoryManager::GetInstance2()
-{
-    return MemoryManager::GetInstance();
-}
-
-MemoryManager * MemoryManager::GetInstance()
-{
-    if (MemoryManager::_instance == nullptr)
-    {
-        MemoryManager::_instance = new MemoryManager();
-    } 
-
-    return MemoryManager::_instance;
-}
-
-void MemoryManager::DeleteInstance()
-{
-    if (MemoryManager::_instance != nullptr)
-    {
-        delete MemoryManager::_instance;
-        MemoryManager::_instance = nullptr;
-    }
 }
 
 int MemoryManager::GetNewDescriptor()

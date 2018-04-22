@@ -21,6 +21,7 @@ CommandManager * System::_commandManager = nullptr;
 ConfigurationManager * System::_configurationManager = nullptr;
 ContextManager * System::_contetxManager = nullptr;
 Database * System::_database = nullptr;
+MemoryManager * System::_memoryManager = nullptr;
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
@@ -32,6 +33,7 @@ bool System::Start()
     System::_configurationManager = new ConfigurationManager();
     System::_contetxManager = new ContextManager();
     System::_database = new Database();
+    System::_memoryManager = new MemoryManager();
     
     if (!System::_configurationManager->LoadResources())
     {
@@ -79,9 +81,14 @@ void System::Stop()
         _commandManager = nullptr;
     }
 
+    if (_memoryManager != nullptr)
+    {
+        delete _memoryManager;
+        _memoryManager = nullptr;
+    }
+
     TcpServer<TelnetServer>::StopAllInstances();
     IAsync::StopActiveJobs();
-    MemoryManager::DeleteInstance();
     Logger::ClearResources();
 }
 
@@ -119,7 +126,7 @@ Database * System::GetDatabase()
 
 MemoryManager * System::GetMemoryManager()
 {
-    return MemoryManager::GetInstance2();
+    return System::_memoryManager;
 }
 
 } // namespace machine

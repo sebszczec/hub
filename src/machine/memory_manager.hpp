@@ -61,20 +61,16 @@ public:
 class MemoryManager
 {
 private:
-    static MemoryManager * _instance;
     static int _descriptorGenerator;
-    
-    MemoryManager() = default;
-    ~MemoryManager();
 
     map<int, Block *> _blocks;
     int _allocatedBlocks = 0;
 
     static int GetNewDescriptor();
-    static MemoryManager * GetInstance();
+
 public:
-    static MemoryManager * GetInstance2();    
-    static void DeleteInstance();
+    MemoryManager() = default;
+    ~MemoryManager();
 
     Block * GetFreeBlock();
     void DeleteBlock(int descriptor);
