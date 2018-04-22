@@ -14,12 +14,12 @@ protected:
 public:
     void SetUp() override
     {
-        _sut = machine::System::GetContextManager();
+        _sut = new ContextManager();
     }
 
     void TearDown() override
     {
-        ContextManager::ClearInstance();
+        delete _sut;
         _sut = nullptr;
     }
 };
@@ -50,19 +50,6 @@ TEST_F(ContextManagerTest, ContextContent)
 {
     auto context = _sut->CreateContext();
     EXPECT_EQ(account::AccessLevel::Level::NotLogged, context->GetUser().GetAccessLevel().GetLevel());
-}
-
-TEST_F(ContextManagerTest, RecoveryCleaning)
-{
-    EXPECT_EQ(0u, _sut->GetActiveCountextCount());
-    
-    _sut->CreateContext();
-    _sut->CreateContext();
-    _sut->CreateContext();
-    EXPECT_EQ(3u, _sut->GetActiveCountextCount());
-
-    ContextManager::ClearInstance();
-    EXPECT_EQ(0u, machine::System::GetContextManager()->GetActiveCountextCount());
 }
 
 #endif

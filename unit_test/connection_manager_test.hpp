@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include "connection_manager.hpp"
 #include "telnet_connection.hpp"
+#include "system.hpp"
 
 using namespace network;
 
@@ -14,6 +15,7 @@ protected:
 public:
     void SetUp() override
     {
+        machine::System::InitializeMembersForUT();
         _sut = new ConnectionManager();
     }
 
@@ -24,6 +26,7 @@ public:
             delete _sut;
             _sut = nullptr;
         }
+        machine::System::FreeMembersForUT();
     }
 };
 

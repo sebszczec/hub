@@ -21,6 +21,7 @@ class System
     static ConfigurationManager * _configurationManager;
     static database::Database * _database;
     static commands::CommandManager * _commandManager;
+    static network::ContextManager * _contetxManager;
 
     static system_clock::time_point _timeNow;
     static void RegisterCommands();
@@ -42,6 +43,7 @@ public:
      {
          _commandManager = new commands::CommandManager();
         _configurationManager = new ConfigurationManager();
+        _contetxManager = new network::ContextManager();
         _database = new database::Database();
      }
 
@@ -63,6 +65,12 @@ public:
         {
             delete _commandManager;
             _commandManager = nullptr;
+        }
+
+        if (_contetxManager != nullptr)
+        {
+            delete _contetxManager;
+            _contetxManager = nullptr;
         }
      }
 };

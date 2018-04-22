@@ -3,21 +3,9 @@
 namespace network
 {
 
-ContextManager * ContextManager::_instance = nullptr;
-
-ContextManager * ContextManager::GetInstance2()
+ContextManager::~ContextManager()
 {
-    return ContextManager::GetInstance();
-}
-
-ContextManager * ContextManager::GetInstance()
-{
-    if (ContextManager::_instance == nullptr)
-    {
-        ContextManager::_instance = new ContextManager();
-    }
-
-    return ContextManager::_instance;
+    this->ClearAllContexts();
 }
 
 void ContextManager::ClearAllContexts()
@@ -28,17 +16,6 @@ void ContextManager::ClearAllContexts()
     }
 
     this->_contextContainer.clear();
-}
-
-void ContextManager::ClearInstance()
-{
-    if (ContextManager::_instance != nullptr)
-    {
-        ContextManager::_instance->ClearAllContexts();
-        
-        delete ContextManager::_instance;
-        ContextManager::_instance = nullptr;
-    }
 }
 
 Context * ContextManager::CreateContext()
