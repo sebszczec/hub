@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include "uptime_command.hpp"
 #include <iostream>
-#include <thread>
+#include "system.hpp"
 
 using commands::UptimeCommand;
 using commands::CommandArgument;
@@ -16,12 +16,14 @@ public:
 public:
     UptimeCommandTest()
     {
+        machine::System::InitializeMembersForUT();
         this->sut = new UptimeCommand();
     }
 
     ~UptimeCommandTest()
     {
         delete this->sut;
+        machine::System::FreeMembersForUT();
     }
 };
 

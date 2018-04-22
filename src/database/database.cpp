@@ -1,5 +1,5 @@
 #include "database.hpp"
-#include "logger.hpp"
+#include "system.hpp"
 #include <cstring>
 #include <iostream>
 
@@ -10,6 +10,8 @@ namespace database
 
 bool Database::Connect()
 {
+    auto logger = System::GetLogger();
+
     if (this->_connected)
     {
         return true;
@@ -19,12 +21,12 @@ bool Database::Connect()
     
     if (result == 0)
     {
-        Logger::Log("SQLite: connected to database");
+        logger->Log("SQLite: connected to database");
         this->_connected = true;
         return true;
     }
 
-    Logger::LogError("SQLite: can't connect to database");
+    logger->LogError("SQLite: can't connect to database");
     exit(EXIT_FAILURE);
 
     return false;
@@ -33,16 +35,18 @@ bool Database::Connect()
 void Database::Disconnect()
 {
     sqlite3_close(this->_database);
-    Logger::Log("SQLite: disconnected from database");
+    System::GetLogger()->Log("SQLite: disconnected from database");
 
     this->_connected = false;
 }
 
 SqlResult Database::GetTable(const string & tableName)
 {
+    auto logger = System::GetLogger();
+
     if (!_connected)
     {
-        Logger::LogError("SQLite: trying to get table " + tableName + " when not connected to database");
+        logger->LogError("SQLite: trying to get table " + tableName + " when not connected to database");
         throw NotDatabaseConnectionException();
     }
 
@@ -56,7 +60,7 @@ SqlResult Database::GetTable(const string & tableName)
     if (db_result != SQLITE_OK)
     {
         auto message = sqlite3_errmsg(this->_database);
-        Logger::LogError("SQLite: wrong query, sqlite3 fault: " + string(message));
+        logger->LogError("SQLite: wrong query, sqlite3 fault: " + string(message));
         sqlite3_finalize(statement);
         throw SqlStatementException(message);
     }
@@ -74,7 +78,7 @@ SqlResult Database::GetTable(const string & tableName)
         if (db_result != SQLITE_ROW)
         {
             auto message = sqlite3_errmsg(this->_database);
-            Logger::LogError("SQLite: error while reading, sqlite3 fault: " + string(message));
+            logger->LogError("SQLite: error while reading, sqlite3 fault: " + string(message));
             sqlite3_finalize(statement);
             throw SqlFetchRowErrorException(message);
         }

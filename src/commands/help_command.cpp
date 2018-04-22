@@ -1,6 +1,5 @@
 #include "help_command.hpp"
 #include "command_manager.hpp"
-#include "logger.hpp"
 #include "system.hpp"
 
 using machine::Logger;
@@ -21,7 +20,9 @@ string HelpCommand::PrintHelp()
 
 bool HelpCommand::Execute(const CommandArgument &arg)
 {
-    Logger::LogDebug(this->_name + " called");
+    auto logger = System::GetLogger();
+
+    logger->LogDebug(this->_name + " called");
 
     auto && size = arg.Args.size();
     if (size == 0)
@@ -40,7 +41,7 @@ bool HelpCommand::Execute(const CommandArgument &arg)
     auto & command = arg.Args[0];
     if (!commandManager->GetCommandHelp(command, this->_result))
     {
-        Logger::LogError(this->_name + " failed when processing");
+        logger->LogError(this->_name + " failed when processing");
         return false;
     }
 

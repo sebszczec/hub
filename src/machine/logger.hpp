@@ -17,32 +17,32 @@ enum LogLevel
 
 class Logger
 {
-    static std::string _filename;
-    static int _flushResolution;
-    static int _flushCounter;
-    static std::fstream _file;
-    static std::string _buffer;
-    static LogLevel _logLevel;
+    std::string _filename;
+    int _flushResolution;
+    int _flushCounter;
+    std::fstream _file;
+    std::string _buffer;
+    LogLevel _logLevel;
     
-    static std::mutex _mutex; // mutex needed when flushing logs
+    std::mutex _mutex; // mutex needed when flushing logs
 
-    Logger() = delete;
-    ~Logger() = delete;
-
-    static void Flush(bool force = false);
-    static void Log(const std::string &prefix, const std::string &text);
-    static std::string CurrentTime();
+    void Flush(bool force = false);
+    void Log(const std::string &prefix, const std::string &text);
+    std::string CurrentTime();
 public:
-    static void Initilize(const std::string &filename, int flushResolution);
-    static void Initilize(const std::string &filename, int flushResolution, LogLevel logLevel);
-    
-    static void ClearResources();
+    Logger();
+    ~Logger() = default;
 
-    static void LogDebug(const std::string &text);
-    static void LogError(const std::string &text);
-    static void Log(const std::string &text);
-    static LogLevel GetLogLevel() { return Logger::_logLevel; }
-    static void SetLogLevel (LogLevel value ) { Logger::_logLevel = value; }
+    void Initilize(const std::string &filename, int flushResolution);
+    void Initilize(const std::string &filename, int flushResolution, LogLevel logLevel);
+    
+    void ClearResources();
+
+    void LogDebug(const std::string &text);
+    void LogError(const std::string &text);
+    void Log(const std::string &text);
+    LogLevel GetLogLevel() { return this->_logLevel; }
+    void SetLogLevel (LogLevel value ) { this->_logLevel = value; }
 };
 
 }  // namespace machine

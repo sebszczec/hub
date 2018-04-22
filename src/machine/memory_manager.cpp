@@ -1,7 +1,6 @@
 #include "memory_manager.hpp"
 #include "system.hpp"
 #include <fstream>
-#include "logger.hpp"
 
 namespace machine
 {
@@ -55,7 +54,7 @@ void MemoryManager::DumpMemory()
     auto configurationManager = System::GetConfigurationManager();
 
     auto name = configurationManager->GetResource(CMV::MemoryDumpName).ToString();
-    Logger::Log("MemoryManager: dumping the memory to " + name);
+    System::GetLogger()->Log("MemoryManager: dumping the memory to " + name);
 
     fstream file;
     file.open(configurationManager->GetResource(CMV::MemoryDumpName).ToString(), std::fstream::out | std::fstream::trunc);

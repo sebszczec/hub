@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <string.h>
-#include "logger.hpp"
 #include <fstream>
 #include "system.hpp"
 
@@ -19,67 +18,69 @@ pid_t Daemon::_sid = 0;
 
 void Daemon::Initilize(bool goBackground)
 {
-    Logger::Log("Daemon: starting initialization");
+        auto logger = System::GetLogger();
 
-    if (goBackground)
-    {
-        Logger::Log("Daemon: going background");
+        logger->Log("Daemon: starting initialization");
 
-        /* Fork off the parent process */
-        Daemon::_pid = fork();
-        if (Daemon::_pid < 0) 
+        if (goBackground)
         {
-                Logger::LogError("Daemon: getting new PID FAILED");
-                exit(EXIT_FAILURE);
+                logger->Log("Daemon: going background");
+
+                /* Fork off the parent process */
+                Daemon::_pid = fork();
+                if (Daemon::_pid < 0) 
+                {
+                        logger->LogError("Daemon: getting new PID FAILED");
+                        exit(EXIT_FAILURE);
+                }
+                /* If we got a good PID, then
+                        we can exit the parent process. */
+                if (Daemon::_pid > 0) 
+                {
+                        logger->Log("Daemon: getting new PID SUCCESSED, value: " + std::to_string(Daemon::_pid) + ", parrent exiting");
+                        SavePidToFile();
+                        exit(EXIT_SUCCESS);
+                }
+
+                /* Change the file mode mask */
+                umask(0);
+                        
+                /* Open any logs here */        
+                        
+                /* Create a new SID for the child process */
+                Daemon::_sid = setsid();
+                if (Daemon::_sid < 0) 
+                {
+                        /* Log the failure */
+                        logger->LogError("Daemon: getting new SID FAILED");
+                        exit(EXIT_FAILURE);
+                }
+                logger->Log("Daemon: getting new SID SUCCESSED, value: " + std::to_string(Daemon::_sid));
+
+                /* Change the current working directory */
+                if ((chdir("/")) < 0) 
+                {
+                        /* Log the failure */
+                        logger->LogError("Daemon: changing root path FAILED");
+                        exit(EXIT_FAILURE);
+                }
+                logger->Log("Daemon: changing root path SUCCESSED");
+
+                /* Close out the standard file descriptors */
+                close(STDIN_FILENO);
+                close(STDOUT_FILENO);
+                close(STDERR_FILENO);
+                logger->Log("Daemon: disabling standard descriptors SUCCESSED");
+
+                /* Daemon-specific initialization goes here */
+
+                return;
         }
-        /* If we got a good PID, then
-                we can exit the parent process. */
-        if (Daemon::_pid > 0) 
-        {
-                Logger::Log("Daemon: getting new PID SUCCESSED, value: " + std::to_string(Daemon::_pid) + ", parrent exiting");
-                SavePidToFile();
-                exit(EXIT_SUCCESS);
-        }
-        
-        /* Change the file mode mask */
-        umask(0);
-                
-        /* Open any logs here */        
-                
-        /* Create a new SID for the child process */
-        Daemon::_sid = setsid();
-        if (Daemon::_sid < 0) 
-        {
-                /* Log the failure */
-                Logger::LogError("Daemon: getting new SID FAILED");
-                exit(EXIT_FAILURE);
-        }
-        Logger::Log("Daemon: getting new SID SUCCESSED, value: " + std::to_string(Daemon::_sid));
 
-        /* Change the current working directory */
-        if ((chdir("/")) < 0) 
-        {
-                /* Log the failure */
-                Logger::LogError("Daemon: changing root path FAILED");
-                exit(EXIT_FAILURE);
-        }
-        Logger::Log("Daemon: changing root path SUCCESSED");
-
-        /* Close out the standard file descriptors */
-        close(STDIN_FILENO);
-        close(STDOUT_FILENO);
-        close(STDERR_FILENO);
-        Logger::Log("Daemon: disabling standard descriptors SUCCESSED");
-
-        /* Daemon-specific initialization goes here */
-
-        return;
-    }
-
-    Logger::Log("Daemon: staying in foreground");
-    Daemon::_pid = getpid();
-    Logger::Log("Daemon: PID value: " + std::to_string(Daemon::_pid));
-    Daemon::SavePidToFile();
+        logger->Log("Daemon: staying in foreground");
+        Daemon::_pid = getpid();
+        logger->Log("Daemon: PID value: " + std::to_string(Daemon::_pid));
+        Daemon::SavePidToFile();
 
 }
 
@@ -95,7 +96,7 @@ void Daemon::SavePidToFile()
     file << to_string(Daemon::_pid) << endl;
     file.close();
 
-    Logger::LogDebug("Daemon: PID saved to " + name);
+    System::GetLogger()->LogDebug("Daemon: PID saved to " + name);
 }
 
 } // namespace machine

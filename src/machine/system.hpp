@@ -8,6 +8,7 @@
 #include "context_manager.hpp"
 #include "database.hpp"
 #include "memory_manager.hpp"
+#include "logger.hpp"
 
 using namespace std::chrono;
 
@@ -24,6 +25,7 @@ class System
     static commands::CommandManager * _commandManager;
     static network::ContextManager * _contetxManager;
     static MemoryManager * _memoryManager;
+    static Logger * _logger;
 
     static system_clock::time_point _timeNow;
     static void RegisterCommands();
@@ -37,6 +39,7 @@ public:
     static ConfigurationManager * GetConfigurationManager();
     static network::ContextManager * GetContextManager();
     static database::Database * GetDatabase();
+    static Logger * GetLogger();
     static MemoryManager * GetMemoryManager();
 
     static system_clock::duration UpTime();
@@ -48,7 +51,10 @@ public:
         _configurationManager = new ConfigurationManager();
         _contetxManager = new network::ContextManager();
         _database = new database::Database();
+        _logger = new Logger();
         _memoryManager = new MemoryManager();
+
+        _logger->Initilize("hub_ut.log", 1, machine::LogLevel::Debug);
      }
 
      static void FreeMembersForUT()
@@ -75,6 +81,12 @@ public:
         {
             delete _contetxManager;
             _contetxManager = nullptr;
+        }
+
+        if (_logger != nullptr)
+        {
+            delete _logger;
+            _logger = nullptr;
         }
 
         if (_memoryManager != nullptr)

@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/database)
 include_directories(${CMAKE_SOURCE_DIR}/src/machine)
+include_directories(${CMAKE_SOURCE_DIR}/src/network)
 
 # sources
 set (SOURCE_FILES database.cpp db_exceptions.cpp)

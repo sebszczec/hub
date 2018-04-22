@@ -11,7 +11,6 @@
 #include <sstream>
 #include "system.hpp"
 #include "connection_manager.hpp"
-#include "logger.hpp"
 #include "telnet_connection.hpp"
 
 using namespace std;
@@ -45,7 +44,7 @@ private:
         auto stream = this->_server->accept();
         auto descriptor = stream->getfd();
                     
-        machine::Logger::LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
+        machine::System::GetLogger()->LogDebug(this->_prefix + ": new connection to sever, accepting fd: " + std::to_string(descriptor));
         this->_readSet.add_fd(*stream, LIBSOCKET_READ);
 
         this->_impl.AddConnection(*stream);
@@ -54,7 +53,7 @@ private:
     void RemoveStream(inet_stream * stream)
     {
         auto descriptor = stream->getfd();
-        machine::Logger::LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
+        machine::System::GetLogger()->LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
         this->_readSet.remove_fd(*stream);
 
         this->_impl.RemoveConnection(*stream);
@@ -62,6 +61,7 @@ private:
 
     void ListenLoop()
     {
+        auto logger = machine::System::GetLogger();
         using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
         long long delay = machine::System::GetConfigurationManager()->GetResource(CMV::TelnetPooling).ToInt();
@@ -72,7 +72,7 @@ private:
 
             while(!readyPair.first.empty())
             {
-                machine::Logger::LogDebug(this->_prefix + ": new trigger, proceeding");
+                logger->LogDebug(this->_prefix + ": new trigger, proceeding");
 
                 auto socket = readyPair.first.back();
                 readyPair.first.pop_back();
@@ -90,6 +90,8 @@ private:
 
     void HandleIncommingData(inet_socket & socket)
     {
+        auto logger = machine::System::GetLogger();
+
         auto block = machine::System::GetMemoryManager()->GetFreeBlock();
         char * buffer = reinterpret_cast<char *>(block->GetPayload());
         auto stream = dynamic_cast<inet_stream *>(&socket);
@@ -103,7 +105,7 @@ private:
         catch (const libsocket::socket_exception &e)
         {
             // std::cout << e.mesg;
-            machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": " + e.mesg);
+            logger->LogError(this->GetExtendedPrefix(socketFd) + ": " + e.mesg);
         }
 
         if (bytes > 0)
@@ -113,10 +115,10 @@ private:
                 temp_stream << " " << std::hex << (int)buffer[i];
             string data = temp_stream.str();
 
-            machine::Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
+            logger->LogDebug(this->GetExtendedPrefix(socketFd) + ": new " + std::to_string(bytes) + " bytes of data:" + data);
 
             string message(buffer, bytes - 1);
-            machine::Logger::LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
+            logger->LogDebug(this->GetExtendedPrefix(socketFd) + ": " + message);
 
             block->SetPayloadLength(bytes);
 
@@ -127,7 +129,7 @@ private:
             }
             catch (const ConnectionNotFoundException &)
             {
-                machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": connection for socket FD not found");
+                logger->LogError(this->GetExtendedPrefix(socketFd) + ": connection for socket FD not found");
             }
         }
         else if (bytes == 0)
@@ -136,7 +138,7 @@ private:
         }
         else
         {
-            machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
+            logger->LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
         }
 
         machine::System::GetMemoryManager()->DeleteBlock(block->GetDescriptor());
@@ -181,20 +183,22 @@ public:
     }
 
     void Start()
-    {    
-        machine::Logger::Log(this->_prefix + ": starting on port " + this->_port);
+    {   
+        auto logger = machine::System::GetLogger();
+
+        logger->Log(this->_prefix + ": starting on port " + this->_port);
         this->_server = new inet_stream_server(this->_host, this->_port, LIBSOCKET_IPv4);
         this->_readSet.add_fd(*(this->_server), LIBSOCKET_READ);
 
         this->_working = true;
         this->ListenLoop();
 
-        machine::Logger::LogDebug(this->_prefix + ": Out of the while() loop");
+        logger->Logger::LogDebug(this->_prefix + ": Out of the while() loop");
     }
 
     void Stop()
     {
-        machine::Logger::Log(this->_prefix + ": stopped ");
+        machine::System::GetLogger()->Log(this->_prefix + ": stopped ");
 
         using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;

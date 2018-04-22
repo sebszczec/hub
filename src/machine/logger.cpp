@@ -7,44 +7,41 @@
 namespace machine
 {
 
-std::string Logger::_filename = "";
-int Logger::_flushResolution = 0;
-int Logger::_flushCounter = 0;
-std::fstream Logger::_file;
-std::string Logger::_buffer = "";
-LogLevel Logger::_logLevel = LogLevel::Debug;
-std::mutex Logger::_mutex;
+Logger::Logger()
+: _filename(""), _flushResolution(0), _flushCounter(0), _file(), _buffer(""), _logLevel(LogLevel::Debug), _mutex()
+{
+}
 
 void Logger::Initilize(const std::string &filename, int flushResolution)
 {
-    Logger::_flushResolution = flushResolution;
-    Logger::_filename = filename;
+    this->_flushResolution = flushResolution;
+    this->_filename = filename;
 
-    Logger::_file.open(Logger::_filename, std::fstream::out | std::fstream::app);
+    this->_file.open(this->_filename, std::fstream::out | std::fstream::app);
 }
 
 void Logger::Initilize(const std::string &filename, int flushResolution, LogLevel logLevel)
 {
-    Logger::Initilize(filename, flushResolution);
-    Logger::SetLogLevel(logLevel);
+    this->Initilize(filename, flushResolution);
+    this->SetLogLevel(logLevel);
 }
 
 void Logger::ClearResources()
 {
-    Logger::Log("Logger: cleaning resources");
-    Logger::Flush(true);
-    Logger::_file.close();
+    this->Log("Logger: cleaning resources");
+    this->Flush(true);
+    this->_file.close();
 }
 
 void Logger::Flush(bool force)
 {
-    std::lock_guard<std::mutex> lock(Logger::_mutex);
-    if (++Logger::_flushCounter >= Logger::_flushResolution || force)
+    std::lock_guard<std::mutex> lock(this->_mutex);
+    if (++this->_flushCounter >= this->_flushResolution || force)
     {
-        Logger::_flushCounter = 0;
-        Logger::_file << Logger::_buffer;
-        Logger::_buffer = "";
-        Logger::_file.flush();
+        this->_flushCounter = 0;
+        this->_file << this->_buffer;
+        this->_buffer = "";
+        this->_file.flush();
         return;
     }
 }
@@ -64,32 +61,32 @@ std::string Logger::CurrentTime()
 void Logger::Log(const std::string &prefix, const std::string &text)
 {
     auto tmp = CurrentTime() + " " + prefix + " " + text + "\n";
-    Logger::_buffer.append(tmp);
+    this->_buffer.append(tmp);
 
-    Logger::Flush();
+    this->Flush();
 }
 
 void Logger::LogDebug(const std::string &text)
 {
-    if (Logger::_logLevel <= LogLevel::Debug)
+    if (this->_logLevel <= LogLevel::Debug)
     {
-        Logger::Log("DBG", text);
+        this->Log("DBG", text);
     }
 }
 
 void Logger::LogError(const std::string &text)
 {
-    if (Logger::_logLevel <= LogLevel::Error)
+    if (this->_logLevel <= LogLevel::Error)
     {
-        Logger::Log("ERR", text);
+        this->Log("ERR", text);
     }
 }
 
 void Logger::Log(const std::string &text)
 {
-    if (Logger::_logLevel <= LogLevel::Info)
+    if (this->_logLevel <= LogLevel::Info)
     {
-        Logger::Log("INF", text);
+        this->Log("INF", text);
     }
 }
 

@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "help_command.hpp"
+#include "system.hpp"
 
 using commands::HelpCommand;
 using commands::CommandArgument;
@@ -14,12 +15,14 @@ public:
 public:
     HelpCommandTest()
     {
+        machine::System::InitializeMembersForUT();
         this->sut = new HelpCommand();
     }
 
     ~HelpCommandTest()
     {
         delete this->sut;
+        machine::System::FreeMembersForUT();
     }
 };
 

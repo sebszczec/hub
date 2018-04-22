@@ -1,6 +1,6 @@
 #include "uptime_command.hpp"
 #include "system.hpp"
-#include "logger.hpp"
+#include "system.hpp"
 #include <sstream>
 
 using namespace machine;
@@ -20,7 +20,7 @@ string UptimeCommand::PrintHelp()
     
 bool UptimeCommand::Execute(const CommandArgument &)
 {
-    Logger::LogDebug(this->_name + " called");
+    System::GetLogger()->LogDebug(this->_name + " called");
 
     auto uptime = System::UpTime();
 

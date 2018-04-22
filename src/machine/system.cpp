@@ -1,5 +1,4 @@
 #include "system.hpp"
-#include "logger.hpp"
 #include "daemon.hpp"
 #include "signal_handler.hpp"
 #include "help_command.hpp"
@@ -21,6 +20,7 @@ CommandManager * System::_commandManager = nullptr;
 ConfigurationManager * System::_configurationManager = nullptr;
 ContextManager * System::_contetxManager = nullptr;
 Database * System::_database = nullptr;
+Logger * System::_logger = nullptr;
 MemoryManager * System::_memoryManager = nullptr;
 
 system_clock::time_point System::_timeNow = system_clock::now();
@@ -33,6 +33,7 @@ bool System::Start()
     System::_configurationManager = new ConfigurationManager();
     System::_contetxManager = new ContextManager();
     System::_database = new Database();
+    System::_logger = new Logger();
     System::_memoryManager = new MemoryManager();
     
     if (!System::_configurationManager->LoadResources())
@@ -40,7 +41,7 @@ bool System::Start()
         return false;
     }
 
-    Logger::Initilize(
+    System::_logger->Initilize(
         System::_configurationManager->GetResource(CMV::LogFileName).ToString(), 
         System::_configurationManager->GetResource(CMV::LogResolution).ToInt(), 
         (LogLevel)System::_configurationManager->GetResource(CMV::LogLevel).ToInt()
@@ -89,7 +90,13 @@ void System::Stop()
 
     TcpServer<TelnetServer>::StopAllInstances();
     IAsync::StopActiveJobs();
-    Logger::ClearResources();
+
+    _logger->ClearResources();
+    if (_logger != nullptr)
+    {
+        delete _logger;
+        _logger = nullptr;
+    }
 }
 
 system_clock::duration System::UpTime()
@@ -122,6 +129,11 @@ network::ContextManager * System::GetContextManager()
 Database * System::GetDatabase()
 {
     return System::_database;
+}
+
+Logger * System::GetLogger()
+{
+    return System::_logger;
 }
 
 MemoryManager * System::GetMemoryManager()

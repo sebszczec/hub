@@ -18,8 +18,6 @@ using machine::Logger;
 
 int main(int ac, char* av[])
 {
-  Logger::Initilize("hub_ut.log", 1, machine::LogLevel::Debug);
-
   testing::InitGoogleTest(&ac, av);
   return RUN_ALL_TESTS();
 }

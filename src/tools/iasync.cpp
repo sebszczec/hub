@@ -1,5 +1,5 @@
 #include "iasync.hpp"
-#include "logger.hpp"
+#include "system.hpp"
 #include <thread>
 
 using namespace std;
@@ -12,7 +12,7 @@ map <int, IAsync *> IAsync::_activeJobs;
 
 void IAsync::StopActiveJobs()
 {
-    machine::Logger::Log("IAsync: stopping active workers");
+    machine::System::GetLogger()->Log("IAsync: stopping active workers");
 
     auto maxDelay = IAsync::DelayMS(0);
 

@@ -1,5 +1,4 @@
 #include "telnet_connection.hpp"
-#include "logger.hpp"
 #include "command_manager.hpp"
 #include "connection_manager.hpp"
 #include "system.hpp"
@@ -51,8 +50,11 @@ bool TelnetConnection::ExtractCommand(const string& message, string & result, Co
 
 void TelnetConnection::HandleData(machine::Block * block)
 {
+    auto logger = System::GetLogger();
+
     if (block->GetPayloadLength() == 0)
     {
+        logger->LogError("TelnetConnection: memory block is empty");
         return;
     }
 
@@ -67,16 +69,16 @@ void TelnetConnection::HandleData(machine::Block * block)
 
         if (!this->ExtractCommand(message, command, arg))
         {
-            Logger::LogError("TelnetConnection: cannot extract command from " + message);
+            logger->LogError("TelnetConnection: cannot extract command from " + message);
             return;
         }
 
-        Logger::LogDebug("TelnetConnection: got command " + command);
+        logger->LogDebug("TelnetConnection: got command " + command);
 
         arg.RequestorAccessLevel = this->_context->GetUser().GetAccessLevel().GetLevel();
         if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
         {
-            Logger::LogDebug("TelnetConnection: command execution result: " + result.Result);
+            logger->LogDebug("TelnetConnection: command execution result: " + result.Result);
             *this->_stream << command << ": " << result.Result << "\n";
         }
         else
@@ -88,7 +90,7 @@ void TelnetConnection::HandleData(machine::Block * block)
     }
 
     // send message to others
-    Logger::LogDebug("TelnetConnection: sending to other users: " + message.substr(0, message.length() - 1));
+    logger->LogDebug("TelnetConnection: sending to other users: " + message.substr(0, message.length() - 1));
     for (auto & item : this->_parent->GetConnections())
     {
         if (item.first == this->_socketFd)

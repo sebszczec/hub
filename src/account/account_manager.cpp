@@ -1,6 +1,4 @@
 #include "account_manager.hpp"
-#include "database.hpp"
-#include "logger.hpp"
 #include "system.hpp"
 
 using database::Database;
@@ -12,12 +10,14 @@ namespace account
 {
     void AccountManager::RefreshWithDB()
     {
-        Logger::Log("AccountManager: refreshing user base with DB");
+        auto logger = System::GetLogger();
+
+        logger->Log("AccountManager: refreshing user base with DB");
         auto instance = System::GetDatabase();
 
         if (!instance->Connect())
         {
-            Logger::LogError("AccountManager: unable to connect to DB");
+            logger->LogError("AccountManager: unable to connect to DB");
             return;
         }
     
@@ -34,20 +34,22 @@ namespace account
 
     bool AccountManager::ValidateUser(const std::string & name, const std::string & password)
     {
+        auto logger = System::GetLogger();
+
         auto iterator = this->_userInDB.find(name);
         if (iterator == this->_userInDB.end())
         {
-            Logger::LogError("AccountManager: user " + name + " does not exist in DB");
+            logger->LogError("AccountManager: user " + name + " does not exist in DB");
             return false;
         }
 
         if (iterator->second.Password.compare(password) != 0)
         {
-            Logger::LogError("AccountManager: wrong password for user " + name);
+            logger->LogError("AccountManager: wrong password for user " + name);
             return false;
         }
 
-        Logger::Log("AccountManager: user " + name + " validated");
+        logger->Log("AccountManager: user " + name + " validated");
 
         return true;
     }

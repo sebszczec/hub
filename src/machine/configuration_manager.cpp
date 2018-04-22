@@ -1,6 +1,6 @@
 #include "configuration_manager.hpp"
 #include <iostream>
-#include "logger.hpp"
+#include "system.hpp"
 
 namespace machine
 {
@@ -70,7 +70,7 @@ IResource & CM::GetResource(CMV variableName)
 
 void CM::ClearResources()
 {
-    Logger::Log("ConfigurationManager: cleaning resources");;
+    System::GetLogger()->Log("ConfigurationManager: cleaning resources");;
     for (auto &pair : this->_resources)
     {
         delete pair.second;

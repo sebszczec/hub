@@ -1,6 +1,6 @@
 #include "login_command.hpp"
-#include "logger.hpp"
 #include "account_manager.hpp"
+#include "system.hpp"
 
 using namespace machine;
 using namespace account;
@@ -21,20 +21,22 @@ string LoginCommand::PrintHelp()
 
 bool LoginCommand::Execute(const CommandArgument & commandArgument)
 {
-    Logger::LogDebug(this->_name + " called");
+    auto logger = System::GetLogger();
+
+    logger->LogDebug(this->_name + " called");
 
     if (commandArgument.Args.size() < 2)
     {   
         auto errorMessage = "failed, not enough arguments";
         this->_result = errorMessage;
-        Logger::LogError(this->_name + " " + errorMessage);
+        logger->LogError(this->_name + " " + errorMessage);
         return false;
     }
     else if (commandArgument.Args.size() > 2)
     {
         auto errorMessage = "failed, too many arguments";
         this->_result = errorMessage;
-        Logger::LogError(this->_name + " " + errorMessage);
+        logger->LogError(this->_name + " " + errorMessage);
         return false;
     }
 

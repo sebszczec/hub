@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include "system.hpp"
 #include "configuration_manager.hpp"
-#include "logger.hpp"
 #include "worker.hpp"
 #include "timer.hpp"
 #include "signal_handler.hpp"
@@ -38,10 +37,11 @@ int main()
     telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
 
     /* The Big Loop */
-    while (1) 
+    auto logger = System::GetLogger();
+    while (true) 
     {
         /* Do some task here ... */  
-        Logger::LogDebug("Standard loop");  
+        logger->LogDebug("Standard loop");  
         sleep(1); /* wait 1 second */
     }
 
