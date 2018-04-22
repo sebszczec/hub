@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "account_manager.hpp"
+#include "system.hpp"
 
 using namespace account;
 
@@ -13,6 +14,7 @@ protected:
 public:
     void SetUp() override
     {
+        machine::System::InitializeMembersForUT();
         _sut = new AccountManager();
         _sut->ClearUserCache();
     }
@@ -24,6 +26,7 @@ public:
             delete _sut;
             _sut = nullptr;
         }
+        machine::System::FreeMembersForUT();
     }
 };
 

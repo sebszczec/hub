@@ -17,6 +17,7 @@ class System
     ~System() = delete;
 
     static ConfigurationManager * _configurationManager;
+    static database::Database * _database;
 
     static system_clock::time_point _timeNow;
     static void RegisterCommands();
@@ -30,6 +31,22 @@ public:
     static database::Database * GetDatabase();
 
     static system_clock::duration UpTime();
+
+     // Help methods for UTs
+     static void InitializeMembersForUT()
+     {
+        _configurationManager = new ConfigurationManager();
+        _database = new database::Database();
+     }
+
+     static void FreeMembersForUT()
+     {
+        if (_database != nullptr)
+            delete _database;
+    
+        if (_configurationManager != nullptr)
+            delete _configurationManager;
+     }
 };
 
 } // namespace machine

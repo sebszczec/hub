@@ -5,6 +5,7 @@
 #include "login_command.hpp"
 #include <iostream>
 #include <thread>
+#include "system.hpp"
 
 using commands::LoginCommand;
 using commands::CommandArgument;
@@ -16,12 +17,14 @@ public:
 public:
     LoginCommandTest()
     {
+        machine::System::InitializeMembersForUT();
         this->sut = new LoginCommand();
     }
 
     ~LoginCommandTest()
     {
         delete this->sut;
+        machine::System::FreeMembersForUT();
     }
 };
 

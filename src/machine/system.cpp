@@ -22,6 +22,7 @@ namespace machine
 {
 
 ConfigurationManager * System::_configurationManager = nullptr;
+Database * System::_database = nullptr;
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
@@ -30,6 +31,7 @@ bool System::Start()
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
     System::_configurationManager = new ConfigurationManager();
+    System::_database = new Database();
     
     if (!System::_configurationManager->LoadResources())
     {
@@ -51,8 +53,13 @@ bool System::Start()
 
 void System::Stop()
 {
-    Database::ClearInstance();
     MemoryManager::GetInstance()->DumpMemory();
+
+    if (_database != nullptr)
+        delete _database;
+    
+    if (_configurationManager != nullptr)
+        delete _configurationManager;
 
     CommandManager::ClearInstance();
     ContextManager::ClearInstance();
@@ -81,7 +88,7 @@ ConfigurationManager * System::GetConfigurationManager()
 
 Database * System::GetDatabase()
 {
-    return Database::GetInstance2();
+    return System::_database;
 }
 
 } // namespace machine

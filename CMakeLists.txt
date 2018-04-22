@@ -4,12 +4,15 @@ project (hub)
 # enable C++14 standard
 set(CMAKE_CXX_STANDARD 14)  
 
+# Debug or release
+set(CMAKE_BUILD_TYPE Debug)
+
 # Allows to use distcc for cloud computing
 # set(CMAKE_CXX_COMPILE_OBJECT "$(USE_DISTCC) <CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
 
 # extra compilation flags
 # -g - generates debug symbols
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -g -O0 -Wall -fprofile-arcs -ftest-coverage")
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -Wall -fprofile-arcs -ftest-coverage")
 
 # Prepare files to be handled by gcov (*.cpp.gcno -> *.gcno)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
@@ -47,7 +50,8 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub machine commands database network tools config++ sqlite3 
-  ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a account)
+TARGET_LINK_LIBRARIES(hub machine commands network tools config++  
+  ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a account database sqlite3)
+  
 TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 
   ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a /usr/lib/libgtest.a)

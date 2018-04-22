@@ -20,16 +20,9 @@ private:
     sqlite3 * _database;
     bool _connected = false;
 
-    static Database * _instance;
-
-    static Database * GetInstance();
-
 public:
     Database() = default;
     ~Database() = default;
-
-    static Database * GetInstance2();
-    static void ClearInstance();
 
     bool Connect();
     void Disconnect();
