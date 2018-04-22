@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "context_manager.hpp"
+#include "system.hpp"
 
 using namespace network;
 
@@ -13,7 +14,7 @@ protected:
 public:
     void SetUp() override
     {
-        _sut = ContextManager::GetInstance();
+        _sut = machine::System::GetContextManager();
     }
 
     void TearDown() override
@@ -61,7 +62,7 @@ TEST_F(ContextManagerTest, RecoveryCleaning)
     EXPECT_EQ(3u, _sut->GetActiveCountextCount());
 
     ContextManager::ClearInstance();
-    EXPECT_EQ(0u, ContextManager::GetInstance()->GetActiveCountextCount());
+    EXPECT_EQ(0u, machine::System::GetContextManager()->GetActiveCountextCount());
 }
 
 #endif

@@ -5,6 +5,7 @@
 #include <ctime>
 #include "command_manager.hpp"
 #include "configuration_manager.hpp"
+#include "context_manager.hpp"
 #include "database.hpp"
 
 using namespace std::chrono;
@@ -31,6 +32,7 @@ public:
 
     static commands::CommandManager * GetCommandManager();
     static ConfigurationManager * GetConfigurationManager();
+    static network::ContextManager * GetContextManager();
     static database::Database * GetDatabase();
 
     static system_clock::duration UpTime();

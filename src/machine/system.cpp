@@ -104,6 +104,11 @@ ConfigurationManager * System::GetConfigurationManager()
     return System::_configurationManager;
 }
 
+network::ContextManager * System::GetContextManager()
+{
+    return ContextManager::GetInstance2();
+}
+
 Database * System::GetDatabase()
 {
     return System::_database;

@@ -5,6 +5,11 @@ namespace network
 
 ContextManager * ContextManager::_instance = nullptr;
 
+ContextManager * ContextManager::GetInstance2()
+{
+    return ContextManager::GetInstance();
+}
+
 ContextManager * ContextManager::GetInstance()
 {
     if (ContextManager::_instance == nullptr)

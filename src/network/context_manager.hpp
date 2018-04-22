@@ -21,8 +21,10 @@ private:
 
     void ClearAllContexts();
     
+    static ContextManager * GetInstance(); 
+
 public:
-    static ContextManager * GetInstance();
+    static ContextManager * GetInstance2();
     static void ClearInstance();
 
     Context * CreateContext();

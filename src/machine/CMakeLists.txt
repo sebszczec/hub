@@ -8,6 +8,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/account)
 include_directories(${CMAKE_SOURCE_DIR}/src/commands)
 include_directories(${CMAKE_SOURCE_DIR}/src/database)
 include_directories(${CMAKE_SOURCE_DIR}/src/machine)
+include_directories(${CMAKE_SOURCE_DIR}/src/network)
 
 # sources
 set (SOURCE_FILES configuration_manager.cpp daemon.cpp logger.cpp memory_manager.cpp signal_handler.cpp system.cpp)

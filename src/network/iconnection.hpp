@@ -4,6 +4,7 @@
 #include "libsocket/inetserverstream.hpp"
 #include "memory_manager.hpp"
 #include "context_manager.hpp"
+#include "system.hpp"
 
 namespace network
 {
@@ -27,7 +28,7 @@ public:
     IConnection(int socketFd, inet_stream * stream, ConnectionManager * parent)
     : _socketFd(socketFd), _stream(stream), _parent(parent)
     {
-        this->_context = ContextManager::GetInstance()->CreateContext();
+        this->_context = machine::System::GetContextManager()->CreateContext();
     }
 
     virtual ~IConnection();

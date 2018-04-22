@@ -6,7 +6,7 @@ namespace network
 
 IConnection::~IConnection()
 {
-    ContextManager::GetInstance()->DeleteContext(this->_context);
+    machine::System::GetContextManager()->DeleteContext(this->_context);
     this->_context = nullptr;
 
     if (this->_stream == nullptr)
