@@ -15,6 +15,11 @@ CommandManager::~CommandManager()
     this->ClearAllCommands();
 }
 
+CommandManager * CommandManager::GetInstance2()
+{
+    return CommandManager::GetInstance();
+}
+
 void CommandManager::ClearInstance()
 {
     if (CommandManager::_instance != nullptr)

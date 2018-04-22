@@ -1,8 +1,10 @@
 #include "help_command.hpp"
 #include "command_manager.hpp"
 #include "logger.hpp"
+#include "system.hpp"
 
 using machine::Logger;
+using machine::System;
 
 namespace commands
 {
@@ -34,7 +36,7 @@ bool HelpCommand::Execute(const CommandArgument &arg)
         return true;
     }
 
-    auto commandManager = CommandManager::GetInstance();
+    auto commandManager = System::GetCommandManager();
     auto & command = arg.Args[0];
     if (!commandManager->GetCommandHelp(command, this->_result))
     {

@@ -29,8 +29,10 @@ private:
 
     commands::ICommand * SearchCommand(const string & command);
 
-public:
     static CommandManager * GetInstance();
+
+public:
+    static CommandManager * GetInstance2();
     static void ClearInstance();
 
     void RegisterCommand(commands::ICommand * command);

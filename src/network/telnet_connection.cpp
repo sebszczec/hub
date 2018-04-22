@@ -2,8 +2,10 @@
 #include "logger.hpp"
 #include "command_manager.hpp"
 #include "connection_manager.hpp"
+#include "system.hpp"
 
 using machine::Logger;
+using machine::System;
 using namespace::account;
 
 namespace network
@@ -72,7 +74,7 @@ void TelnetConnection::HandleData(machine::Block * block)
         Logger::LogDebug("TelnetConnection: got command " + command);
 
         arg.RequestorAccessLevel = this->_context->GetUser().GetAccessLevel().GetLevel();
-        if (commands::CommandManager::GetInstance()->ExecuteCommand(command, arg, result))
+        if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
         {
             Logger::LogDebug("TelnetConnection: command execution result: " + result.Result);
             *this->_stream << command << ": " << result.Result << "\n";

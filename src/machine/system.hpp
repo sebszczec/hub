@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <ctime>
+#include "command_manager.hpp"
 #include "configuration_manager.hpp"
 #include "database.hpp"
 
@@ -27,6 +28,7 @@ public:
     static bool Start();
     static void Stop();
 
+    static commands::CommandManager * GetCommandManager();
     static ConfigurationManager * GetConfigurationManager();
     static database::Database * GetDatabase();
 

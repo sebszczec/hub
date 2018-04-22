@@ -76,9 +76,14 @@ system_clock::duration System::UpTime()
 
 void System::RegisterCommands()
 {
-    CommandManager::GetInstance()->RegisterCommand(new UptimeCommand());
-    CommandManager::GetInstance()->RegisterCommand(new LoginCommand());
-    CommandManager::GetInstance()->RegisterCommand(new HelpCommand());
+    System::GetCommandManager()->RegisterCommand(new UptimeCommand());
+    System::GetCommandManager()->RegisterCommand(new LoginCommand());
+    System::GetCommandManager()->RegisterCommand(new HelpCommand());
+}
+
+CommandManager * System::GetCommandManager()
+{
+    return CommandManager::GetInstance2();
 }
 
 ConfigurationManager * System::GetConfigurationManager()
