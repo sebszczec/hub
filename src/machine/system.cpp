@@ -21,6 +21,7 @@ using namespace tools;
 namespace machine
 {
 
+CommandManager * System::_commandManager = nullptr;
 ConfigurationManager * System::_configurationManager = nullptr;
 Database * System::_database = nullptr;
 
@@ -30,6 +31,7 @@ bool System::Start()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
+    System::_commandManager = new CommandManager();
     System::_configurationManager = new ConfigurationManager();
     System::_database = new Database();
     
@@ -56,12 +58,23 @@ void System::Stop()
     MemoryManager::GetInstance()->DumpMemory();
 
     if (_database != nullptr)
+    {
         delete _database;
+        _database = nullptr;
+    }
     
     if (_configurationManager != nullptr)
+    {
         delete _configurationManager;
+        _configurationManager = nullptr;
+    }
 
-    CommandManager::ClearInstance();
+    if (_commandManager != nullptr)
+    {
+        delete _commandManager;
+        _commandManager = nullptr;
+    }
+
     ContextManager::ClearInstance();
     TcpServer<TelnetServer>::StopAllInstances();
     IAsync::StopActiveJobs();
@@ -76,14 +89,14 @@ system_clock::duration System::UpTime()
 
 void System::RegisterCommands()
 {
-    System::GetCommandManager()->RegisterCommand(new UptimeCommand());
-    System::GetCommandManager()->RegisterCommand(new LoginCommand());
-    System::GetCommandManager()->RegisterCommand(new HelpCommand());
+    System::_commandManager->RegisterCommand(new UptimeCommand());
+    System::_commandManager->RegisterCommand(new LoginCommand());
+    System::_commandManager->RegisterCommand(new HelpCommand());
 }
 
 CommandManager * System::GetCommandManager()
 {
-    return CommandManager::GetInstance2();
+    return System::_commandManager;
 }
 
 ConfigurationManager * System::GetConfigurationManager()

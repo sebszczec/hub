@@ -19,6 +19,7 @@ class System
 
     static ConfigurationManager * _configurationManager;
     static database::Database * _database;
+    static commands::CommandManager * _commandManager;
 
     static system_clock::time_point _timeNow;
     static void RegisterCommands();
@@ -37,6 +38,7 @@ public:
      // Help methods for UTs
      static void InitializeMembersForUT()
      {
+         _commandManager = new commands::CommandManager();
         _configurationManager = new ConfigurationManager();
         _database = new database::Database();
      }
@@ -44,10 +46,22 @@ public:
      static void FreeMembersForUT()
      {
         if (_database != nullptr)
+        {
             delete _database;
+            _database = nullptr;
+        }
     
         if (_configurationManager != nullptr)
+        {
             delete _configurationManager;
+            _configurationManager = nullptr;
+        }
+
+        if (_commandManager != nullptr)
+        {
+            delete _commandManager;
+            _commandManager = nullptr;
+        }
      }
 };
 
