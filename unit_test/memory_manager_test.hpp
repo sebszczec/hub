@@ -3,6 +3,7 @@
 
 #include "memory_manager.hpp"
 #include <gtest/gtest.h>
+#include "system.hpp"
 
 class MemoryManagerTest : public testing::Test 
 {
@@ -11,7 +12,7 @@ protected:
 public:
     void SetUp() override
     {
-        _sut = machine::MemoryManager::GetInstance();
+        _sut = machine::System::GetMemoryManager();
     }
 
     void TearDown() override

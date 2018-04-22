@@ -2,15 +2,11 @@
 #include "logger.hpp"
 #include "daemon.hpp"
 #include "signal_handler.hpp"
-#include "command_manager.hpp"
-#include "context_manager.hpp"
 #include "help_command.hpp"
 #include "login_command.hpp"
 #include "uptime_command.hpp"
 #include "iasync.hpp"
 #include "tcp_server.hpp"
-#include "command_manager.hpp"
-#include "memory_manager.hpp"
 #include "telnet_server.hpp"
 
 using namespace commands;
@@ -57,7 +53,7 @@ bool System::Start()
 
 void System::Stop()
 {
-    MemoryManager::GetInstance()->DumpMemory();
+    System::GetMemoryManager()->DumpMemory();
 
     if (_database != nullptr)
     {
@@ -119,6 +115,11 @@ network::ContextManager * System::GetContextManager()
 Database * System::GetDatabase()
 {
     return System::_database;
+}
+
+MemoryManager * System::GetMemoryManager()
+{
+    return MemoryManager::GetInstance2();
 }
 
 } // namespace machine

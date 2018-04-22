@@ -90,7 +90,7 @@ private:
 
     void HandleIncommingData(inet_socket & socket)
     {
-        auto block = machine::MemoryManager::GetInstance()->GetFreeBlock();
+        auto block = machine::System::GetMemoryManager()->GetFreeBlock();
         char * buffer = reinterpret_cast<char *>(block->GetPayload());
         auto stream = dynamic_cast<inet_stream *>(&socket);
         auto socketFd = stream->getfd();
@@ -139,7 +139,7 @@ private:
             machine::Logger::LogError(this->GetExtendedPrefix(socketFd) + ": something went wrong");
         }
 
-        machine::MemoryManager::GetInstance()->DeleteBlock(block->GetDescriptor());
+        machine::System::GetMemoryManager()->DeleteBlock(block->GetDescriptor());
     }
 
 public:

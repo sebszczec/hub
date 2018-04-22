@@ -7,6 +7,7 @@
 #include "configuration_manager.hpp"
 #include "context_manager.hpp"
 #include "database.hpp"
+#include "memory_manager.hpp"
 
 using namespace std::chrono;
 
@@ -35,6 +36,7 @@ public:
     static ConfigurationManager * GetConfigurationManager();
     static network::ContextManager * GetContextManager();
     static database::Database * GetDatabase();
+    static MemoryManager * GetMemoryManager();
 
     static system_clock::duration UpTime();
 

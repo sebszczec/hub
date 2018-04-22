@@ -71,8 +71,9 @@ private:
     int _allocatedBlocks = 0;
 
     static int GetNewDescriptor();
+    static MemoryManager * GetInstance();
 public:
-    static MemoryManager * GetInstance();    
+    static MemoryManager * GetInstance2();    
     static void DeleteInstance();
 
     Block * GetFreeBlock();

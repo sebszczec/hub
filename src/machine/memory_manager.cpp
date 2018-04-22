@@ -20,6 +20,11 @@ MemoryManager::~MemoryManager()
     _allocatedBlocks = 0;
 }
 
+MemoryManager * MemoryManager::GetInstance2()
+{
+    return MemoryManager::GetInstance();
+}
+
 MemoryManager * MemoryManager::GetInstance()
 {
     if (MemoryManager::_instance == nullptr)
