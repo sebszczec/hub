@@ -17,17 +17,18 @@ using SqlResult = vector<map<string, string>>;
 class Database
 {
 private:
-    Database() = default;
-    ~Database() = default;
-
     sqlite3 * _database;
     bool _connected = false;
 
     static Database * _instance;
 
-public:
-
     static Database * GetInstance();
+
+public:
+    Database() = default;
+    ~Database() = default;
+
+    static Database * GetInstance2();
     static void ClearInstance();
 
     bool Connect();

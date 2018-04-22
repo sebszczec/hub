@@ -1,17 +1,19 @@
 #include "account_manager.hpp"
 #include "database.hpp"
 #include "logger.hpp"
+#include "system.hpp"
 
 using database::Database;
 using database::SqlResult;
 using machine::Logger;
+using machine::System;
 
 namespace account
 {
     void AccountManager::RefreshWithDB()
     {
         Logger::Log("AccountManager: refreshing user base with DB");
-        auto instance = Database::GetInstance();
+        auto instance = System::GetDatabase();
 
         if (!instance->Connect())
         {

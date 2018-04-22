@@ -10,7 +10,6 @@
 #include "iasync.hpp"
 #include "tcp_server.hpp"
 #include "command_manager.hpp"
-#include "database.hpp"
 #include "memory_manager.hpp"
 #include "telnet_server.hpp"
 
@@ -46,9 +45,6 @@ bool System::Start()
     Daemon::Initilize(System::_configurationManager->GetResource(CMV::IsDaemon).ToBool());
     SignalHandler::RegisterExitSignals();
     System::RegisterCommands();
-    
-    auto db = Database::GetInstance();
-    (void)db;
 
     return true;
 }
@@ -81,6 +77,11 @@ void System::RegisterCommands()
 ConfigurationManager * System::GetConfigurationManager()
 {
     return System::_configurationManager;
+}
+
+Database * System::GetDatabase()
+{
+    return Database::GetInstance2();
 }
 
 } // namespace machine

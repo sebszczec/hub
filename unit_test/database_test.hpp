@@ -14,19 +14,15 @@ public:
 public:
     DatabaseTest()
     {
-        this->sut = Database::GetInstance();
+        this->sut = new Database();
     }
 
     ~DatabaseTest()
     {
-        Database::ClearInstance();
+        delete this->sut;
     }
 };
 
-TEST_F(DatabaseTest, CheckInstance)
-{
-    EXPECT_FALSE(Database::GetInstance() == nullptr);
-}
 
 TEST_F(DatabaseTest, GetTableNoConnection)
 {

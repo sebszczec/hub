@@ -10,6 +10,11 @@ namespace database
 
 Database * Database::_instance = nullptr;
 
+Database * Database::GetInstance2()
+{
+    return Database::GetInstance();
+}
+
 Database * Database::GetInstance()
 {
     if (Database::_instance == nullptr)

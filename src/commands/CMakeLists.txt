@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/account)
 include_directories(${CMAKE_SOURCE_DIR}/src/commands)
+include_directories(${CMAKE_SOURCE_DIR}/src/database)
 include_directories(${CMAKE_SOURCE_DIR}/src/machine)
 
 # sources

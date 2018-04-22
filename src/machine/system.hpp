@@ -4,6 +4,7 @@
 #include <chrono>
 #include <ctime>
 #include "configuration_manager.hpp"
+#include "database.hpp"
 
 using namespace std::chrono;
 
@@ -26,6 +27,7 @@ public:
     static void Stop();
 
     static ConfigurationManager * GetConfigurationManager();
+    static database::Database * GetDatabase();
 
     static system_clock::duration UpTime();
 };
