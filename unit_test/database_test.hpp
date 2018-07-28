@@ -14,14 +14,12 @@ public:
 public:
     DatabaseTest()
     {
-        machine::System::InitializeMembersForUT();
         this->sut = new Database();
     }
 
     ~DatabaseTest()
     {
         delete this->sut;
-        machine::System::FreeMembersForUT();
     }
 };
 

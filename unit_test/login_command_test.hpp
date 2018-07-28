@@ -17,14 +17,12 @@ public:
 public:
     LoginCommandTest()
     {
-        machine::System::InitializeMembersForUT();
         this->sut = new LoginCommand();
     }
 
     ~LoginCommandTest()
     {
         delete this->sut;
-        machine::System::FreeMembersForUT();
     }
 };
 

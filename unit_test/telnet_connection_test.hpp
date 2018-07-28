@@ -35,14 +35,12 @@ protected:
 public:
     void SetUp() override
     {
-        machine::System::InitializeMembersForUT();
         this->_sut = new OverridedTelnetConnection();
     }
 
     void TearDown() override
     {
         delete this->_sut;
-        machine::System::FreeMembersForUT();
     }
 };
 

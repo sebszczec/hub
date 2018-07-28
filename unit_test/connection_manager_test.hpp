@@ -15,7 +15,6 @@ protected:
 public:
     void SetUp() override
     {
-        machine::System::InitializeMembersForUT();
         _sut = new ConnectionManager();
     }
 
@@ -26,7 +25,6 @@ public:
             delete _sut;
             _sut = nullptr;
         }
-        machine::System::FreeMembersForUT();
     }
 };
 

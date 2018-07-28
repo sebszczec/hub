@@ -16,14 +16,12 @@ public:
 public:
     UptimeCommandTest()
     {
-        machine::System::InitializeMembersForUT();
         this->sut = new UptimeCommand();
     }
 
     ~UptimeCommandTest()
     {
         delete this->sut;
-        machine::System::FreeMembersForUT();
     }
 };
 

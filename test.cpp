@@ -19,5 +19,10 @@ using machine::Logger;
 int main(int ac, char* av[])
 {
   testing::InitGoogleTest(&ac, av);
-  return RUN_ALL_TESTS();
+
+  machine::System::InitializeMembersForUT();
+  auto result = RUN_ALL_TESTS();
+  machine::System::FreeMembersForUT();
+
+  return result;
 }

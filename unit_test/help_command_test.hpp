@@ -15,14 +15,12 @@ public:
 public:
     HelpCommandTest()
     {
-        machine::System::InitializeMembersForUT();
         this->sut = new HelpCommand();
     }
 
     ~HelpCommandTest()
     {
         delete this->sut;
-        machine::System::FreeMembersForUT();
     }
 };
 
