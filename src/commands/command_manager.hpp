@@ -22,6 +22,7 @@ private:
     void ClearAllCommands();
 
     std::map<std::string, commands::ICommand *> _commands;
+    std::vector<std::string> _commandNames;
 
     commands::ICommand * SearchCommand(const string & command);
 
@@ -32,6 +33,7 @@ public:
     void RegisterCommand(commands::ICommand * command);
     bool ExecuteCommand(const string & command, const commands::CommandArgument &, CommandExecutionResult & result);
     bool GetCommandHelp(const string & command, string & result);
+    std::vector<std::string> GetRegisteredCommands();
 };
 
 } // namepace commands

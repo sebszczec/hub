@@ -17,6 +17,7 @@ void CommandManager::RegisterCommand(ICommand * command)
 {
     auto key = command->Register();
     this->_commands[key] = command;
+    this->_commandNames.push_back(key);
 
     System::GetLogger()->LogDebug("CommandManager: command " + key + " registered");
 }
@@ -31,6 +32,7 @@ void CommandManager::ClearAllCommands()
     }
 
     this->_commands.clear();
+    this->_commandNames.clear();
 }
 
 ICommand * CommandManager::SearchCommand(const string & command)
@@ -87,6 +89,11 @@ bool CommandManager::GetCommandHelp(const string & command, string & result)
 
     result = found->PrintHelp();
     return true;
+}
+
+std::vector<std::string> CommandManager::GetRegisteredCommands()
+{
+    return this->_commandNames;
 }
 
 } // namespace commands
