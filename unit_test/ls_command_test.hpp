@@ -45,4 +45,9 @@ TEST_F(LsCommandTest, Execute)
     EXPECT_TRUE(sut->Execute(arg));
 }
 
+TEST_F(LsCommandTest, AccessLevel)
+{
+    EXPECT_EQ(account::AccessLevel::Level::NotLogged, sut->GetAccessLevel());
+}
+
 #endif
