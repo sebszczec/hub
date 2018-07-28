@@ -3,6 +3,7 @@
 #include "signal_handler.hpp"
 #include "help_command.hpp"
 #include "login_command.hpp"
+#include "logout_command.hpp"
 #include "ls_command.hpp"
 #include "uptime_command.hpp"
 #include "iasync.hpp"
@@ -120,6 +121,7 @@ void System::RegisterCommands()
 {
     System::_commandManager->RegisterCommand(new HelpCommand());
     System::_commandManager->RegisterCommand(new LoginCommand());
+    System::_commandManager->RegisterCommand(new LogoutCommand());
     System::_commandManager->RegisterCommand(new LsCommand());
     System::_commandManager->RegisterCommand(new UptimeCommand());
 }
