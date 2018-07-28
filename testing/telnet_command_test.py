@@ -98,3 +98,10 @@ class TelnetLoginAccessGrantedTest(TelnetTest):
         self.connection.send(".login slaugh seb666")
         result = self.connection.expect([r".login: access granted"])
         return result
+
+class TelnetLsTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        self.connection.send(".ls")
+        result = self.connection.expect([r".ls: .help .login .ls .uptime"])
+        return result

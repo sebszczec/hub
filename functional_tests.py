@@ -8,8 +8,9 @@ from testing.test_runner import *
 
 tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest(), TelnetHelpLoginCommandTest(), TelnetHelpUptimeCommandTest(), 
     TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest(), 
-    TelnetLoginNoArgTest(), TelnetLoginTooLessArgTest(), TelnetLoginTooManyArgTest()
-    , TelnetLoginWrongUserTest(), TelnetLoginWrongPasswordTest(), TelnetLoginAccessGrantedTest() 
+    TelnetLoginNoArgTest(), TelnetLoginTooLessArgTest(), TelnetLoginTooManyArgTest(), 
+    TelnetLoginWrongUserTest(), TelnetLoginWrongPasswordTest(), TelnetLoginAccessGrantedTest(),
+    TelnetLsTest()
     ]
 
 parser = argparse.ArgumentParser()

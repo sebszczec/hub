@@ -118,9 +118,9 @@ system_clock::duration System::UpTime()
 
 void System::RegisterCommands()
 {
+    System::_commandManager->RegisterCommand(new HelpCommand());
     System::_commandManager->RegisterCommand(new LoginCommand());
     System::_commandManager->RegisterCommand(new LsCommand());
-    System::_commandManager->RegisterCommand(new HelpCommand());
     System::_commandManager->RegisterCommand(new UptimeCommand());
 }
 
