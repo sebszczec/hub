@@ -11,6 +11,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src/machine)
 include_directories(${CMAKE_SOURCE_DIR}/src/network)
 
 # sources
-set (SOURCE_FILES command_manager.cpp help_command.cpp login_command.cpp uptime_command.cpp)
+set (SOURCE_FILES command_manager.cpp help_command.cpp login_command.cpp ls_command.cpp uptime_command.cpp)
 
 add_library(commands ${SOURCE_FILES})
