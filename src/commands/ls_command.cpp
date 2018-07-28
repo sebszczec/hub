@@ -1,4 +1,5 @@
 #include "ls_command.hpp"
+#include "system.hpp"
 
 using namespace commands;
 
@@ -14,7 +15,16 @@ string LsCommand::PrintHelp()
 
 bool LsCommand::Execute(const CommandArgument &)
 {
-    return false;
+    this->_result = "";
+    auto commands = machine::System::GetCommandManager()->GetRegisteredCommands();
+
+    for (auto command : commands)
+    {
+        this->_result += command + " ";
+    }
+    this->_result.pop_back();
+
+    return true;
 }
 
 string LsCommand::GetResult()

@@ -10,7 +10,7 @@ namespace commands
 class LsCommand : public ICommand
 {
 private:
-    const string _name = ".uptime";
+    const string _name = ".ls";
     string _result = "";
 public:
     LsCommand() = default;
