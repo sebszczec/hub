@@ -100,7 +100,10 @@ TEST_F(LoginCommandTest, WrongPassword)
 TEST_F(LoginCommandTest, AccessGranted)
 {
     string expect = "access granted";
+    
     CommandArgument arg;
+    arg.Context = new network::Context(0);
+
     arg.Args.push_back("slaugh");
     arg.Args.push_back("seb666");
 
@@ -108,6 +111,8 @@ TEST_F(LoginCommandTest, AccessGranted)
     auto result = sut->GetResult();
     
     EXPECT_STREQ(expect.c_str(), result.c_str());
+
+    delete arg.Context;
 }
 
 #endif // __LOGIN_COMMAND_TEST_HPP

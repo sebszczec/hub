@@ -49,6 +49,7 @@ bool LoginCommand::Execute(const CommandArgument & commandArgument)
        return true;
     }
 
+    commandArgument.Context->GetUser().GetAccessLevel().SetLevel(account::AccessLevel::Level::User);
     this->_result = "access granted";
     return true;
 }

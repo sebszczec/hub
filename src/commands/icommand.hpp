@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "access_level.hpp"
+#include "context.hpp"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ public:
     ~CommandArgument() = default;
 
     vector<string> Args;
-    account::AccessLevel::Level RequestorAccessLevel = account::AccessLevel::Level::NotLogged;
+    network::Context * Context;
 };
 
 class ICommand

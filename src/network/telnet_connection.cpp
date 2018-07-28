@@ -75,7 +75,7 @@ void TelnetConnection::HandleData(machine::Block * block)
 
         logger->LogDebug("TelnetConnection: got command " + command);
 
-        arg.RequestorAccessLevel = this->_context->GetUser().GetAccessLevel().GetLevel();
+        arg.Context = this->_context;
         if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
         {
             logger->LogDebug("TelnetConnection: command execution result: " + result.Result);

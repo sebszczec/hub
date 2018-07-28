@@ -76,13 +76,18 @@ TEST_F(CommandManagerTest, ExecuteCommand)
     _sut->RegisterCommand(command);
 
     auto name = command->Register();
+    
     CommandArgument arg;
+    arg.Context = new network::Context(0);
+
     CommandExecutionResult result;
     EXPECT_FALSE(_sut->ExecuteCommand(name, arg, result));
     EXPECT_FALSE(result.Success);
 
     string expected = "no access to run " + name;
     EXPECT_STREQ(expected.c_str(), result.ErrorMessage.c_str());
+
+    delete arg.Context;
 }
 
 #endif
