@@ -1,0 +1,1 @@
+#include "command_manager_test.hpp"
