@@ -111,5 +111,23 @@ class TelnetLsTest(TelnetTest):
     def run(self):
         Test.run(self)
         self.connection.send(".ls")
-        result = self.connection.expect([r".ls: .help .login .ls .uptime"])
+        result = self.connection.expect([r".ls: .help .login .logout .ls .uptime"])
+        return result
+
+class TelnetLogoutCommandTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        self.connection.send(".logout")
+        result = self.connection.expect([r"no access to run .logout"])
+        return result
+
+class TelnetLogoutCommandAfterLoginTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        self.connection.send(".login slaugh seb666")
+        result = self.connection.expect([r".login: access granted"])
+        self.connection.send(".logout")
+        result = self.connection.expect([r".logout: logout successful"])
+        self.connection.send(".logout")
+        result = self.connection.expect([r"no access to run .logout"])
         return result
