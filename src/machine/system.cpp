@@ -6,6 +6,7 @@
 #include "logout_command.hpp"
 #include "ls_command.hpp"
 #include "uptime_command.hpp"
+#include "whoami_command.hpp"
 #include "iasync.hpp"
 #include "tcp_server.hpp"
 #include "telnet_server.hpp"
@@ -124,6 +125,7 @@ void System::RegisterCommands()
     System::_commandManager->RegisterCommand(new LogoutCommand());
     System::_commandManager->RegisterCommand(new LsCommand());
     System::_commandManager->RegisterCommand(new UptimeCommand());
+    System::_commandManager->RegisterCommand(new WhoamiCommand());
 }
 
 AccountManager * System::GetAccountManager()

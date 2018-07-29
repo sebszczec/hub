@@ -1,6 +1,7 @@
 #include "account_manager.hpp"
 #include "system.hpp"
 
+using account::User;
 using database::Database;
 using database::SqlResult;
 using machine::Logger;
@@ -32,7 +33,7 @@ namespace account
         }
     }
 
-    bool AccountManager::ValidateUser(const std::string & name, const std::string & password)
+    bool AccountManager::ValidateUser(const std::string & name, const std::string & password, User & user)
     {
         auto logger = System::GetLogger();
 
@@ -49,6 +50,7 @@ namespace account
             return false;
         }
 
+        user.SetName(name);
         logger->Log("AccountManager: user " + name + " validated");
 
         return true;

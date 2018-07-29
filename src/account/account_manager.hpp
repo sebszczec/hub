@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include "user.hpp"
 
 namespace account
 {
@@ -24,7 +25,7 @@ public:
 
     void RefreshWithDB();
 
-    bool ValidateUser(const std::string & name, const std::string & password);
+    bool ValidateUser(const std::string & name, const std::string & password, account::User & user);
     void ClearUserCache();
 };
 

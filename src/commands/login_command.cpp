@@ -42,14 +42,15 @@ bool LoginCommand::Execute(const CommandArgument & commandArgument)
 
     auto & name = commandArgument.Args[0];
     auto & password = commandArgument.Args[1];
+    auto & user = commandArgument.Context->GetUser();
 
-    if (!System::GetAccountManager()->ValidateUser(name, password))
+    if (!System::GetAccountManager()->ValidateUser(name, password, user))
     {
        this->_result = "access danied"; 
        return true;
     }
 
-    commandArgument.Context->GetUser().GetAccessLevel().SetLevel(account::AccessLevel::Level::User);
+    user.GetAccessLevel().SetLevel(account::AccessLevel::Level::User);
     this->_result = "access granted";
     return true;
 }
