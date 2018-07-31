@@ -131,3 +131,23 @@ class TelnetLogoutCommandAfterLoginTest(TelnetTest):
         self.connection.send(".logout")
         result = self.connection.expect([r"no access to run .logout"])
         return result
+
+class TelnetWhoamiCommandTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        self.connection.send(".whoami")
+        result = self.connection.expect([r"no access to run .whoami"])
+        return result
+
+class TelnetWhoamiCommandAfterLoginTest(TelnetTest):
+    def run(self):
+        Test.run(self)
+        self.connection.send(".login slaugh seb666")
+        result = self.connection.expect([r".login: access granted"])
+        self.connection.send(".whoami")
+        result = self.connection.expect([r".whoami: slaugh"])
+        self.connection.send(".logout")
+        result = self.connection.expect([r".logout: logout successful"])
+        self.connection.send(".whoami")
+        result = self.connection.expect([r"no access to run .whoami"])
+        return result

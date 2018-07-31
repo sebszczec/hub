@@ -10,7 +10,7 @@ tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetUptimeCommand
     TelnetHelpLoginCommandTest(), TelnetHelpUptimeCommandTest(), TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), 
     TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest(), TelnetLoginNoArgTest(), TelnetLoginTooLessArgTest(), TelnetLoginTooManyArgTest(), 
     TelnetLoginWrongUserTest(), TelnetLoginWrongPasswordTest(), TelnetLoginAccessGrantedTest(), TelnetLsTest(), TelnetLogoutCommandTest(), 
-    TelnetLogoutCommandAfterLoginTest()
+    TelnetLogoutCommandAfterLoginTest(), TelnetWhoamiCommandTest(), TelnetWhoamiCommandAfterLoginTest()
     ]
 
 parser = argparse.ArgumentParser()
