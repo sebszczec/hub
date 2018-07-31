@@ -16,6 +16,7 @@
 #include "telnet_connection_test.hpp"
 #include "uptime_command_test.hpp"
 #include "user_test.hpp"
+#include "whoami_command_test.hpp"
 
 using machine::Logger;
 
