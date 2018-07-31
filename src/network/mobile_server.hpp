@@ -1,5 +1,5 @@
-#ifndef __TELNET_SERVER_HPP
-#define __TELNET_SERVER_HPP
+#ifndef __MOBILE_SERVER_HPP
+#define __MOBILE_SERVER_HPP
 
 #include "connection_manager.hpp"
 #include "libsocket/inetserverstream.hpp"
@@ -10,18 +10,18 @@ using libsocket::inet_stream;
 namespace network
 {
 
-class TelnetServer
+class MobileServer
 {
 private:
     ConnectionManager * _connectionManager;
 public:
-    TelnetServer(ConnectionManager & connectionManager);
-    ~TelnetServer() = default;
+    MobileServer(ConnectionManager & connectionManager);
+    ~MobileServer() = default;
 
     void AddConnection(inet_stream & stream);
     void RemoveConnection(inet_stream & stream);
 };
 
-} // namespace networok
+} // namespace network
 
 #endif
