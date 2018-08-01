@@ -31,6 +31,8 @@ MemoryManager * System::_memoryManager = nullptr;
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
+std::mutex System::Mutex;
+
 bool System::Start()
 {
     using CM = ConfigurationManager;

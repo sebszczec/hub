@@ -1,6 +1,7 @@
 #include "memory_manager.hpp"
 #include "system.hpp"
 #include <fstream>
+#include <mutex>
 
 namespace machine
 {
@@ -20,6 +21,7 @@ MemoryManager::~MemoryManager()
 
 int MemoryManager::GetNewDescriptor()
 {
+    std::lock_guard<std::mutex> guard(machine::System::Mutex);
     return MemoryManager::_descriptorGenerator++;
 }
 

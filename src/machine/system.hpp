@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <ctime>
+#include <mutex>
 #include "account_manager.hpp"
 #include "command_manager.hpp"
 #include "configuration_manager.hpp"
@@ -33,6 +34,8 @@ class System
     static void RegisterCommands();
 public:
     using DelayUS = std::chrono::duration<int, std::micro>;
+
+    static std::mutex Mutex;
 
     static bool Start();
     static void Stop();
