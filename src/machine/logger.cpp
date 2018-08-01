@@ -61,7 +61,11 @@ std::string Logger::CurrentTime()
 void Logger::Log(const std::string &prefix, const std::string &text)
 {
     auto tmp = CurrentTime() + " " + prefix + " " + text + "\n";
-    this->_buffer.append(tmp);
+
+    {
+        std::lock_guard<std::mutex> lock(this->_mutex);
+        this->_buffer.append(tmp);
+    }
 
     this->Flush();
 }
