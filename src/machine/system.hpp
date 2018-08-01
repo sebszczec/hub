@@ -35,8 +35,6 @@ class System
 public:
     using DelayUS = std::chrono::duration<int, std::micro>;
 
-    static std::mutex Mutex;
-
     static bool Start();
     static void Stop();
 

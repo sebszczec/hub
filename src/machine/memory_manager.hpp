@@ -2,6 +2,7 @@
 #define __MEMORY_MANAGER_HPP
 
 #include <map>
+#include <mutex>
 
 using namespace std;
 
@@ -65,6 +66,7 @@ private:
 
     map<int, Block *> _blocks;
     int _allocatedBlocks = 0;
+    std::mutex _mutex;
 
     static int GetNewDescriptor();
 
