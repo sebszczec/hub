@@ -30,7 +30,10 @@ Block * MemoryManager::GetFreeBlock()
     auto block = new Block(MemoryManager::GetNewDescriptor());
     this->_blocks[block->GetDescriptor()] = block;
 
-    _allocatedBlocks++;
+    {
+        std::lock_guard<std::mutex> guard(machine::System::Mutex);
+        _allocatedBlocks++;
+    }
 
     return block;
 }
@@ -43,7 +46,10 @@ void MemoryManager::DeleteBlock(int descriptor)
         return;
     }
 
-    _allocatedBlocks--;
+    {
+        std::lock_guard<std::mutex> guard(machine::System::Mutex);
+        _allocatedBlocks--;
+    }
 
     delete block->second;
     this->_blocks.erase(block);
