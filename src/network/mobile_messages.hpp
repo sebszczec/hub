@@ -3,22 +3,38 @@
 
 #include <stdint.h>
 
+namespace network
+{
+
 typedef uint8_t OneByte;
 typedef uint16_t TwoBytes;
 typedef uint32_t FourBytes;
 
-struct Message1
+static const unsigned int NetworkMessageSize = 256;
+static const unsigned int HandshakeNameSize = 5;
+
+enum MessageId
 {
-    OneByte ID;
-    OneByte TRANSACTION;
-    OneByte REQUEST[254];
+    HandshakeRequest,
+    HandshakeResponse
 };
 
-struct Message1
+struct NetworkMessage
 {
     OneByte ID;
-    OneByte TRANSACTION;
-    TwoBytes RESPONSE;
+    OneByte REQUEST[NetworkMessageSize - 1];
 };
+
+struct HandshakeRequest
+{
+    FourBytes Name[HandshakeNameSize];
+};
+
+struct HandshakeResponse
+{
+    OneByte MobileId;
+};
+
+} // namespace network
 
 #endif

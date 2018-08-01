@@ -6,7 +6,7 @@
 namespace machine
 {
 
-int MemoryManager::_descriptorGenerator = 0;
+unsigned int MemoryManager::_descriptorGenerator = 0;
 
 MemoryManager::~MemoryManager()
 {
@@ -21,7 +21,7 @@ MemoryManager::~MemoryManager()
     _allocatedBlocks = 0;
 }
 
-int MemoryManager::GetNewDescriptor()
+unsigned int MemoryManager::GetNewDescriptor()
 {
     return MemoryManager::_descriptorGenerator++;
 }
@@ -38,7 +38,7 @@ Block * MemoryManager::GetFreeBlock()
     return block;
 }
 
-void MemoryManager::DeleteBlock(int descriptor)
+void MemoryManager::DeleteBlock(unsigned int descriptor)
 {
     std::lock_guard<std::mutex> guard(this->_mutex);
 
@@ -74,7 +74,7 @@ void MemoryManager::DumpMemory()
         {
             file << "Block descriptor: " << pair.first << ", size: " << pair.second->GetPayloadLength() << std::endl;
             char * buffer = reinterpret_cast<char *>(pair.second->GetPayload());
-            for (int i = 0; i < pair.second->size; i++)
+            for (unsigned int i = 0; i < pair.second->size; i++)
             {
                 file << buffer[i];
             }

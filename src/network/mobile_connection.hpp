@@ -2,9 +2,15 @@
 #define __MOBILE_CONNECTION_HPP
 
 #include "iconnection.hpp"
+#include <exception>
 
 namespace network
 {
+
+class WrongPacketSizeException : public std::exception
+{
+
+};
 
 class MobileConnection : public IConnection
 {
