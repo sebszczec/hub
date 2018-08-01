@@ -116,8 +116,8 @@ public:
         IsDaemon,
         PidFileName,
         TelnetPort,
-        TelnetPooling,
-        TelnetCooling,
+        TcpPooling,
+        TcpCooling,
         MemoryDumpName,
         DatabaseFileName
     };

@@ -48,11 +48,11 @@ bool CM::LoadResources()
     string telnetPort = this->_configFile.lookup("telnet_port");
     this->_resources[CMV::TelnetPort] = new StringResource(telnetPort);
 
-    int telnetPooling = this->_configFile.lookup("telnet_pooling");
-    this->_resources[CMV::TelnetPooling] = new IntResource(telnetPooling);
+    int tcpPooling = this->_configFile.lookup("tcp_pooling");
+    this->_resources[CMV::TcpPooling] = new IntResource(tcpPooling);
 
-    int telnetCooling = this->_configFile.lookup("telnet_cooling");
-    this->_resources[CMV::TelnetCooling] = new IntResource(telnetCooling);
+    int tcpooling = this->_configFile.lookup("tcp_cooling");
+    this->_resources[CMV::TcpCooling] = new IntResource(tcpooling);
 
     string memoryDumpName = this->_configFile.lookup("memory_dump_name");
     this->_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);

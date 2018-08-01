@@ -64,7 +64,7 @@ private:
         auto logger = machine::System::GetLogger();
         using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
-        long long delay = machine::System::GetConfigurationManager()->GetResource(CMV::TelnetPooling).ToInt();
+        long long delay = machine::System::GetConfigurationManager()->GetResource(CMV::TcpPooling).ToInt();
 
         while (this->_working)
         {
@@ -202,7 +202,7 @@ public:
 
         using CM = machine::ConfigurationManager;
         using CMV = CM::Variable;
-        int delay = machine::System::GetConfigurationManager()->GetResource(CMV::TelnetCooling).ToInt();
+        int delay = machine::System::GetConfigurationManager()->GetResource(CMV::TcpCooling).ToInt();
         
         this->_working = false;
         using DelayMS = std::chrono::duration<int, std::milli>;
