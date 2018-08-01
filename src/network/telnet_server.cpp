@@ -4,6 +4,8 @@
 namespace network
 {
 
+const string TelnetServer::Name = "Telnet";
+
 TelnetServer::TelnetServer(ConnectionManager & connectionManager)
 : _connectionManager(&connectionManager)
 {

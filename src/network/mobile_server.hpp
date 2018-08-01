@@ -20,6 +20,8 @@ public:
 
     void AddConnection(inet_stream & stream);
     void RemoveConnection(inet_stream & stream);
+
+    static const string Name;
 };
 
 } // namespace network

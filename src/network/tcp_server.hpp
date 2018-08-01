@@ -151,7 +151,7 @@ public:
     : _port(port), _id(TcpServer::_idGenerator++), _impl(_connectionManager)
     {
         TcpServer::_instances[this->_id] = this;
-        this->_prefix = "TcpServer[" + std::to_string(this->_id) + "]";
+        this->_prefix = "TcpServer[" + Impl::Name + "][" + std::to_string(this->_id) + "]";
     }
 
     ~TcpServer()

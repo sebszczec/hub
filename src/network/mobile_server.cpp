@@ -3,6 +3,8 @@
 
 namespace network
 {
+    
+const string MobileServer::Name = "Mobile";
 
 MobileServer::MobileServer(ConnectionManager & connectionManager)
 : _connectionManager(&connectionManager)
