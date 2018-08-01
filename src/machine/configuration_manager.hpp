@@ -116,6 +116,7 @@ public:
         IsDaemon,
         PidFileName,
         TelnetPort,
+        MobilePort,
         TcpPooling,
         TcpCooling,
         MemoryDumpName,

@@ -8,6 +8,7 @@
 #include "signal_handler.hpp"
 #include "tcp_server.hpp"
 #include "telnet_server.hpp"
+#include "mobile_server.hpp"
 
 using namespace network;
 using namespace machine;
@@ -35,6 +36,10 @@ int main()
     TcpServer<TelnetServer> telnetServer(System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToString());
     tools::Worker telnetWorker(false);
     telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
+
+    TcpServer<MobileServer> mobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToString());
+    tools::Worker mobileWorker(false);
+    mobileWorker.StartAsync([&mobileServer] () { mobileServer.Start(); });
 
     /* The Big Loop */
     auto logger = System::GetLogger();
