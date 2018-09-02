@@ -60,7 +60,7 @@ RESULT=1
 retry=0
 while [ $retry -lt $MAX_RETRY ]
 do
-    echo "Giving ${DELAY} seconds for app to work, retry: ${retry}"
+    echo "Giving ${DELAY} second for app to work, retry: ${retry}"
     sleep ${DELAY}
     (( retry++ ))
 
