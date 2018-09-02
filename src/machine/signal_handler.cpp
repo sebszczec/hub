@@ -27,6 +27,8 @@ void SignalHandler::RegisterExitSignals()
         logger->LogDebug("Registering " + pair.second + " signal");
         signal(pair.first, SignalHandler::Handler);
     }
+
+    signal(SIGPIPE, SIG_IGN);
 }
 
 } // namespace machine

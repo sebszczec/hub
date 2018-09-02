@@ -1,6 +1,7 @@
 #include "telnet_connection.hpp"
 #include "command_manager.hpp"
 #include "connection_manager.hpp"
+#include <iostream>
 #include "system.hpp"
 
 using machine::Logger;
@@ -79,11 +80,29 @@ void TelnetConnection::HandleData(machine::Block * block)
         if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
         {
             logger->LogDebug("TelnetConnection: command execution result: " + result.Result);
-            *this->_stream << command << ": " << result.Result << "\n";
+            try 
+            {
+                *this->_stream << command << ": " << result.Result << "\n";
+            }
+            catch (const libsocket::socket_exception &e)
+            {
+                auto message = "TelnetConnection[" + std::to_string(this->_socketFd) + "]: Executing command error: " + e.mesg;
+                std::cout << message;
+                logger->LogError(message);
+            }
         }
         else
         {
-            *this->_stream << command << ": "<< result.ErrorMessage << "\n";
+            try 
+            {
+                *this->_stream << command << ": "<< result.ErrorMessage << "\n";
+            }
+            catch (const libsocket::socket_exception &e)
+            {
+                auto message = "TelnetConnection[" + std::to_string(this->_socketFd) + "]: Problem with sending error information: " + e.mesg;
+                std::cout << message;
+                logger->LogError(message);
+            }
         }
 
         return;
@@ -98,7 +117,16 @@ void TelnetConnection::HandleData(machine::Block * block)
             continue;
         }
 
-        item.second->GetStream() << message;
+        try 
+        {
+            item.second->GetStream() << message;
+        }
+            catch (const libsocket::socket_exception &e)
+            {
+                auto message = "TelnetConnection[" + std::to_string(this->_socketFd) + "]: Sending message to others" + e.mesg;
+                std::cout << message;
+                logger->LogError(message);
+            }
     }
 }
 

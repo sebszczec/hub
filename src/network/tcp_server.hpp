@@ -9,6 +9,7 @@
 #include <thread>
 #include <map>
 #include <sstream>
+#include <iostream>
 #include "system.hpp"
 #include "connection_manager.hpp"
 #include "telnet_connection.hpp"
@@ -104,7 +105,7 @@ private:
         }
         catch (const libsocket::socket_exception &e)
         {
-            // std::cout << e.mesg;
+            std::cout << e.mesg;
             logger->LogError(this->GetExtendedPrefix(socketFd) + ": " + e.mesg);
         }
 
