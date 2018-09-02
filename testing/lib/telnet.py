@@ -20,7 +20,11 @@ class Telnet(object):
         data = None
         data = self.network_connection.receive_data(len(message))
 
-        if data[:-1] == message[:-1]:
+        # removing last characters
+        received = data[:-1]
+        expected = message[:-1]
+
+        if expected.find(received) != -1:
             return True
         else:
             print "Expected: " +  str(len(message)) + " " + message

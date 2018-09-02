@@ -103,8 +103,8 @@ class TelnetUptimeCommandAfterLoginTest(TelnetTest):
         Test.run(self)
         self.connection.send(".login slaugh seb666")
         result = self.connection.expect(".login: access granted\n")
-        #self.connection.send(".uptime")
-        #result = self.connection.expect(".uptime: hours, [0-9]+ minutes, [0-9]+ seconds, [0-9]+ milliseconds\n")
+        self.connection.send(".uptime")
+        result = self.connection.expect(".uptime:")
         return result
 
 class TelnetLsTest(TelnetTest):
