@@ -22,7 +22,6 @@ bool LsCommand::Execute(const CommandArgument &)
     {
         this->_result += command + " ";
     }
-    this->_result.pop_back();
 
     return true;
 }

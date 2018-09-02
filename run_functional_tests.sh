@@ -58,11 +58,8 @@ valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-cal
 echo "Giving ${DELAY} seconds for app to work"
 sleep ${DELAY}
 
-# dry run
-./telnet.sh
-echo ""
-
 # functional tests
+echo $ARGS
 python functional_tests.py $ARGS
 RESULT=$?
 
