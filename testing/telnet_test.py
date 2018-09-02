@@ -6,7 +6,8 @@ class TelnetTest(Test):
     def setup(self):
         self.connection = Telnet("localhost", 1235, 0.1)
         self.connection.connect()
-        return True
+        result = self.connection.expect("Welcome\n")
+        return result
 
     def run(self):
         raise NotImplementedError("Subclass must implement abstract method")
@@ -17,14 +18,12 @@ class TelnetTest(Test):
 
 class TelnetConnectionTest(TelnetTest):
     def run(self):
-        Test.run(self)
-        result = self.connection.expect("Welcome\n")
-        return result
+        return Test.run(self)
 
 class TelnetTalkWithOtherSessionTest(TelnetTest):
     def run(self):
         Test.run(self)
-        self.connection.expect("Welcome\n")
+        
         connection2 = Telnet("localhost", 1235, 0.1)
         connection2.connect()
         connection2.expect("Welcome\n")
