@@ -50,19 +50,29 @@ esac
 shift # past argument or value
 done
 
-DELAY=2
+DELAY=1
+MAX_RETRY=10
 
 echo "Starting Valgrind"
 valgrind --leak-check=full --show-reachable=yes --leak-resolution=high --num-callers=50 --trace-children=yes --xml=yes --xml-file=valgrind_ft_result.xml ./hub &
 
-echo "Giving ${DELAY} seconds for app to work"
-sleep ${DELAY}
+RESULT=1
+retry=0
+while [ $retry -lt $MAX_RETRY ]
+do
+    echo "Giving ${DELAY} seconds for app to work, retry: ${retry}"
+    sleep ${DELAY}
+    (( retry++ ))
 
-# functional tests
-echo $ARGS
-python functional_tests.py $ARGS
-RESULT=$?
-
+    nc -z -v localhost 1235
+    if [ $? -eq 0 ] ; then
+        # functional tests
+        echo $ARGS
+        python functional_tests.py $ARGS
+        RESULT=$?
+        break
+    fi
+done
 
 PID=`cat hub.pid`
 echo "Killing hub PID: ${PID}"
