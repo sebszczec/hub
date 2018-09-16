@@ -20,8 +20,6 @@ void TelnetServer::AddConnection(inet_stream & stream)
 
 void TelnetServer::RemoveConnection(inet_stream & stream)
 {
-    auto descriptor = stream.getfd();
-    this->_connectionManager->RemoveConnection(descriptor);
 }
 
 } // namespace network

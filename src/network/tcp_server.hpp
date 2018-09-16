@@ -57,6 +57,8 @@ private:
         machine::System::GetLogger()->LogDebug(this->GetExtendedPrefix(descriptor) + ": client disconnected");
         this->_readSet.remove_fd(*stream);
 
+        this->_connectionManager.RemoveConnection(descriptor);
+
         this->_impl.RemoveConnection(*stream);
     }
 

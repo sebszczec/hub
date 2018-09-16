@@ -19,8 +19,6 @@ void MobileServer::AddConnection(inet_stream & stream)
 
 void MobileServer::RemoveConnection(inet_stream & stream)
 {
-    auto descriptor = stream.getfd();
-    this->_connectionManager->RemoveConnection(descriptor);
 }
 
 } // namespace network
