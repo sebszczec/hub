@@ -9,6 +9,7 @@
 #include <string.h>
 #include <fstream>
 #include "system.hpp"
+#include "strings.hpp"
 
 namespace machine
 {
@@ -20,17 +21,17 @@ void Daemon::Initilize(bool goBackground)
 {
         auto logger = System::GetLogger();
 
-        logger->Log("Daemon: starting initialization");
+        logger->Log(machine::string::daemonMessage1);
 
         if (goBackground)
         {
-                logger->Log("Daemon: going background");
+                logger->Log(machine::string::daemonMessage2);
 
                 /* Fork off the parent process */
                 Daemon::_pid = fork();
                 if (Daemon::_pid < 0) 
                 {
-                        logger->LogError("Daemon: getting new PID FAILED");
+                        logger->LogError(machine::string::daemonMessage3);
                         exit(EXIT_FAILURE);
                 }
                 /* If we got a good PID, then
@@ -52,7 +53,7 @@ void Daemon::Initilize(bool goBackground)
                 if (Daemon::_sid < 0) 
                 {
                         /* Log the failure */
-                        logger->LogError("Daemon: getting new SID FAILED");
+                        logger->LogError(machine::string::daemonMessage4);
                         exit(EXIT_FAILURE);
                 }
                 logger->Log("Daemon: getting new SID SUCCESSED, value: " + std::to_string(Daemon::_sid));
@@ -61,23 +62,23 @@ void Daemon::Initilize(bool goBackground)
                 if ((chdir("/")) < 0) 
                 {
                         /* Log the failure */
-                        logger->LogError("Daemon: changing root path FAILED");
+                        logger->LogError(machine::string::daemonMessage5);
                         exit(EXIT_FAILURE);
                 }
-                logger->Log("Daemon: changing root path SUCCESSED");
+                logger->Log(machine::string::daemonMessage6);
 
                 /* Close out the standard file descriptors */
                 close(STDIN_FILENO);
                 close(STDOUT_FILENO);
                 close(STDERR_FILENO);
-                logger->Log("Daemon: disabling standard descriptors SUCCESSED");
+                logger->Log(machine::string::daemonMessage7);
 
                 /* Daemon-specific initialization goes here */
 
                 return;
         }
 
-        logger->Log("Daemon: staying in foreground");
+        logger->Log(machine::string::daemonMessage8);
         Daemon::_pid = getpid();
         logger->Log("Daemon: PID value: " + std::to_string(Daemon::_pid));
         Daemon::SavePidToFile();

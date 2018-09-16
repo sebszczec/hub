@@ -1,6 +1,7 @@
 #include <csignal>
 #include "signal_handler.hpp"
 #include "system.hpp"
+#include "strings.hpp"
 
 namespace machine
 {
@@ -18,9 +19,9 @@ void SignalHandler::RegisterExitSignals()
 {
     auto logger = System::GetLogger();
 
-    SignalHandler::_signalNames[SIGINT] = "SIGINT";
-    SignalHandler::_signalNames[SIGABRT] = "SIGABRT";
-    SignalHandler::_signalNames[SIGTERM] = "SIGTERM";
+    SignalHandler::_signalNames[SIGINT] = machine::string::sigint;
+    SignalHandler::_signalNames[SIGABRT] = machine::string::sigabrt;
+    SignalHandler::_signalNames[SIGTERM] = machine::string::sigterm;
 
     for (const auto &pair : SignalHandler::_signalNames)
     {

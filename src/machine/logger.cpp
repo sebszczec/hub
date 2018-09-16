@@ -3,6 +3,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include "strings.hpp"
 
 namespace machine
 {
@@ -54,13 +55,13 @@ std::string Logger::CurrentTime()
     auto in_time_t = system_clock::to_time_t(now);
 
     std::stringstream stringStream;
-    stringStream << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
+    stringStream << std::put_time(std::localtime(&in_time_t), machine::string::timeFormat.c_str());
     return stringStream.str();
 }
 
 void Logger::Log(const std::string &prefix, const std::string &text)
 {
-    auto tmp = CurrentTime() + " " + prefix + " " + text + "\n";
+    auto tmp = CurrentTime() + " " + prefix + " " + text + machine::string::endl;
 
     {
         std::lock_guard<std::mutex> lock(this->_mutex);
@@ -74,7 +75,7 @@ void Logger::LogDebug(const std::string &text)
 {
     if (this->_logLevel <= LogLevel::Debug)
     {
-        this->Log("DBG", text);
+        this->Log(machine::string::dbg, text);
     }
 }
 
@@ -82,7 +83,7 @@ void Logger::LogError(const std::string &text)
 {
     if (this->_logLevel <= LogLevel::Error)
     {
-        this->Log("ERR", text);
+        this->Log(machine::string::err, text);
     }
 }
 
@@ -90,7 +91,7 @@ void Logger::Log(const std::string &text)
 {
     if (this->_logLevel <= LogLevel::Info)
     {
-        this->Log("INF", text);
+        this->Log(machine::string::inf, text);
     }
 }
 
