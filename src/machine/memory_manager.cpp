@@ -8,6 +8,14 @@ namespace machine
 
 unsigned int MemoryManager::_descriptorGenerator = 0;
 
+MemoryManager::MemoryManager()
+{
+    using CM = ConfigurationManager;
+    using CMV = CM::Variable;
+
+    this->_blockSize = System::GetConfigurationManager()->GetResource(CMV::MemoryBlockSize).ToInt();
+}
+
 MemoryManager::~MemoryManager()
 {
     std::lock_guard<std::mutex> guard(this->_mutex);
@@ -30,7 +38,7 @@ Block * MemoryManager::GetFreeBlock()
 {
     std::lock_guard<std::mutex> guard(this->_mutex);
 
-    auto block = new Block(MemoryManager::GetNewDescriptor());
+    auto block = new Block(MemoryManager::GetNewDescriptor(), this->_blockSize);
     this->_blocks[block->GetDescriptor()] = block;
 
     _allocatedBlocks++;
@@ -74,7 +82,7 @@ void MemoryManager::DumpMemory()
         {
             file << "Block descriptor: " << pair.first << ", size: " << pair.second->GetPayloadLength() << std::endl;
             char * buffer = reinterpret_cast<char *>(pair.second->GetPayload());
-            for (unsigned int i = 0; i < pair.second->size; i++)
+            for (unsigned int i = 0; i < pair.second->GetMaxSize(); i++)
             {
                 file << buffer[i];
             }

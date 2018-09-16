@@ -60,6 +60,9 @@ bool CM::LoadResources()
     string memoryDumpName = this->_configFile.lookup("memory_dump_name");
     this->_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);
 
+    int memoryBlockSize = this->_configFile.lookup("memory_block_size");
+    this->_resources[CMV::MemoryBlockSize] = new IntResource(memoryBlockSize);
+
     string databaseFileName = this->_configFile.lookup("database_file_name");
     this->_resources[CMV::DatabaseFileName] = new StringResource(databaseFileName);
 

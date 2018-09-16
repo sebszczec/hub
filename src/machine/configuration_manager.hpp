@@ -120,6 +120,7 @@ public:
         TcpPooling,
         TcpCooling,
         MemoryDumpName,
+        MemoryBlockSize,
         DatabaseFileName
     };
 

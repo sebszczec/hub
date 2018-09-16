@@ -16,17 +16,23 @@ class InvalidLengthException : public exception
 class Block
 {
 public:
-    static const unsigned int size = 128;
 
 private:
     unsigned int _descriptor = 0;
     unsigned int _length = 0;
-    char _buffer[size] = { 0 };
+    unsigned int _size = 0;
+    char * _buffer = nullptr;
 
 public:
-    Block(unsigned int descriptor)
-    : _descriptor(descriptor)
+    Block(unsigned int descriptor, unsigned int size)
+    : _descriptor(descriptor), _size(size)
     {
+        this->_buffer = new char[size];
+    }
+
+    virtual ~Block()
+    {
+        delete[] this->_buffer;
     }
 
     unsigned int GetDescriptor() const
@@ -46,7 +52,7 @@ public:
 
     void SetPayloadLength(unsigned int length)
     {
-        if (length > size)
+        if (length > this->_size)
         {
             throw InvalidLengthException();
         }
@@ -55,7 +61,7 @@ public:
 
     unsigned int GetMaxSize() const
     {
-        return size;
+        return this->_size;
     }
 };
 
@@ -64,6 +70,7 @@ class MemoryManager
 private:
     static unsigned int _descriptorGenerator;
 
+    unsigned int _blockSize = 0;
     map<int, Block *> _blocks;
     int _allocatedBlocks = 0;
     std::mutex _mutex;
@@ -71,7 +78,7 @@ private:
     static unsigned int GetNewDescriptor();
 
 public:
-    MemoryManager() = default;
+    MemoryManager();
     ~MemoryManager();
 
     Block * GetFreeBlock();

@@ -35,18 +35,19 @@ bool System::Start()
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
-    System::_commandManager = new CommandManager();
-    System::_configurationManager = new ConfigurationManager();
-    System::_contetxManager = new ContextManager();
-    System::_database = new Database();
-    System::_accountManager = new AccountManager();
-    System::_logger = new Logger();
-    System::_memoryManager = new MemoryManager();
     
+    System::_configurationManager = new ConfigurationManager();
     if (!System::_configurationManager->LoadResources())
     {
         return false;
     }
+
+    System::_accountManager = new AccountManager();
+    System::_commandManager = new CommandManager();
+    System::_contetxManager = new ContextManager();
+    System::_database = new Database();  
+    System::_logger = new Logger();
+    System::_memoryManager = new MemoryManager();
 
     System::_logger->Initilize(
         System::_configurationManager->GetResource(CMV::LogFileName).ToString(), 

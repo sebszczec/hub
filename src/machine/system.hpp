@@ -51,9 +51,15 @@ public:
      // Help methods for UTs
      static void InitializeMembersForUT()
      {
+        _configurationManager = new ConfigurationManager();
+        if (!System::_configurationManager->LoadResources())
+        {
+            return;
+        }
+
         _accountManager = new account::AccountManager();
         _commandManager = new commands::CommandManager();
-        _configurationManager = new ConfigurationManager();
+
         _contetxManager = new network::ContextManager();
         _database = new database::Database();
         _logger = new Logger();
