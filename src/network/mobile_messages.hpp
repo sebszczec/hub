@@ -10,7 +10,7 @@ typedef uint8_t OneByte;
 typedef uint16_t TwoBytes;
 typedef uint32_t FourBytes;
 
-static const unsigned int NetworkMessageSize = 256;
+static const unsigned int NetworkMessageSize = 128;
 static const unsigned int HandshakeNameSize = 5;
 
 enum MessageId
