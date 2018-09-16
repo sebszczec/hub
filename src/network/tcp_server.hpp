@@ -132,6 +132,10 @@ private:
             {
                 logger->LogError(this->GetExtendedPrefix(socketFd) + ": connection for socket FD not found");
             }
+            catch (const WrongPacketSizeException &)
+            {
+                logger->LogError(this->GetExtendedPrefix(socketFd) + ": Wrong packet size");
+            } 
         }
         else if (bytes == 0)
         {

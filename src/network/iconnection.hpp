@@ -14,6 +14,11 @@ class ConnectionManager;
 using namespace std;
 using libsocket::inet_stream;
 
+class WrongPacketSizeException : public std::exception
+{
+
+};
+
 class IConnection
 {
 protected:

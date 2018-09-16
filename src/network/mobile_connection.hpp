@@ -7,11 +7,6 @@
 namespace network
 {
 
-class WrongPacketSizeException : public std::exception
-{
-
-};
-
 class MobileConnection : public IConnection
 {
 public:
