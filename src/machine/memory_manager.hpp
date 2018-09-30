@@ -70,10 +70,10 @@ class MemoryManager
 {
 private:
     static unsigned int _descriptorGenerator;
-    static const unsigned int _preallocationSize = 5;
-    static const unsigned int _preallocationMaxFreeSize = 10;
+    const unsigned int _preallocationSize = 5;
+    const unsigned int _preallocationMaxFreeSize = 10;
 
-    unsigned int _blockSize = 0;
+    const unsigned int _blockSize = 0;
     map<int, Block *> _blocks;
     int _allocatedBlocks = 0;
     std::mutex _mutex;

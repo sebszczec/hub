@@ -63,6 +63,12 @@ bool CM::LoadResources()
     int memoryBlockSize = this->_configFile.lookup("memory_block_size");
     this->_resources[CMV::MemoryBlockSize] = new IntResource(memoryBlockSize);
 
+    int memoryPreallocatedSize = this->_configFile.lookup("memory_preallocation_size");
+    this->_resources[CMV::MemoryPreallocatedSize] = new IntResource(memoryPreallocatedSize);
+
+    int memoryMaxFreePreallocatedSize = this->_configFile.lookup("memory_free_preallocated_size");
+    this->_resources[CMV::MemoryMaxFreePreallocatedSize] = new IntResource(memoryMaxFreePreallocatedSize);
+
     string databaseFileName = this->_configFile.lookup("database_file_name");
     this->_resources[CMV::DatabaseFileName] = new StringResource(databaseFileName);
 

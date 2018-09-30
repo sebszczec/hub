@@ -121,6 +121,8 @@ public:
         TcpCooling,
         MemoryDumpName,
         MemoryBlockSize,
+        MemoryPreallocatedSize,
+        MemoryMaxFreePreallocatedSize,
         DatabaseFileName
     };
 

@@ -7,13 +7,14 @@ namespace machine
 {
 
 unsigned int MemoryManager::_descriptorGenerator = 0;
+using CM = ConfigurationManager;
+using CMV = CM::Variable;
 
 MemoryManager::MemoryManager()
+: _preallocationSize((System::GetConfigurationManager()->GetResource(CMV::MemoryPreallocatedSize).ToInt())),
+  _preallocationMaxFreeSize((System::GetConfigurationManager()->GetResource(CMV::MemoryMaxFreePreallocatedSize).ToInt())),
+  _blockSize(System::GetConfigurationManager()->GetResource(CMV::MemoryBlockSize).ToInt())
 {
-    using CM = ConfigurationManager;
-    using CMV = CM::Variable;
-
-    this->_blockSize = System::GetConfigurationManager()->GetResource(CMV::MemoryBlockSize).ToInt();
     this->IncreaseMemoryPreallocation();
 }
 
