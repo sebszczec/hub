@@ -89,6 +89,7 @@ public:
 
     Block * GetFreeBlock();
     void DeleteBlock(unsigned int descriptor);
+    void DeleteBlock(Block * block);
     unsigned int GetAllocatedBlocks()
     {
         return this->_allocatedBlocks;

@@ -14,6 +14,8 @@ set(CMAKE_BUILD_TYPE Debug)
 # -g - generates debug symbols
 SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -Wall -fprofile-arcs -ftest-coverage")
 
+add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
+
 # Prepare files to be handled by gcov (*.cpp.gcno -> *.gcno)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 
@@ -35,6 +37,7 @@ ENDIF()
 
 # sources
 add_subdirectory(src)
+include_directories(include)
 include_directories(src)
 include_directories(src/account)
 include_directories(src/commands)

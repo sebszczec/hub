@@ -96,6 +96,11 @@ void MemoryManager::DeleteBlock(unsigned int descriptor)
     }
 }
 
+void MemoryManager::DeleteBlock(Block * block)
+{
+    this->DeleteBlock(block->GetDescriptor());
+}
+
 void MemoryManager::DumpMemory()
 {
     using CM = ConfigurationManager;
