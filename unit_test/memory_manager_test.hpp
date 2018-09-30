@@ -44,6 +44,24 @@ TEST_F(MemoryManagerTest, Allocate)
     EXPECT_EQ(0, _sut->GetAllocatedBlocks());
 }
 
+TEST_F(MemoryManagerTest, AllocateStressTest)
+{
+    const unsigned int bufferSize = 1024;
+    machine::Block * blocks[bufferSize];
+
+    for (unsigned int i = 0; i < bufferSize; i++)
+    {
+        blocks[i] = _sut->GetFreeBlock();
+    }
+    EXPECT_EQ(bufferSize, _sut->GetAllocatedBlocks());
+
+        for (unsigned int i = 0; i < bufferSize; i++)
+    {
+        _sut->DeleteBlock(blocks[i]->GetDescriptor());
+    }
+    EXPECT_EQ(0, _sut->GetAllocatedBlocks());
+}
+
 TEST_F(MemoryManagerTest, DeleteWrongDescriptor)
 {
     auto block1 = _sut->GetFreeBlock();

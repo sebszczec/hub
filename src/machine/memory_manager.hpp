@@ -3,6 +3,7 @@
 
 #include <map>
 #include <mutex>
+#include <stack>
 
 using namespace std;
 
@@ -69,13 +70,18 @@ class MemoryManager
 {
 private:
     static unsigned int _descriptorGenerator;
+    static const unsigned int _preallocationSize = 5;
+    static const unsigned int _preallocationMaxFreeSize = 10;
 
     unsigned int _blockSize = 0;
     map<int, Block *> _blocks;
     int _allocatedBlocks = 0;
     std::mutex _mutex;
+    std::stack<Block *> _preallocatedBlocks;
 
     static unsigned int GetNewDescriptor();
+    void IncreaseMemoryPreallocation();
+    void ReduceMemoryPreallocation();
 
 public:
     MemoryManager();

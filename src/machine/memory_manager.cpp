@@ -14,19 +14,41 @@ MemoryManager::MemoryManager()
     using CMV = CM::Variable;
 
     this->_blockSize = System::GetConfigurationManager()->GetResource(CMV::MemoryBlockSize).ToInt();
+    this->IncreaseMemoryPreallocation();
 }
 
 MemoryManager::~MemoryManager()
 {
     std::lock_guard<std::mutex> guard(this->_mutex);
 
-    for (auto & pair : this->_blocks)
+    while (!this->_preallocatedBlocks.empty())
     {
-        delete pair.second;
+        auto block = this->_preallocatedBlocks.top();
+        this->_preallocatedBlocks.pop();
+        delete block;
     }
 
     this->_blocks.clear();
     _allocatedBlocks = 0;
+}
+
+void MemoryManager::IncreaseMemoryPreallocation()
+{
+    for (unsigned int i = 0; i < this->_preallocationSize; i++)
+    {
+        this->_preallocatedBlocks.push(new Block(MemoryManager::GetNewDescriptor(), this->_blockSize));
+    }
+}
+
+void MemoryManager::ReduceMemoryPreallocation()
+{
+    while (this->_preallocatedBlocks.size() > this->_preallocationSize)
+    {
+        auto block = this->_preallocatedBlocks.top();
+        this->_preallocatedBlocks.pop();
+
+        delete block;
+    }
 }
 
 unsigned int MemoryManager::GetNewDescriptor()
@@ -38,7 +60,13 @@ Block * MemoryManager::GetFreeBlock()
 {
     std::lock_guard<std::mutex> guard(this->_mutex);
 
-    auto block = new Block(MemoryManager::GetNewDescriptor(), this->_blockSize);
+    if (this->_preallocatedBlocks.empty())
+    {
+        this->IncreaseMemoryPreallocation();
+    }
+    auto block = this->_preallocatedBlocks.top();
+    this->_preallocatedBlocks.pop();
+
     this->_blocks[block->GetDescriptor()] = block;
 
     _allocatedBlocks++;
@@ -58,8 +86,13 @@ void MemoryManager::DeleteBlock(unsigned int descriptor)
 
     _allocatedBlocks--;
 
-    delete block->second;
+    this->_preallocatedBlocks.push(block->second);
     this->_blocks.erase(block);
+
+    if (this->_preallocatedBlocks.size() > this->_preallocationMaxFreeSize)
+    {
+        this->ReduceMemoryPreallocation();
+    }
 }
 
 void MemoryManager::DumpMemory()
@@ -88,6 +121,8 @@ void MemoryManager::DumpMemory()
             }
             file << std::endl;
         }
+
+        file << "Pre-allocation buffer size: " << this->_preallocatedBlocks.size() << std::endl;
     }
 
     file.close();
