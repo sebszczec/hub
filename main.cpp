@@ -19,13 +19,22 @@ using namespace machine;
 using boost::asio::ip::tcp;
 class BoostTcpConnection : public std::enable_shared_from_this<BoostTcpConnection>
 {
-private:
+protected:
     tcp::socket _socket;
     machine::Block * _memoryBlock = nullptr;
 public:
     BoostTcpConnection(boost::asio::io_service& ios)
     : _socket(ios), _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock())
     {
+    }
+
+    virtual ~BoostTcpConnection()
+    {
+        if (this->_memoryBlock)
+        {
+            machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
+            this->_memoryBlock = nullptr; 
+        }
     }
 
     void Start()
@@ -37,6 +46,12 @@ public:
         );
     }
 
+    void SendData(const void * data, unsigned int size)
+    {
+        boost::asio::async_write(this->_socket, boost::asio::buffer(data, size), boost::bind(&BoostTcpConnection::HandleWrite, shared_from_this(), boost::asio::placeholders::error, 
+            boost::asio::placeholders::bytes_transferred));
+    }
+
     void HandleWrite(const boost::system::error_code& err, size_t bytesTransferred)
     {
         // error handling 
@@ -44,25 +59,22 @@ public:
         (void)bytesTransferred;
     }
 
+    virtual void HandleData() = 0;
+
     void HandleRead(std::shared_ptr<BoostTcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred)
     {
         if (err)
         {
             std::cerr << "err (recv): " << err.message() << std::endl;
             machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
+            this->_memoryBlock = nullptr;
             return;
         }
 
         this->_memoryBlock->SetPayloadLength(bytesTransferred);
-        char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
-        // handle data
-        {
-            string message(buffer, this->_memoryBlock->GetPayloadLength());
-            string response = "Response to: " + message;
+        this->HandleData();
 
-            boost::asio::async_write(this->_socket, boost::asio::buffer(response), boost::bind(&BoostTcpConnection::HandleWrite, shared_from_this(), boost::asio::placeholders::error, 
-                boost::asio::placeholders::bytes_transferred));
-        }
+        char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
         this->_socket.async_read_some(boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
             boost::bind(&BoostTcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
@@ -75,6 +87,30 @@ public:
     }
 };
 
+class BoostTelnetConnection : public BoostTcpConnection
+{
+public:
+    BoostTelnetConnection(boost::asio::io_service& ios)
+    : BoostTcpConnection(ios)
+    {}
+
+    void HandleData() override
+    {
+        auto length = this->_memoryBlock->GetPayloadLength();
+        if (length == 0)
+        {
+            return;
+        }
+
+        char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
+        string message(buffer, length);
+        string response = "Response to: " + message;
+
+        this->SendData(reinterpret_cast<const void *> (response.c_str()), response.size());
+    }
+};
+
+template <typename CONNECTION_TYPE>
 class BoostTcpServer
 {
 private:
@@ -85,12 +121,12 @@ public:
     BoostTcpServer(boost::asio::io_service& ios, short port)
     : _ios(ios), _acceptor(ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
-        auto connection = std::make_shared<BoostTcpConnection>(ios);
+        auto connection = std::make_shared<CONNECTION_TYPE>(ios);
         
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
     }
 
-    void HandleAccept(std::shared_ptr<BoostTcpConnection> connection, const boost::system::error_code& err)
+    void HandleAccept(std::shared_ptr<CONNECTION_TYPE> connection, const boost::system::error_code& err)
     {
         if (err) 
         {
@@ -100,7 +136,7 @@ public:
         }
 
         connection->Start();
-        connection = std::make_shared<BoostTcpConnection>(this->_ios);
+        connection = std::make_shared<CONNECTION_TYPE>(this->_ios);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
 
@@ -132,7 +168,7 @@ int main()
     // });
 
     boost::asio::io_service ios;
-    BoostTcpServer server(ios, 9000);
+    BoostTcpServer<BoostTelnetConnection> server(ios, 9000);
     
     tools::Worker boostServerWorker(false);
     boostServerWorker.StartAsync([&ios] () {ios.run();});
