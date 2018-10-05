@@ -20,11 +20,12 @@ using boost::asio::ip::tcp;
 class BoostTcpConnection : public std::enable_shared_from_this<BoostTcpConnection>
 {
 protected:
-    tcp::socket _socket;
     machine::Block * _memoryBlock = nullptr;
+    tcp::socket _socket;
+    
 public:
     BoostTcpConnection(boost::asio::io_service& ios)
-    : _socket(ios), _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock())
+    : _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), _socket(ios) 
     {
     }
 
@@ -87,29 +88,6 @@ public:
     }
 };
 
-class BoostTelnetConnection : public BoostTcpConnection
-{
-public:
-    BoostTelnetConnection(boost::asio::io_service& ios)
-    : BoostTcpConnection(ios)
-    {}
-
-    void HandleData() override
-    {
-        auto length = this->_memoryBlock->GetPayloadLength();
-        if (length == 0)
-        {
-            return;
-        }
-
-        char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
-        string message(buffer, length);
-        string response = "Response to: " + message;
-
-        this->SendData(reinterpret_cast<const void *> (response.c_str()), response.size());
-    }
-};
-
 template <typename CONNECTION_TYPE>
 class BoostTcpServer
 {
@@ -117,6 +95,9 @@ private:
     boost::asio::io_service& _ios;
     tcp::acceptor _acceptor;
     short _port;
+
+    vector<shared_ptr<CONNECTION_TYPE>> _connections();
+
 public:
     BoostTcpServer(boost::asio::io_service& ios, short port)
     : _ios(ios), _acceptor(ios, tcp::endpoint(tcp::v4(), port)), _port(port)
@@ -145,6 +126,126 @@ public:
         return this->_port;
     }
 
+    const vector<shared_ptr<CONNECTION_TYPE>> & GetConnections()
+    {
+        return this->_connections;
+    }
+};
+
+class BoostTelnetConnection : public BoostTcpConnection
+{
+private:
+    BoostTcpServer<BoostTelnetConnection> * _parent;
+
+public:
+    BoostTelnetConnection(boost::asio::io_service& ios)
+    : BoostTcpConnection(ios)
+    {}
+
+    void ExtractParameters(const string &message, CommandArgument & arg)
+    {
+        auto position = message.find(' ');
+        auto tempPos = 0;
+
+        while (position != string::npos)
+        {
+            arg.Args.push_back(message.substr(tempPos, position - tempPos));
+            tempPos = position + 1;
+            position = message.find(' ', tempPos);
+        }
+
+        // and the last one
+        position = message.find('\r', tempPos);
+        if (position != string::npos)
+        {
+            arg.Args.push_back(message.substr(tempPos, position - tempPos));
+        }
+    }
+
+    bool ExtractCommand(const string& message, string & result, CommandArgument & arg)
+    {
+        auto position = message.find(' ');
+        if (position == string::npos)
+        {
+            position = message.find('\r');
+        }
+
+        if (position == string::npos)
+        {
+            return false;
+        }
+
+        result = message.substr(0, position);
+        this->ExtractParameters(message.substr(position + 1, message.size() - 1), arg);
+        return true;
+    }
+
+    void HandleData() override
+    {
+        auto logger = System::GetLogger();
+
+        auto length = this->_memoryBlock->GetPayloadLength();
+        if (length == 0)
+        {
+            logger->LogError("TelnetConnection: memory block is empty");
+            return;
+        }
+
+        char * payload = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
+        string message(payload, length);
+
+        if (message[0] == '.')
+        {
+            string command = "";
+            commands::CommandExecutionResult result;
+            commands::CommandArgument arg;
+
+            if (!this->ExtractCommand(message, command, arg))
+            {
+                logger->LogError("TelnetConnection: cannot extract command from " + message);
+                return;
+            }
+
+            logger->LogDebug("TelnetConnection: got command " + command);
+
+            // arg.Context = this->_context;
+            string message;
+            if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
+            {
+                logger->LogDebug("TelnetConnection: command execution result: " + result.Result);
+                message = command + ": " + result.Result + "\n";
+            }
+            else
+            {
+                message = command + ": " + result.ErrorMessage + "\n";
+            }
+
+            this->SendData(reinterpret_cast<const void *>(message.c_str()), message.size());
+            return;
+        }
+
+        // send message to others
+        logger->LogDebug("TelnetConnection: sending to other users: " + message.substr(0, message.length() - 1));
+        // for (auto & item : this->_parent->GetConnections())
+        // {
+        //     if (item == shared_from_this())
+        //     {
+        //         continue;
+        //     }
+
+        //     // try 
+        //     // {
+        //     //     item.second->GetStream() << message;
+        //     // }
+        //     // catch (const libsocket::socket_exception &e)
+        //     // {
+        //     //     auto message = "TelnetConnection[" + std::to_string(this->_socketFd) + "]: Sending message to others" + e.mesg;
+        //     //     std::cout << message;
+        //     //     logger->LogError(message);
+        //     // }
+                
+        // }
+    }
 };
 
 int main()
