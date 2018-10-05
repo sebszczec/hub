@@ -96,7 +96,7 @@ private:
     tcp::acceptor _acceptor;
     short _port;
 
-    vector<shared_ptr<CONNECTION_TYPE>> _connections();
+    vector<shared_ptr<CONNECTION_TYPE>> _connections;
 
 public:
     BoostTcpServer(boost::asio::io_service& ios, short port)
@@ -118,6 +118,7 @@ public:
 
         connection->Start();
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios);
+        this->_connections.push_back(connection);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
 
@@ -226,6 +227,20 @@ public:
 
         // send message to others
         logger->LogDebug("TelnetConnection: sending to other users: " + message.substr(0, message.length() - 1));
+        auto & connections = this->_parent->GetConnections();
+
+        for (auto & item : connections)
+        {
+             std::cout << "1" << std::endl;
+        //     if (item == shared_from_this())
+        //     {
+        //         std::cout << "2" << std::endl;
+        //         continue;
+        //     }
+
+        //     //item->SendData(reinterpret_cast<const void *>(message.c_str()), message.size());
+        }
+
         // for (auto & item : this->_parent->GetConnections())
         // {
         //     if (item == shared_from_this())
