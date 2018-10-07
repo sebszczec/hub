@@ -102,7 +102,7 @@ public:
     BoostTcpServer(boost::asio::io_service& ios, short port)
     : _ios(ios), _acceptor(ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
-        auto connection = std::make_shared<CONNECTION_TYPE>(ios);
+        auto connection = std::make_shared<CONNECTION_TYPE>(ios, *this);
         
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
     }
@@ -117,7 +117,7 @@ public:
         }
 
         connection->Start();
-        connection = std::make_shared<CONNECTION_TYPE>(this->_ios);
+        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_connections.push_back(connection);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
@@ -136,11 +136,11 @@ public:
 class BoostTelnetConnection : public BoostTcpConnection
 {
 private:
-    BoostTcpServer<BoostTelnetConnection> * _parent;
+    BoostTcpServer<BoostTelnetConnection> & _parent;
 
 public:
-    BoostTelnetConnection(boost::asio::io_service& ios)
-    : BoostTcpConnection(ios)
+    BoostTelnetConnection(boost::asio::io_service& ios, BoostTcpServer<BoostTelnetConnection> & parent)
+    : BoostTcpConnection(ios), _parent(parent)
     {}
 
     void ExtractParameters(const string &message, CommandArgument & arg)
@@ -227,39 +227,17 @@ public:
 
         // send message to others
         logger->LogDebug("TelnetConnection: sending to other users: " + message.substr(0, message.length() - 1));
-        auto & connections = this->_parent->GetConnections();
+        auto & connections = this->_parent.GetConnections();
 
         for (auto & item : connections)
         {
-             std::cout << "1" << std::endl;
-        //     if (item == shared_from_this())
-        //     {
-        //         std::cout << "2" << std::endl;
-        //         continue;
-        //     }
+            if (item == shared_from_this())
+            {
+                continue;
+            }
 
-        //     //item->SendData(reinterpret_cast<const void *>(message.c_str()), message.size());
+            item->SendData(reinterpret_cast<const void *>(message.c_str()), message.size());
         }
-
-        // for (auto & item : this->_parent->GetConnections())
-        // {
-        //     if (item == shared_from_this())
-        //     {
-        //         continue;
-        //     }
-
-        //     // try 
-        //     // {
-        //     //     item.second->GetStream() << message;
-        //     // }
-        //     // catch (const libsocket::socket_exception &e)
-        //     // {
-        //     //     auto message = "TelnetConnection[" + std::to_string(this->_socketFd) + "]: Sending message to others" + e.mesg;
-        //     //     std::cout << message;
-        //     //     logger->LogError(message);
-        //     // }
-                
-        // }
     }
 };
 
