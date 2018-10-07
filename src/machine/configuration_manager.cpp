@@ -45,8 +45,8 @@ bool CM::LoadResources()
     int isDaemon = this->_configFile.lookup("daemon");
     this->_resources[CMV::IsDaemon] = new BoolResource(isDaemon == 1);
 
-    string telnetPort = this->_configFile.lookup("telnet_port");
-    this->_resources[CMV::TelnetPort] = new StringResource(telnetPort);
+    int telnetPort = this->_configFile.lookup("telnet_port");
+    this->_resources[CMV::TelnetPort] = new IntResource(telnetPort);
 
     string mobilePort = this->_configFile.lookup("mobile_port");
     this->_resources[CMV::MobilePort] = new StringResource(mobilePort);

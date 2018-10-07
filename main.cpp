@@ -60,9 +60,12 @@ public:
 
     void HandleWrite(const boost::system::error_code& err, size_t bytesTransferred)
     {
-        // error handling 
-        (void)err;
         (void)bytesTransferred;
+
+        if (err)
+        {
+             System::GetLogger()->LogError("TcpConnection HandleWrite error: " + err.message());
+        }
     }
 
     virtual void HandleData() = 0;
@@ -71,7 +74,7 @@ public:
     {
         if (err)
         {
-            std::cerr << "err (recv): " << err.message() << std::endl;
+            System::GetLogger()->LogError("TcpConnection HandleRead error: " + err.message());
             machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
             this->_memoryBlock = nullptr;
             return;
@@ -116,14 +119,16 @@ public:
     {
         if (err) 
         {
-            std::cerr << "err: " + err.message() << std::endl;
+            System::GetLogger()->LogError("TcpServer accept error: " + err.message());
+
             connection.reset();
             return;
         }
 
         connection->Start();
-        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_connections.push_back(connection);
+
+        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
 
@@ -147,6 +152,14 @@ public:
     BoostTelnetConnection(boost::asio::io_service& ios, BoostTcpServer<BoostTelnetConnection> & parent)
     : BoostTcpConnection(ios), _parent(parent)
     {}
+
+    void Start()
+    {
+        BoostTcpConnection::Start();
+
+        std::string message = "Welcome\n";
+        this->SendData(message.c_str(), message.size());
+    }
 
     void ExtractParameters(const string &message, CommandArgument & arg)
     {
@@ -267,14 +280,10 @@ int main()
     // });
 
     boost::asio::io_service ios;
-    BoostTcpServer<BoostTelnetConnection> server(ios, 9000);
+    BoostTcpServer<BoostTelnetConnection> server(ios, System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
     
     tools::Worker boostServerWorker(false);
     boostServerWorker.StartAsync([&ios] () {ios.run();});
-
-    TcpServer<TelnetServer> telnetServer(System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToString());
-    tools::Worker telnetWorker(false);
-    telnetWorker.StartAsync([&telnetServer] () { telnetServer.Start(); });
 
     TcpServer<MobileServer> mobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToString());
     tools::Worker mobileWorker(false);
