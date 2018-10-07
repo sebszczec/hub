@@ -1,5 +1,6 @@
 #include "tcp_connection.hpp"
 #include <boost/bind.hpp>
+#include "tcp_connection_storage.hpp"
 
 namespace network
 {
@@ -49,6 +50,9 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
         System::GetLogger()->LogError("TcpConnection HandleRead error: " + err.message());
         machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
         this->_memoryBlock = nullptr;
+        
+        //this->_parent.GetConnections().erase(this);
+        
         return;
     }
 

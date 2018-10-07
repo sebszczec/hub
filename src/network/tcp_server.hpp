@@ -45,6 +45,8 @@ public:
         connection->Start();
         TcpServerConnectionStorage::AddConnection(connection);
 
+        std::cout << TcpServerConnectionStorage::GetConnections().size() << std::endl;
+
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
