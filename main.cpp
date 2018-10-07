@@ -17,18 +17,75 @@ using namespace network;
 using namespace machine;
 
 using boost::asio::ip::tcp;
+
+class BoostTcpConnection;
+
+class BoostTcpServerConnectionStorage
+{
+protected:
+    vector<shared_ptr<BoostTcpConnection>> _connections;
+
+public:
+    const vector<shared_ptr<BoostTcpConnection>> & GetConnections()
+    {
+        return this->_connections;
+    }
+};
+
+template <typename CONNECTION_TYPE>
+class BoostTcpServer : public BoostTcpServerConnectionStorage
+{
+private:
+    boost::asio::io_service& _ios;
+    tcp::acceptor _acceptor;
+    short _port;
+
+public:
+    BoostTcpServer(boost::asio::io_service& ios, short port)
+    : _ios(ios), _acceptor(ios, tcp::endpoint(tcp::v4(), port)), _port(port)
+    {
+        auto connection = std::make_shared<CONNECTION_TYPE>(ios, *this);
+        
+        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
+    }
+
+    void HandleAccept(std::shared_ptr<CONNECTION_TYPE> connection, const boost::system::error_code& err)
+    {
+        if (err) 
+        {
+            System::GetLogger()->LogError("TcpServer accept error: " + err.message());
+
+            connection.reset();
+            return;
+        }
+
+        connection->Start();
+        this->_connections.push_back(connection);
+
+        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
+        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
+    }
+
+    short GetPort()
+    {
+        return this->_port;
+    }
+};
+
 class BoostTcpConnection : public std::enable_shared_from_this<BoostTcpConnection>
 {
 protected:
     Context * _context = nullptr;
     machine::Block * _memoryBlock = nullptr;
     tcp::socket _socket;
+    BoostTcpServerConnectionStorage & _parent;
     
 public:
-    BoostTcpConnection(boost::asio::io_service& ios)
+    BoostTcpConnection(boost::asio::io_service& ios, BoostTcpServerConnectionStorage & parent)
     : _context(machine::System::GetContextManager()->CreateContext()),
       _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
-      _socket(ios) 
+      _socket(ios),
+      _parent(parent)
     {
     }
 
@@ -43,7 +100,7 @@ public:
         }
     }
 
-    void Start()
+    virtual void Start()
     {
         char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
@@ -96,61 +153,21 @@ public:
     }
 };
 
-template <typename CONNECTION_TYPE>
-class BoostTcpServer
+class BoostMobileConnection : public BoostTcpConnection
 {
 private:
-    boost::asio::io_service& _ios;
-    tcp::acceptor _acceptor;
-    short _port;
-
-    vector<shared_ptr<CONNECTION_TYPE>> _connections;
 
 public:
-    BoostTcpServer(boost::asio::io_service& ios, short port)
-    : _ios(ios), _acceptor(ios, tcp::endpoint(tcp::v4(), port)), _port(port)
-    {
-        auto connection = std::make_shared<CONNECTION_TYPE>(ios, *this);
-        
-        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
-    }
 
-    void HandleAccept(std::shared_ptr<CONNECTION_TYPE> connection, const boost::system::error_code& err)
-    {
-        if (err) 
-        {
-            System::GetLogger()->LogError("TcpServer accept error: " + err.message());
-
-            connection.reset();
-            return;
-        }
-
-        connection->Start();
-        this->_connections.push_back(connection);
-
-        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
-        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
-    }
-
-    short GetPort()
-    {
-        return this->_port;
-    }
-
-    const vector<shared_ptr<CONNECTION_TYPE>> & GetConnections()
-    {
-        return this->_connections;
-    }
 };
 
 class BoostTelnetConnection : public BoostTcpConnection
 {
 private:
-    BoostTcpServer<BoostTelnetConnection> & _parent;
 
 public:
-    BoostTelnetConnection(boost::asio::io_service& ios, BoostTcpServer<BoostTelnetConnection> & parent)
-    : BoostTcpConnection(ios), _parent(parent)
+    BoostTelnetConnection(boost::asio::io_service& ios, BoostTcpServerConnectionStorage & parent)
+    : BoostTcpConnection(ios, parent)
     {}
 
     void Start()
