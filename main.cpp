@@ -20,17 +20,22 @@ using boost::asio::ip::tcp;
 class BoostTcpConnection : public std::enable_shared_from_this<BoostTcpConnection>
 {
 protected:
+    Context * _context = nullptr;
     machine::Block * _memoryBlock = nullptr;
     tcp::socket _socket;
     
 public:
     BoostTcpConnection(boost::asio::io_service& ios)
-    : _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), _socket(ios) 
+    : _context(machine::System::GetContextManager()->CreateContext()),
+      _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
+      _socket(ios) 
     {
     }
 
     virtual ~BoostTcpConnection()
     {
+        machine::System::GetContextManager()->DeleteContext(this->_context);
+
         if (this->_memoryBlock)
         {
             machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
@@ -209,7 +214,7 @@ public:
 
             logger->LogDebug("TelnetConnection: got command " + command);
 
-            // arg.Context = this->_context;
+            arg.Context = this->_context;
             string message;
             if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
             {
