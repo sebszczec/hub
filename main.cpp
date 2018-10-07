@@ -22,28 +22,28 @@ class WrongPacketSizeException : public std::exception
 
 };
 
-class BoostTcpConnection;
+class TcpConnection;
 
-class BoostTcpServerConnectionStorage
+class TcpServerConnectionStorage
 {
 private:
-    vector<shared_ptr<BoostTcpConnection>> _connections;
+    vector<shared_ptr<TcpConnection>> _connections;
 
 protected:
-    void AddConnection(shared_ptr<BoostTcpConnection> connection)
+    void AddConnection(shared_ptr<TcpConnection> connection)
     {
         this->_connections.push_back(connection);
     }
 
 public:
-    const vector<shared_ptr<BoostTcpConnection>> & GetConnections()
+    const vector<shared_ptr<TcpConnection>> & GetConnections()
     {
         return this->_connections;
     }
 };
 
 template <typename CONNECTION_TYPE>
-class BoostTcpServer : public BoostTcpServerConnectionStorage
+class TcpServer : public TcpServerConnectionStorage
 {
 private:
     boost::asio::io_service _ios;
@@ -51,12 +51,12 @@ private:
     short _port;
 
 public:
-    BoostTcpServer(short port)
+    TcpServer(short port)
     : _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         
-        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
+        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
     }
 
     void Run()
@@ -75,10 +75,10 @@ public:
         }
 
         connection->Start();
-        BoostTcpServerConnectionStorage::AddConnection(connection);
+        TcpServerConnectionStorage::AddConnection(connection);
 
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
-        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
+        this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
 
     short GetPort()
@@ -87,16 +87,16 @@ public:
     }
 };
 
-class BoostTcpConnection : public std::enable_shared_from_this<BoostTcpConnection>
+class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
 protected:
     Context * _context = nullptr;
     machine::Block * _memoryBlock = nullptr;
     tcp::socket _socket;
-    BoostTcpServerConnectionStorage & _parent;
+    TcpServerConnectionStorage & _parent;
     
 public:
-    BoostTcpConnection(boost::asio::io_service& ios, BoostTcpServerConnectionStorage & parent)
+    TcpConnection(boost::asio::io_service& ios, TcpServerConnectionStorage & parent)
     : _context(machine::System::GetContextManager()->CreateContext()),
       _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
       _socket(ios),
@@ -104,7 +104,7 @@ public:
     {
     }
 
-    virtual ~BoostTcpConnection()
+    virtual ~TcpConnection()
     {
         machine::System::GetContextManager()->DeleteContext(this->_context);
 
@@ -120,13 +120,13 @@ public:
         char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
         this->_socket.async_read_some(boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
-            boost::bind(&BoostTcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
+            boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
         );
     }
 
     void SendData(const void * data, unsigned int size)
     {
-        boost::asio::async_write(this->_socket, boost::asio::buffer(data, size), boost::bind(&BoostTcpConnection::HandleWrite, shared_from_this(), boost::asio::placeholders::error, 
+        boost::asio::async_write(this->_socket, boost::asio::buffer(data, size), boost::bind(&TcpConnection::HandleWrite, shared_from_this(), boost::asio::placeholders::error, 
             boost::asio::placeholders::bytes_transferred));
     }
 
@@ -142,7 +142,7 @@ public:
 
     virtual void HandleData() = 0;
 
-    void HandleRead(std::shared_ptr<BoostTcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred)
+    void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred)
     {
         if (err)
         {
@@ -158,7 +158,7 @@ public:
         char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
         this->_socket.async_read_some(boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
-            boost::bind(&BoostTcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
+            boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
         );
     }
 
@@ -168,13 +168,13 @@ public:
     }
 };
 
-class BoostMobileConnection : public BoostTcpConnection
+class MobileConnection : public TcpConnection
 {
 private:
 
 public:
-    BoostMobileConnection(boost::asio::io_service& ios, BoostTcpServerConnectionStorage & parent)
-    : BoostTcpConnection(ios, parent)
+    MobileConnection(boost::asio::io_service& ios, TcpServerConnectionStorage & parent)
+    : TcpConnection(ios, parent)
     {}
 
     void HandleData()
@@ -205,18 +205,18 @@ public:
     }
 };
 
-class BoostTelnetConnection : public BoostTcpConnection
+class TelnetConnection : public TcpConnection
 {
 private:
 
 public:
-    BoostTelnetConnection(boost::asio::io_service& ios, BoostTcpServerConnectionStorage & parent)
-    : BoostTcpConnection(ios, parent)
+    TelnetConnection(boost::asio::io_service& ios, TcpServerConnectionStorage & parent)
+    : TcpConnection(ios, parent)
     {}
 
     void Start()
     {
-        BoostTcpConnection::Start();
+        TcpConnection::Start();
 
         std::string message = "Welcome\n";
         this->SendData(message.c_str(), message.size());
@@ -340,15 +340,15 @@ int main()
     //     Logger::LogDebug("Keep alive message from timer.");
     // });
 
-    BoostTcpServer<BoostTelnetConnection> boostTelnetServer(System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
+    TcpServer<TelnetConnection> telnetServer(System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
     
-    tools::Worker boostTelnetWorker(false);
-    boostTelnetWorker.StartAsync([&boostTelnetServer] () {boostTelnetServer.Run();});
+    tools::Worker telnetWorker(false);
+    telnetWorker.StartAsync([&telnetServer] () {telnetServer.Run();});
 
-    BoostTcpServer<BoostMobileConnection> boostMobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
+    TcpServer<MobileConnection> mobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
     
-    tools::Worker boostMobileWorker(false);
-    boostMobileWorker.StartAsync([&boostMobileServer] () {boostMobileServer.Run();});
+    tools::Worker mobileWorker(false);
+    mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});
 
     /* The Big Loop */
     auto logger = System::GetLogger();
