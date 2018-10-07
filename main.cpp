@@ -9,6 +9,7 @@
 #include "tcp_server.hpp"
 #include "telnet_server.hpp"
 #include "mobile_server.hpp"
+#include "mobile_messages.hpp"
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/bind.hpp>
@@ -22,8 +23,14 @@ class BoostTcpConnection;
 
 class BoostTcpServerConnectionStorage
 {
-protected:
+private:
     vector<shared_ptr<BoostTcpConnection>> _connections;
+
+protected:
+    void AddConnection(shared_ptr<BoostTcpConnection> connection)
+    {
+        this->_connections.push_back(connection);
+    }
 
 public:
     const vector<shared_ptr<BoostTcpConnection>> & GetConnections()
@@ -60,7 +67,7 @@ public:
         }
 
         connection->Start();
-        this->_connections.push_back(connection);
+        BoostTcpServerConnectionStorage::AddConnection(connection);
 
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
@@ -158,7 +165,36 @@ class BoostMobileConnection : public BoostTcpConnection
 private:
 
 public:
+    BoostMobileConnection(boost::asio::io_service& ios, BoostTcpServerConnectionStorage & parent)
+    : BoostTcpConnection(ios, parent)
+    {}
 
+    void HandleData()
+    {
+        auto logger = machine::System::GetLogger();
+        logger->LogDebug("MobileConnection: Received data block");
+
+        auto packetLength = this->_memoryBlock->GetPayloadLength();
+        if (packetLength != network::NetworkMessageSize)
+        {
+            logger->LogError("MobileConnection: Wrong network packet size: " + std::to_string(packetLength));
+            throw WrongPacketSizeException();
+            return; 
+        }
+
+        auto networkMessage = reinterpret_cast<NetworkMessage *>(this->_memoryBlock->GetPayload());
+
+        switch (networkMessage->ID)
+        {
+            case network::MessageId::HandshakeRequest:
+            logger->Log("MobileConnection: HandshakeRequest received");
+            break;
+
+            default:
+            logger->LogError("MobileConnection: Unknown network message ID: " + std::to_string(networkMessage->ID));
+            break;
+        }
+    }
 };
 
 class BoostTelnetConnection : public BoostTcpConnection
@@ -302,9 +338,11 @@ int main()
     tools::Worker boostServerWorker(false);
     boostServerWorker.StartAsync([&ios] () {ios.run();});
 
-    TcpServer<MobileServer> mobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToString());
-    tools::Worker mobileWorker(false);
-    mobileWorker.StartAsync([&mobileServer] () { mobileServer.Start(); });
+    boost::asio::io_service ios2;
+    BoostTcpServer<BoostMobileConnection> server2(ios2, System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
+    
+    tools::Worker boostServerWorker2(false);
+    boostServerWorker2.StartAsync([&ios2] () {ios2.run();});
 
     /* The Big Loop */
     auto logger = System::GetLogger();

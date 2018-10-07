@@ -48,8 +48,8 @@ bool CM::LoadResources()
     int telnetPort = this->_configFile.lookup("telnet_port");
     this->_resources[CMV::TelnetPort] = new IntResource(telnetPort);
 
-    string mobilePort = this->_configFile.lookup("mobile_port");
-    this->_resources[CMV::MobilePort] = new StringResource(mobilePort);
+    int mobilePort = this->_configFile.lookup("mobile_port");
+    this->_resources[CMV::MobilePort] = new IntResource(mobilePort);
 
     int tcpPooling = this->_configFile.lookup("tcp_pooling");
     this->_resources[CMV::TcpPooling] = new IntResource(tcpPooling);
