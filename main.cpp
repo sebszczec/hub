@@ -3,12 +3,10 @@
 #include <unistd.h>
 #include "system.hpp"
 #include "configuration_manager.hpp"
+#include "icommand.hpp"
 #include "worker.hpp"
 #include "timer.hpp"
 #include "signal_handler.hpp"
-#include "tcp_server.hpp"
-#include "telnet_server.hpp"
-#include "mobile_server.hpp"
 #include "mobile_messages.hpp"
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -18,6 +16,11 @@ using namespace network;
 using namespace machine;
 
 using boost::asio::ip::tcp;
+
+class WrongPacketSizeException : public std::exception
+{
+
+};
 
 class BoostTcpConnection;
 
@@ -43,17 +46,22 @@ template <typename CONNECTION_TYPE>
 class BoostTcpServer : public BoostTcpServerConnectionStorage
 {
 private:
-    boost::asio::io_service& _ios;
+    boost::asio::io_service _ios;
     tcp::acceptor _acceptor;
     short _port;
 
 public:
-    BoostTcpServer(boost::asio::io_service& ios, short port)
-    : _ios(ios), _acceptor(ios, tcp::endpoint(tcp::v4(), port)), _port(port)
+    BoostTcpServer(short port)
+    : _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
-        auto connection = std::make_shared<CONNECTION_TYPE>(ios, *this);
+        auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&BoostTcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
+    }
+
+    void Run()
+    {
+        this->_ios.run();
     }
 
     void HandleAccept(std::shared_ptr<CONNECTION_TYPE> connection, const boost::system::error_code& err)
@@ -214,7 +222,7 @@ public:
         this->SendData(message.c_str(), message.size());
     }
 
-    void ExtractParameters(const string &message, CommandArgument & arg)
+    void ExtractParameters(const string &message, commands::CommandArgument & arg)
     {
         auto position = message.find(' ');
         auto tempPos = 0;
@@ -234,7 +242,7 @@ public:
         }
     }
 
-    bool ExtractCommand(const string& message, string & result, CommandArgument & arg)
+    bool ExtractCommand(const string& message, string & result, commands::CommandArgument & arg)
     {
         auto position = message.find(' ');
         if (position == string::npos)
@@ -332,17 +340,15 @@ int main()
     //     Logger::LogDebug("Keep alive message from timer.");
     // });
 
-    boost::asio::io_service ios;
-    BoostTcpServer<BoostTelnetConnection> server(ios, System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
+    BoostTcpServer<BoostTelnetConnection> boostTelnetServer(System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
     
-    tools::Worker boostServerWorker(false);
-    boostServerWorker.StartAsync([&ios] () {ios.run();});
+    tools::Worker boostTelnetWorker(false);
+    boostTelnetWorker.StartAsync([&boostTelnetServer] () {boostTelnetServer.Run();});
 
-    boost::asio::io_service ios2;
-    BoostTcpServer<BoostMobileConnection> server2(ios2, System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
+    BoostTcpServer<BoostMobileConnection> boostMobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
     
-    tools::Worker boostServerWorker2(false);
-    boostServerWorker2.StartAsync([&ios2] () {ios2.run();});
+    tools::Worker boostMobileWorker(false);
+    boostMobileWorker.StartAsync([&boostMobileServer] () {boostMobileServer.Run();});
 
     /* The Big Loop */
     auto logger = System::GetLogger();

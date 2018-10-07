@@ -8,9 +8,6 @@
 #include "uptime_command.hpp"
 #include "whoami_command.hpp"
 #include "iasync.hpp"
-#include "tcp_server.hpp"
-#include "telnet_server.hpp"
-#include "mobile_server.hpp"
 
 using namespace account;
 using namespace commands;
@@ -104,8 +101,6 @@ void System::Stop()
         _memoryManager = nullptr;
     }
 
-    TcpServer<TelnetServer>::StopAllInstances();
-    TcpServer<MobileServer>::StopAllInstances();
     IAsync::StopActiveJobs();
 
     _logger->ClearResources();

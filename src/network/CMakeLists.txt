@@ -9,6 +9,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src/network)
 include_directories(${CMAKE_SOURCE_DIR}/src/machine)
 
 # sources
-set (SOURCE_FILES connection_manager.cpp context_manager.cpp context.cpp iconnection.cpp mobile_connection.cpp mobile_server.cpp tcp_server.cpp telnet_connection.cpp telnet_server.cpp)
+set (SOURCE_FILES context_manager.cpp context.cpp)
 
 add_library(network ${SOURCE_FILES})

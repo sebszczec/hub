@@ -53,8 +53,6 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub machine commands network tools config++  
-  ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a account database sqlite3)
+TARGET_LINK_LIBRARIES(hub machine commands network tools config++ account database sqlite3)
   
-TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 
-  ${CMAKE_BINARY_DIR}/lib/libsocket++_static.a ${CMAKE_BINARY_DIR}/lib/libsocket_int.a /usr/lib/libgtest.a)
+TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 /usr/lib/libgtest.a)
