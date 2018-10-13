@@ -13,10 +13,11 @@ namespace network
         std::vector<std::shared_ptr<TcpConnection>> _connections;
 
     protected:
-        void AddConnection(std::shared_ptr<TcpConnection> connection);
 
     public:
         const std::vector<std::shared_ptr<TcpConnection>> & GetConnections();
+        void AddConnection(std::shared_ptr<TcpConnection> connection);
+        void RemoveConnection(std::shared_ptr<TcpConnection> connection);
     };
 } // namespave network
 #endif // __TCP_CONNECTION_STORATE_HPP

@@ -1,6 +1,7 @@
 #include "tcp_connection.hpp"
 #include <boost/bind.hpp>
 #include "tcp_connection_storage.hpp"
+#include <iostream>
 
 namespace network
 {
@@ -51,8 +52,9 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
         machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
         this->_memoryBlock = nullptr;
         
-        //this->_parent.GetConnections().erase(this);
-        
+        System::GetLogger()->LogError("TcpConnection disconnected");
+        this->_parent.RemoveConnection(shared_from_this());
+                
         return;
     }
 
