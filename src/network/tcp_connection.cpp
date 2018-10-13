@@ -52,7 +52,7 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
         machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
         this->_memoryBlock = nullptr;
         
-        System::GetLogger()->LogError("TcpConnection disconnected");
+        System::GetLogger()->Log("TcpConnection disconnected");
         this->_parent.RemoveConnection(shared_from_this());
                 
         return;

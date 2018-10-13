@@ -1,5 +1,6 @@
 from lib.test import Test
 from lib.telnet import Telnet
+from time import sleep
 
 # Base class for all telnet tests
 class TelnetTest(Test):
@@ -44,3 +45,5 @@ class TelnetNotReadingTest(TelnetTest):
         Test.run(self)
         message = "MESSAGE"
         self.connection.send(message)
+        self.connection.close()
+        sleep(0.05)
