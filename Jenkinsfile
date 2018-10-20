@@ -26,8 +26,6 @@ pipeline {
         }
         stage('Generate statistics'){
             steps {
-                sh 'find . -name "*.gcda" -print0 | xargs -0 rm -rf'
-                sh 'find . -name "*.gcno" -print0 | xargs -0 rm -rf'
                 sh 'make -f makefile.docker generate_cobertura'
                 sh 'make -f makefile.docker generate_cloc'
             }
