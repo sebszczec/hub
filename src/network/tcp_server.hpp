@@ -19,8 +19,8 @@ private:
     short _port;
 
 public:
-    TcpServer(short port)
-    : _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
+    TcpServer(std::string serverName, short port)
+    : TcpServerConnectionStorage(serverName), _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         

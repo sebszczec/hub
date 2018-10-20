@@ -33,10 +33,11 @@ public:
 
     virtual void Start();
     void SendData(const void * data, unsigned int size);
-    void HandleWrite(const boost::system::error_code& err, size_t bytesTransferred);
+    void HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     virtual void HandleData() = 0;
     void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     tcp::socket& GetSocket();
+    Context & GetContext();
 };
 
 } // namespace network

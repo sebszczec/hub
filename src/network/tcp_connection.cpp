@@ -23,24 +23,35 @@ void TcpConnection::Start()
 {
     char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
-    this->_socket.async_read_some(boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
+    this->_socket.async_read_some(
+        boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
         boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
     );
 }
 
 void TcpConnection::SendData(const void * data, unsigned int size)
 {
-    boost::asio::async_write(this->_socket, boost::asio::buffer(data, size), boost::bind(&TcpConnection::HandleWrite, shared_from_this(), boost::asio::placeholders::error, 
-        boost::asio::placeholders::bytes_transferred));
+    boost::asio::async_write(
+        this->_socket, 
+        boost::asio::buffer(data, size), 
+        boost::bind(&TcpConnection::HandleWrite,
+        this, 
+        shared_from_this(), 
+        boost::asio::placeholders::error, 
+        boost::asio::placeholders::bytes_transferred)
+    );
 }
 
-void TcpConnection::HandleWrite(const boost::system::error_code& err, size_t bytesTransferred)
+void TcpConnection::HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred)
 {
     (void)bytesTransferred;
 
     if (err)
     {
-            System::GetLogger()->LogError("TcpConnection HandleWrite error: " + err.message());
+        auto id = std::to_string(connection->GetContext().GetId());
+        auto prefix = this->_parent.GetLoggingPrefix();
+
+        System::GetLogger()->LogError(prefix + "[" + id +  "]: HandleWrite error: " + err.message());
     }
 }
 
@@ -48,11 +59,13 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
 {
     if (err)
     {
-        System::GetLogger()->LogError("TcpConnection HandleRead error: " + err.message());
+        auto id = std::to_string(connection->GetContext().GetId());
+        auto prefix = this->_parent.GetLoggingPrefix();
+
+        System::GetLogger()->LogError(prefix + "[" + id +  "]: HandleRead error: " + err.message());
         machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
         this->_memoryBlock = nullptr;
         
-        System::GetLogger()->Log("TcpConnection disconnected");
         this->_parent.RemoveConnection(shared_from_this());
                 
         return;
@@ -63,7 +76,8 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
 
     char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
-    this->_socket.async_read_some(boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
+    this->_socket.async_read_some(
+        boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
         boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
     );
 }
@@ -71,6 +85,11 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
 tcp::socket& TcpConnection::GetSocket()
 {
     return this->_socket;
+}
+
+Context & TcpConnection::GetContext()
+{
+    return *this->_context;
 }
 
 } // namespace network

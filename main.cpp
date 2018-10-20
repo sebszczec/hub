@@ -14,6 +14,7 @@
 #include "tcp_server.hpp"
 #include "telnet_connection.hpp"
 #include "mobile_connection.hpp"
+#include "strings.hpp"
 
 using namespace network;
 using namespace machine;
@@ -40,12 +41,12 @@ int main()
     //     Logger::LogDebug("Keep alive message from timer.");
     // });
 
-    TcpServer<TelnetConnection> telnetServer(System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
+    TcpServer<TelnetConnection> telnetServer(::machine::string::telnet, System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
     
     tools::Worker telnetWorker(false);
     telnetWorker.StartAsync([&telnetServer] () {telnetServer.Run();});
 
-    TcpServer<MobileConnection> mobileServer(System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
+    TcpServer<MobileConnection> mobileServer(::machine::string::mobile, System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
     
     tools::Worker mobileWorker(false);
     mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});

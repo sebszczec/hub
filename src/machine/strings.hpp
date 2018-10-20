@@ -27,6 +27,10 @@ namespace machine
         static const std::string daemonMessage7 = "Daemon: disabling standard descriptors SUCCESSED";
         static const std::string daemonMessage8 = "Daemon: staying in foreground";
 
+        static const std::string telnet = "Telnet";
+        static const std::string telnetWelcomeMessage = "Welcome\n";
+        static const std::string mobile = "Mobile";
+
         static const std::string settingsFileName = "";
 
     } // string

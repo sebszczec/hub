@@ -6,6 +6,7 @@
 #include "tcp_connection_storage.hpp"
 #include "system.hpp"
 #include "icommand.hpp"
+#include "strings.hpp"
 
 using namespace commands;
 using namespace network;
@@ -17,6 +18,10 @@ protected:
     TcpServerConnectionStorage parent;
     TelnetConnection * _sut;
 public:
+    TelnetConnectionTest()
+    : parent(machine::string::telnet)
+    {}
+
     void SetUp() override
     {
         this->_sut = new TelnetConnection(ios, parent);

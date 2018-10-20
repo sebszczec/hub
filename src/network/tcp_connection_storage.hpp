@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 #include "tcp_connection.hpp"
 
 namespace network
@@ -10,14 +11,24 @@ namespace network
     class TcpServerConnectionStorage
     {
     private:
+        static unsigned int _instanceIndexGenerator;
+        
         std::vector<std::shared_ptr<TcpConnection>> _connections;
+        std::string _serverName;
+        unsigned int _instanceIndex;        
 
     protected:
 
     public:
+        TcpServerConnectionStorage(std::string serverName)
+        : _serverName(serverName), _instanceIndex(TcpServerConnectionStorage::_instanceIndexGenerator++)
+        {
+        }
+
         const std::vector<std::shared_ptr<TcpConnection>> & GetConnections();
         void AddConnection(std::shared_ptr<TcpConnection> connection);
         void RemoveConnection(std::shared_ptr<TcpConnection> connection);
+        std::string GetLoggingPrefix();
     };
 } // namespave network
 #endif // __TCP_CONNECTION_STORATE_HPP

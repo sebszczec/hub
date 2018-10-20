@@ -1,6 +1,7 @@
 #include "telnet_connection.hpp"
 #include "tcp_connection_storage.hpp"
 #include "system.hpp"
+#include "strings.hpp"
 
 namespace network
 {
@@ -11,16 +12,16 @@ void TelnetConnection::Start()
 {
     TcpConnection::Start();
 
-    std::string message = "Welcome\n";
+    auto message = ::machine::string::telnetWelcomeMessage;
     this->SendData(message.c_str(), message.size());
 }
 
-void TelnetConnection::ExtractParameters(const string &message, commands::CommandArgument & arg)
+void TelnetConnection::ExtractParameters(const std::string & message, commands::CommandArgument & arg)
 {
     auto position = message.find(' ');
     auto tempPos = 0;
 
-    while (position != string::npos)
+    while (position != std::string::npos)
     {
         arg.Args.push_back(message.substr(tempPos, position - tempPos));
         tempPos = position + 1;
@@ -29,21 +30,21 @@ void TelnetConnection::ExtractParameters(const string &message, commands::Comman
 
     // and the last one
     position = message.find('\r', tempPos);
-    if (position != string::npos)
+    if (position != std::string::npos)
     {
         arg.Args.push_back(message.substr(tempPos, position - tempPos));
     }
 }
 
-bool TelnetConnection::ExtractCommand(const string& message, string & result, commands::CommandArgument & arg)
+bool TelnetConnection::ExtractCommand(const std::string & message, std::string & result, commands::CommandArgument & arg)
 {
     auto position = message.find(' ');
-    if (position == string::npos)
+    if (position == std::string::npos)
     {
         position = message.find('\r');
     }
 
-    if (position == string::npos)
+    if (position == std::string::npos)
     {
         return false;
     }
@@ -56,36 +57,38 @@ bool TelnetConnection::ExtractCommand(const string& message, string & result, co
 void TelnetConnection::HandleData()
 {
     auto logger = System::GetLogger();
+    auto id = std::to_string(this->GetContext().GetId());
+    auto prefix = this->_parent.GetLoggingPrefix();
 
     auto length = this->_memoryBlock->GetPayloadLength();
     if (length == 0)
     {
-        logger->LogError("TelnetConnection: memory block is empty");
+        logger->LogError(prefix + "[" + id +  "]: memory block is empty");
         return;
     }
 
     char * payload = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
-    string message(payload, length);
+    std::string message(payload, length);
 
     if (message[0] == '.')
     {
-        string command = "";
+        std::string command = "";
         commands::CommandExecutionResult result;
         commands::CommandArgument arg;
 
         if (!this->ExtractCommand(message, command, arg))
         {
-            logger->LogError("TelnetConnection: cannot extract command from " + message);
+            logger->LogError(prefix + "[" + id +  "]: cannot extract command from " + message);
             return;
         }
 
-        logger->LogDebug("TelnetConnection: got command " + command);
+        logger->LogDebug(prefix + "[" + id +  "]: got command " + command);
 
         arg.Context = this->_context;
-        string message;
+        std::string message;
         if (System::GetCommandManager()->ExecuteCommand(command, arg, result))
         {
-            logger->LogDebug("TelnetConnection: command execution result: " + result.Result);
+            logger->LogDebug(prefix + "[" + id +  "]: command execution result: " + result.Result);
             message = command + ": " + result.Result + "\n";
         }
         else
@@ -98,7 +101,7 @@ void TelnetConnection::HandleData()
     }
 
     // send message to others
-    logger->LogDebug("TelnetConnection: sending to other users: " + message.substr(0, message.length() - 1));
+    logger->LogDebug(prefix + "[" + id +  "]: sending to other users: " + message.substr(0, message.length() - 1));
     auto & connections = this->_parent.GetConnections();
 
     for (auto & item : connections)
