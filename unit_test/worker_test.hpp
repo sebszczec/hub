@@ -29,7 +29,7 @@ TEST_F(WorkerTest, RunInBackgroundLooped)
     EXPECT_TRUE(true);
 }
 
-TEST_F(WorkerTest, RunInBackgroundMany)
+TEST_F(WorkerTest, DISABLED_RunInBackgroundMany)
 {
     tools::Worker worker1(true);
     worker1.StartAsync([]() {});

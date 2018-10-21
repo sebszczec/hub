@@ -33,7 +33,7 @@ TEST_F(TimerTest, RunInBackgroundLooped)
     EXPECT_TRUE(true);
 }
 
-TEST_F(TimerTest, RunInBackgroundMany)
+TEST_F(TimerTest, DISABLED_RunInBackgroundMany)
 {
     auto delay = tools::IAsync::DelayMS(1);
 
