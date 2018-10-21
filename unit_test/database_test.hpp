@@ -23,6 +23,25 @@ public:
     }
 };
 
+TEST_F(DatabaseTest, SqlStatementException)
+{
+    std::string message = "foobar";
+    database::SqlStatementException ex(message);
+
+    auto what = ex.what();
+
+    EXPECT_STREQ(message.c_str(), what);
+}
+
+TEST_F(DatabaseTest, SqlFetchRowErrorException)
+{
+    std::string message = "foobar";
+    database::SqlFetchRowErrorException ex(message);
+
+    auto what = ex.what();
+
+    EXPECT_STREQ(message.c_str(), what);
+}
 
 TEST_F(DatabaseTest, GetTableNoConnection)
 {

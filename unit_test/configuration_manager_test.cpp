@@ -1,0 +1,1 @@
+#include "configuration_manager_test.hpp"
