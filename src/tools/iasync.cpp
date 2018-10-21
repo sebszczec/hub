@@ -19,10 +19,6 @@ void IAsync::StopActiveJobs()
     for (auto & pair : IAsync::_activeJobs)
     {
         auto & element = pair.second;
-        if(!element->_isLooped)
-        {
-            continue;
-        }
 
         element->Stop();
         if (element->_delay > maxDelay)

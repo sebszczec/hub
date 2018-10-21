@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <map>
+#include <functional>
 
 using namespace std;
 
@@ -19,6 +20,9 @@ public:
 protected:
     static int _idGenerator;
     static map <int, IAsync *> _activeJobs;
+
+    std::function<void(void)> _callback;
+    bool _callbackRegistered = false;
 
     int _id = 0;
     bool _isLooped = false;
@@ -58,6 +62,17 @@ public:
     void Stop()
     {
         this->_isLooped = false;
+
+        if (this->_callbackRegistered)
+        {
+            this->_callback();
+        }
+    }
+
+    void OnExitCallback(std::function<void(void)> callback)
+    {
+        this->_callback = callback;
+        this->_callbackRegistered = true;
     }
 };
 

@@ -29,13 +29,13 @@ public:
 
     void Run()
     {
-        System::GetLogger()->LogError(this->GetLoggingPrefix() + ": started");
+        System::GetLogger()->Log(this->GetLoggingPrefix() + ": started");
         this->_ios.run();
     }
 
     void Stop()
     {
-        System::GetLogger()->LogError(this->GetLoggingPrefix() + ": stopped");
+        System::GetLogger()->Log(this->GetLoggingPrefix() + ": stopped");
         _ios.post(boost::bind(&TcpServer::HandleStop, this));
     }
 
@@ -47,7 +47,8 @@ public:
 private:
     void HandleStop()
     {
-        this->_acceptor.stop();
+        this->_acceptor.cancel();
+        this->_acceptor.close();
 
         auto & connections = TcpConnectionStorage::GetConnections();
         for (auto connection : connections)
