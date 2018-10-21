@@ -81,6 +81,9 @@ TEST_F(ConfigurationManagerTest, BoolResourceExceptionInt)
     machine::BoolResource sut(value);
 
     EXPECT_THROW(sut.ToInt(), machine::WrongTypeException);
+
+    int *a = new int();
+    (void)a;
 }
 
 #endif // __CONFIGURATION_MANAGER_TEST_HPP
