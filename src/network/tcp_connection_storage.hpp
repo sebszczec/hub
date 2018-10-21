@@ -28,6 +28,7 @@ namespace network
         const std::vector<std::shared_ptr<TcpConnection>> & GetConnections();
         void AddConnection(std::shared_ptr<TcpConnection> connection);
         void RemoveConnection(std::shared_ptr<TcpConnection> connection);
+        void ClearConnections();
         std::string GetLoggingPrefix();
     };
 } // namespave network

@@ -29,6 +29,11 @@ void TcpConnection::Start()
     );
 }
 
+void TcpConnection::Stop()
+{
+    this->_socket.close();
+}
+
 void TcpConnection::SendData(const void * data, unsigned int size)
 {
     boost::asio::async_write(
@@ -66,6 +71,7 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
         machine::System::GetMemoryManager()->DeleteBlock(this->_memoryBlock);
         this->_memoryBlock = nullptr;
         
+        this->Stop();
         this->_parent.RemoveConnection(shared_from_this());
                 
         return;

@@ -35,6 +35,7 @@ public:
     virtual ~TcpConnection();
 
     virtual void Start();
+    virtual void Stop();
     void SendData(const void * data, unsigned int size);
     
     virtual void HandleData() = 0;

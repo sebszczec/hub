@@ -40,4 +40,9 @@ std::string TcpConnectionStorage::GetLoggingPrefix()
     return "Server<" + this->_serverName + ">[" + std::to_string(this->_instanceIndex) + "]";
 }
 
+void TcpConnectionStorage::ClearConnections()
+{
+    this->_connections.clear();
+}
+
 } // namespace network
