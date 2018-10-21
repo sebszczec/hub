@@ -27,3 +27,5 @@ run_ft:
 run_interactive:
 	docker run -P -v "${WORKSPACE}:/root/repo" -t -i ci_hub /bin/bash
 
+clean:
+	docker system prune -a

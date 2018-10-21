@@ -1,8 +1,11 @@
 FROM ubuntu:latest
 
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apt-get -y update
 RUN apt-get -y install git cmake g++ libconfig++-dev mc libgtest-dev python valgrind vim expect telnet python-pip screen inetutils-ping
-RUN apt-get -y install sqlite3 libsqlite3-dev cloc sloccount xsltproc dos2unix netcat iperf
+RUN apt-get -y install sqlite3 libsqlite3-dev cloc sloccount xsltproc dos2unix netcat iperf libssl-dev
 
 RUN pip install --upgrade pip
 RUN pip install junit_xml
@@ -16,6 +19,8 @@ RUN cmake . && \
     make && \
     cp libgtest.a /usr/lib/libgtest.a && \
     cp libgtest_main.a /usr/lib/libgtest_main.a
+
+ENV WORKSPACE=/root/repo
 
 WORKDIR /root
 
