@@ -8,7 +8,7 @@
 
 namespace network
 {
-    class TcpServerConnectionStorage
+    class TcpConnectionStorage
     {
     private:
         static unsigned int _instanceIndexGenerator;
@@ -20,8 +20,8 @@ namespace network
     protected:
 
     public:
-        TcpServerConnectionStorage(std::string serverName)
-        : _serverName(serverName), _instanceIndex(TcpServerConnectionStorage::_instanceIndexGenerator++)
+        TcpConnectionStorage(std::string serverName)
+        : _serverName(serverName), _instanceIndex(TcpConnectionStorage::_instanceIndexGenerator++)
         {
         }
 

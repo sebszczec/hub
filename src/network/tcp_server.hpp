@@ -11,7 +11,7 @@ namespace network
 using namespace machine;
 
 template <typename CONNECTION_TYPE>
-class TcpServer : public TcpServerConnectionStorage
+class TcpServer : public TcpConnectionStorage
 {
 private:
     boost::asio::io_service _ios;
@@ -20,7 +20,7 @@ private:
 
 public:
     TcpServer(std::string serverName, short port)
-    : TcpServerConnectionStorage(serverName), _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
+    : TcpConnectionStorage(serverName), _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         
@@ -43,7 +43,7 @@ public:
         }
 
         connection->Start();
-        TcpServerConnectionStorage::AddConnection(connection);
+        TcpConnectionStorage::AddConnection(connection);
 
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       

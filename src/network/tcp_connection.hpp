@@ -10,7 +10,7 @@ namespace network
 
 using boost::asio::ip::tcp;
 
-class TcpServerConnectionStorage;
+class TcpConnectionStorage;
 
 class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
@@ -18,10 +18,13 @@ protected:
     Context * _context = nullptr;
     machine::Block * _memoryBlock = nullptr;
     tcp::socket _socket;
-    TcpServerConnectionStorage & _parent;
+    TcpConnectionStorage & _parent;
+
+    void HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
+    void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     
 public:
-    TcpConnection(boost::asio::io_service& ios, TcpServerConnectionStorage & parent)
+    TcpConnection(boost::asio::io_service& ios, TcpConnectionStorage & parent)
     : _context(machine::System::GetContextManager()->CreateContext()),
       _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
       _socket(ios),
@@ -33,9 +36,9 @@ public:
 
     virtual void Start();
     void SendData(const void * data, unsigned int size);
-    void HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
+    
     virtual void HandleData() = 0;
-    void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
+    
     tcp::socket& GetSocket();
     Context & GetContext();
 };

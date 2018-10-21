@@ -12,6 +12,7 @@
 #include "ls_command_test.hpp"
 #include "memory_manager_test.hpp"
 #include "system_test.hpp"
+#include "tcp_connection_storage_test.hpp"
 #include "telnet_connection_test.hpp"
 #include "uptime_command_test.hpp"
 #include "user_test.hpp"

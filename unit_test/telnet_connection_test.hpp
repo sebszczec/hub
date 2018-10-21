@@ -15,7 +15,7 @@ class TelnetConnectionTest : public testing::Test
 {
 protected:
     boost::asio::io_service ios;
-    TcpServerConnectionStorage parent;
+    TcpConnectionStorage parent;
     TelnetConnection * _sut;
 public:
     TelnetConnectionTest()
@@ -32,6 +32,18 @@ public:
         delete this->_sut;
     }
 };
+
+TEST_F(TelnetConnectionTest, GetContext)
+{
+    auto context = _sut->GetContext();
+    EXPECT_NE((unsigned int)-1, context.GetId());
+}
+
+TEST_F(TelnetConnectionTest, GetSocket)
+{
+    auto & context = _sut->GetSocket();
+    (void)context;
+}
 
 TEST_F(TelnetConnectionTest, ExtractNoCommand)
 {

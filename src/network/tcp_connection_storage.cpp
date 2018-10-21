@@ -7,16 +7,16 @@ namespace network
 {
 using namespace std;
 
-unsigned int TcpServerConnectionStorage::_instanceIndexGenerator = 0;
+unsigned int TcpConnectionStorage::_instanceIndexGenerator = 0;
 
-void TcpServerConnectionStorage::AddConnection(shared_ptr<TcpConnection> connection)
+void TcpConnectionStorage::AddConnection(shared_ptr<TcpConnection> connection)
 {
     auto id = std::to_string(connection->GetContext().GetId());
     System::GetLogger()->Log(this->GetLoggingPrefix() + "[" + id + "]: TcpConnection connected");
     this->_connections.push_back(connection);
 }
 
-void TcpServerConnectionStorage::RemoveConnection(std::shared_ptr<TcpConnection> connection)
+void TcpConnectionStorage::RemoveConnection(std::shared_ptr<TcpConnection> connection)
 {
     auto id = std::to_string(connection->GetContext().GetId());
     auto position = std::find(this->_connections.begin(), this->_connections.end(), connection);
@@ -30,12 +30,12 @@ void TcpServerConnectionStorage::RemoveConnection(std::shared_ptr<TcpConnection>
     System::GetLogger()->LogError(this->GetLoggingPrefix() + "[" + id + "]: TcpConnection disconnect error, connection does not exist");
 }
 
-const vector<shared_ptr<TcpConnection>> & TcpServerConnectionStorage::GetConnections()
+const vector<shared_ptr<TcpConnection>> & TcpConnectionStorage::GetConnections()
 {
     return this->_connections;
 }
 
-std::string TcpServerConnectionStorage::GetLoggingPrefix()
+std::string TcpConnectionStorage::GetLoggingPrefix()
 {
     return "Server<" + this->_serverName + ">[" + std::to_string(this->_instanceIndex) + "]";
 }

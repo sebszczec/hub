@@ -15,7 +15,7 @@ class MobileConnection : public TcpConnection
 private:
 
 public:
-    MobileConnection(boost::asio::io_service& ios, TcpServerConnectionStorage & parent)
+    MobileConnection(boost::asio::io_service& ios, TcpConnectionStorage & parent)
     : TcpConnection(ios, parent)
     {}
 
