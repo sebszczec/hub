@@ -37,6 +37,11 @@ TEST_F(MemoryManagerTest, Allocate)
     auto block2 = _sut->GetFreeBlock();
     EXPECT_EQ(2, _sut->GetAllocatedBlocks());
 
+    auto payload1 = block1->GetPayload();
+    auto payload2 = block2->GetPayload();
+    (void)payload1;
+    (void)payload2;
+
     _sut->DeleteBlock(block1->GetDescriptor());
     EXPECT_EQ(1, _sut->GetAllocatedBlocks());
 
@@ -55,7 +60,9 @@ TEST_F(MemoryManagerTest, AllocateStressTest)
     }
     EXPECT_EQ(bufferSize, _sut->GetAllocatedBlocks());
 
-        for (unsigned int i = 0; i < bufferSize; i++)
+    _sut->DumpMemory();
+
+    for (unsigned int i = 0; i < bufferSize; i++)
     {
         _sut->DeleteBlock(blocks[i]->GetDescriptor());
     }

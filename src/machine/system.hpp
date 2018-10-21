@@ -103,6 +103,7 @@ public:
 
         if (_logger != nullptr)
         {
+            _logger->ClearResources();
             delete _logger;
             _logger = nullptr;
         }

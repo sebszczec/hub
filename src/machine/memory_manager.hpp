@@ -4,6 +4,7 @@
 #include <map>
 #include <mutex>
 #include <stack>
+#include <cstring>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ public:
     : _descriptor(descriptor), _size(size)
     {
         this->_buffer = new char[size];
+        memset(this->_buffer, 0, size);
     }
 
     virtual ~Block()
