@@ -52,10 +52,10 @@ int main()
     tools::Worker mobileWorker(false);
     mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});
 
-    TcpSSLServer<TelnetConnection> telnetSSLServer("SSL", 5555);
+    // TcpSSLServer<TelnetConnection> telnetSSLServer("SSL", 5555);
     
-    tools::Worker telnetSSLWorker(false);
-    telnetSSLWorker.StartAsync([&telnetSSLServer] () {telnetSSLServer.Run();});
+    // tools::Worker telnetSSLWorker(false);
+    // telnetSSLWorker.StartAsync([&telnetSSLServer] () {telnetSSLServer.Run();});
 
     /* The Big Loop */
     auto logger = System::GetLogger();
