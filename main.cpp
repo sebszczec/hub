@@ -42,12 +42,18 @@ int main()
     //     Logger::LogDebug("Keep alive message from timer.");
     // });
 
-    TcpServer<TelnetConnection> telnetServer(::machine::string::telnet, System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt());
+    TcpServer<TelnetConnection> telnetServer(
+        ::machine::string::telnet, 
+        System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt(),
+        false);
     
     tools::Worker telnetWorker(false);
     telnetWorker.StartAsync([&telnetServer] () {telnetServer.Run();});
 
-    TcpServer<MobileConnection> mobileServer(::machine::string::mobile, System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt());
+    TcpServer<MobileConnection> mobileServer(
+        ::machine::string::mobile, 
+        System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt(),
+        false);
     
     tools::Worker mobileWorker(false);
     mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});

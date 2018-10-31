@@ -19,22 +19,27 @@ private:
     tcp::acceptor _acceptor;
     short _port;
     boost::asio::ssl::context _context;
+    bool _ssl;
 
 public:
-    TcpServer(std::string serverName, short port)
+    TcpServer(std::string serverName, short port, bool ssl)
     : TcpConnectionStorage(serverName), _ios(), 
     _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), 
     _port(port),
-    _context(boost::asio::ssl::context::sslv23)
+    _context(boost::asio::ssl::context::sslv23),
+    _ssl(ssl)
     {
-        this->_context.set_options(
-            boost::asio::ssl::context::default_workarounds
-            | boost::asio::ssl::context::no_sslv2
-            | boost::asio::ssl::context::single_dh_use);
-        this->_context.set_password_callback(boost::bind(&TcpServer::GetPassword, this));
-        this->_context.use_certificate_chain_file("server.crt");
-        this->_context.use_private_key_file("server.key", boost::asio::ssl::context::pem);
-        this->_context.use_tmp_dh_file("dh512.pem");
+        if (this->_ssl)
+        {
+            this->_context.set_options(
+                boost::asio::ssl::context::default_workarounds
+                | boost::asio::ssl::context::no_sslv2
+                | boost::asio::ssl::context::single_dh_use);
+            this->_context.set_password_callback(boost::bind(&TcpServer::GetPassword, this));
+            this->_context.use_certificate_chain_file("server.crt");
+            this->_context.use_private_key_file("server.key", boost::asio::ssl::context::pem);
+            this->_context.use_tmp_dh_file("dh512.pem");
+        }
 
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);        
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
