@@ -105,9 +105,9 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
     );
 }
 
-tcp::socket & TcpConnection::GetSocket()
+boost::asio::ip::tcp::socket::lowest_layer_type & TcpConnection::GetSocket()
 {
-    return this->_socket.GetTcpSocket();
+    return this->_socket.GetLowestLayerSocket();
 }
 
 Context & TcpConnection::GetContext()

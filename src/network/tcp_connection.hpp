@@ -27,6 +27,16 @@ public:
     _sslSocket(ios, context)
     {}
 
+    boost::asio::ip::tcp::socket::lowest_layer_type & GetLowestLayerSocket()
+    {
+        if (this->IsSSL())
+        {
+            return this->_sslSocket.lowest_layer();
+        }
+
+        return this->_socket.lowest_layer();
+    }
+
     tcp::socket & GetTcpSocket()
     {
         return this->_socket;
@@ -68,7 +78,7 @@ public:
     void SendData(const void * data, unsigned int size);
     
     virtual void HandleData() = 0;
-    tcp::socket & GetSocket();
+    boost::asio::ip::tcp::socket::lowest_layer_type & GetSocket();
     Context & GetContext();
 };
 
