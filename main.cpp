@@ -12,7 +12,6 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/bind.hpp>
 #include "tcp_server.hpp"
-#include "tcp_ssl_server.hpp"
 #include "telnet_connection.hpp"
 #include "mobile_connection.hpp"
 #include "strings.hpp"
@@ -58,17 +57,21 @@ int main()
     tools::Worker mobileWorker(false);
     mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});
 
-    // TcpSSLServer<TelnetConnection> telnetSSLServer("SSL", 5555);
+    TcpServer<TelnetConnection> telnetServerSSL(
+        ::machine::string::telnet, 
+        5555,
+        true);
     
-    // tools::Worker telnetSSLWorker(false);
-    // telnetSSLWorker.StartAsync([&telnetSSLServer] () {telnetSSLServer.Run();});
+    tools::Worker telnetWorkerSSL(false);
+    telnetWorkerSSL.StartAsync([&telnetServerSSL] () {telnetServerSSL.Run();});
 
     /* The Big Loop */
     auto logger = System::GetLogger();
     while (true) 
     {
-        /* Do some task here ... */  
-        logger->LogDebug("Standard loop");  
+        /* Do some task here ... */
+        (void)logger;  
+        //logger->LogDebug("Standard loop");  
         sleep(1); /* wait 1 second */
     }
 
