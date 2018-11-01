@@ -5,6 +5,7 @@
 #include <boost/asio/ssl.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "system.hpp"
+#include <iostream>
 
 namespace network
 {
@@ -22,7 +23,7 @@ private:
     bool _ssl = false;
 
 public:
-    TcpSocket(boost::asio::io_service& ios, boost::asio::ssl::context& context)
+    TcpSocket(boost::asio::io_context& ios, boost::asio::ssl::context& context)
     : _socket(ios),
     _sslSocket(ios, context)
     {}
@@ -68,10 +69,9 @@ protected:
 
     void HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
-    void HandleHandShake(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& error);
     
 public:
-    TcpConnection(boost::asio::io_service& ios, TcpBase & parent, boost::asio::ssl::context & sslContext);
+    TcpConnection(boost::asio::io_context& ios, TcpBase & parent, boost::asio::ssl::context & sslContext);
     virtual ~TcpConnection();
 
     virtual void Start();

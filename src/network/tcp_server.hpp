@@ -15,7 +15,7 @@ template <typename CONNECTION_TYPE>
 class TcpServer : public TcpBase
 {
 private:
-    boost::asio::io_service _ios;
+    boost::asio::io_context _ios;
     tcp::acceptor _acceptor;
     short _port;
     boost::asio::ssl::context _context;
@@ -92,8 +92,8 @@ private:
             return;
         }
 
-        connection->Start();
         TcpBase::AddConnection(connection);
+        connection->Start();
 
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this, this->_context);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       

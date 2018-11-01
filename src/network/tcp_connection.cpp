@@ -8,7 +8,7 @@ namespace network
 
 using namespace machine;
 
-TcpConnection::TcpConnection(boost::asio::io_service& ios, TcpBase & parent, boost::asio::ssl::context & sslContext)
+TcpConnection::TcpConnection(boost::asio::io_context& ios, TcpBase & parent, boost::asio::ssl::context & sslContext)
 : _context(machine::System::GetContextManager()->CreateContext()),
     _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
     _socket(ios, sslContext),
@@ -33,20 +33,37 @@ TcpConnection::~TcpConnection()
 
 void TcpConnection::Start()
 {
+    char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
+
     if (this->_parent.IsSSL())
     {
-        this->_socket.GetSSLSocket().async_handshake(boost::asio::ssl::stream_base::server,
-            boost::bind(&TcpConnection::HandleHandShake, 
-            this,
-            shared_from_this(),
-            boost::asio::placeholders::error));
+
+        // blocking handshake. i.e. stopping telnet from broadcasting
+        try
+        {
+            this->_socket.GetSSLSocket().handshake(boost::asio::ssl::stream_base::server);
+        }
+        catch (boost::system::system_error & error)
+        {
+            auto id = std::to_string(this->GetContext().GetId());
+            auto prefix = this->_parent.GetLoggingPrefix();
+
+            System::GetLogger()->LogError(prefix + "[" + id +  "]: HandleHandShake error: " + error.what());
+            this->Stop();
+            this->_parent.RemoveConnection(shared_from_this());
+
+            return;
+        }
+
+        this->_socket.GetSSLSocket().async_read_some(
+            boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
+            boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
+        );
 
         return;
     }
 
     // standard non-SSL connection handling
-    char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
-
     this->_socket.GetTcpSocket().async_read_some(
         boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
         boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
@@ -60,33 +77,6 @@ void TcpConnection::Stop()
         //this->_socket.GetSSLSocket().shutdown();    
     }
     this->_socket.GetLowestLayerSocket().close();
-}
-
-// SSL only related method
-void TcpConnection::HandleHandShake(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& error)
-{
-    if (error)
-    {
-        auto id = std::to_string(connection->GetContext().GetId());
-        auto prefix = this->_parent.GetLoggingPrefix();
-
-        System::GetLogger()->LogError(prefix + "[" + id +  "]: HandleHandShake error: " + error.message());
-        this->Stop();
-        this->_parent.RemoveConnection(shared_from_this());
-
-        return;
-    }
-
-    char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
-    this->_socket.GetSSLSocket().async_read_some(
-        boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
-        boost::bind(&TcpConnection::HandleRead, 
-            this,
-            shared_from_this(),
-            boost::asio::placeholders::error,
-            boost::asio::placeholders::bytes_transferred
-        )
-    );
 }
 
 void TcpConnection::SendData(const void * data, unsigned int size)
