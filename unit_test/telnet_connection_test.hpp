@@ -122,4 +122,56 @@ TEST_F(TelnetConnectionTest, CommandWithParameters)
     EXPECT_STREQ(string("parameter2").c_str(), arg.Args[1].c_str());
 }
 
+TEST_F(TelnetConnectionTest, CommandWithCarriageReturn)
+{
+    // 0xd - carriage
+    char hexTable1[] = { 0x2e, 0x6c, 0x73, 0xd, 0xa };
+    string message(hexTable1);
+    string command = "";
+    CommandArgument arg;
+
+    EXPECT_TRUE(_sut->ExtractCommand(message, command, arg));
+    EXPECT_STREQ(string(".ls").c_str(), command.c_str());
+}
+
+// issue found when SSL enabled -> no carriage but only new line is present
+TEST_F(TelnetConnectionTest, CommandWithoutCarriageReturn)
+{
+    // 0xd - carriage
+    char hexTable1[] = { 0x2e, 0x6c, 0x73, 0xa };
+    string message(hexTable1);
+    string command = "";
+    CommandArgument arg;
+
+    EXPECT_TRUE(_sut->ExtractCommand(message, command, arg));
+    EXPECT_STREQ(string(".ls").c_str(), command.c_str());
+}
+
+TEST_F(TelnetConnectionTest, ParamenterWithCarriageReturn)
+{
+    // 0xd - carriage
+    char hexTable1[] = { 0x2e, 0x6c, 0x73, 0xd, 0xa };
+    string message(hexTable1);
+    string command = "";
+    CommandArgument arg;
+
+    _sut->ExtractParameters(message, arg);
+    ASSERT_EQ(1, arg.Args.size());
+    EXPECT_STREQ(string(".ls").c_str(), arg.Args[0].c_str());
+}
+
+// issue found when SSL enabled -> no carriage but only new line is present
+TEST_F(TelnetConnectionTest, ParameterWithoutCarriageReturn)
+{
+    // 0xd - carriage
+    char hexTable1[] = { 0x2e, 0x6c, 0x73, 0xa };
+    string message(hexTable1);
+    string command = "";
+    CommandArgument arg;
+
+    _sut->ExtractParameters(message, arg);
+    ASSERT_EQ(1, arg.Args.size());
+    EXPECT_STREQ(string(".ls").c_str(), arg.Args[0].c_str());
+}
+
 #endif

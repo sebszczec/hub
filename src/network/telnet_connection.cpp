@@ -18,6 +18,7 @@ void TelnetConnection::Start()
 
 void TelnetConnection::ExtractParameters(const std::string & message, commands::CommandArgument & arg)
 {
+
     auto position = message.find(' ');
     auto tempPos = 0;
 
@@ -30,6 +31,13 @@ void TelnetConnection::ExtractParameters(const std::string & message, commands::
 
     // and the last one
     position = message.find('\r', tempPos);
+
+    // issue found when SSL enabled -> no carriage but only new line is present
+    if (position == std::string::npos)
+    {
+        position = message.find('\n', tempPos);
+    }
+    
     if (position != std::string::npos)
     {
         arg.Args.push_back(message.substr(tempPos, position - tempPos));
@@ -42,6 +50,12 @@ bool TelnetConnection::ExtractCommand(const std::string & message, std::string &
     if (position == std::string::npos)
     {
         position = message.find('\r');
+    }
+
+    // issue found when SSL enabled -> no carriage but only new line is present
+    if (position == std::string::npos)
+    {
+        position = message.find('\n');
     }
 
     if (position == std::string::npos)
