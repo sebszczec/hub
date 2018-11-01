@@ -33,12 +33,19 @@ TcpConnection::~TcpConnection()
 
 void TcpConnection::Start()
 {
-    char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
-
     if (this->_parent.IsSSL())
     {
+        this->_socket.GetSSLSocket().async_handshake(boost::asio::ssl::stream_base::server,
+            boost::bind(&TcpConnection::HandleHandShake, 
+            this,
+            shared_from_this(),
+            boost::asio::placeholders::error));
 
+        return;
     }
+
+    // standard non-SSL connection handling
+    char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
     this->_socket.GetTcpSocket().async_read_some(
         boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
@@ -48,11 +55,58 @@ void TcpConnection::Start()
 
 void TcpConnection::Stop()
 {
-    this->_socket.GetTcpSocket().close();
+    if (this->_socket.IsSSL())
+    {
+        //this->_socket.GetSSLSocket().shutdown();    
+    }
+    this->_socket.GetLowestLayerSocket().close();
+}
+
+// SSL only related method
+void TcpConnection::HandleHandShake(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& error)
+{
+    if (error)
+    {
+        auto id = std::to_string(connection->GetContext().GetId());
+        auto prefix = this->_parent.GetLoggingPrefix();
+
+        System::GetLogger()->LogError(prefix + "[" + id +  "]: HandleHandShake error: " + error.message());
+        this->Stop();
+        this->_parent.RemoveConnection(shared_from_this());
+
+        return;
+    }
+
+    char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
+    this->_socket.GetSSLSocket().async_read_some(
+        boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
+        boost::bind(&TcpConnection::HandleRead, 
+            this,
+            shared_from_this(),
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred
+        )
+    );
 }
 
 void TcpConnection::SendData(const void * data, unsigned int size)
 {
+    if (this->_socket.IsSSL())
+    {
+        boost::asio::async_write(
+            this->_socket.GetSSLSocket(), 
+            boost::asio::buffer(data, size), 
+            boost::bind(&TcpConnection::HandleWrite,
+                this, 
+                shared_from_this(), 
+                boost::asio::placeholders::error, 
+                boost::asio::placeholders::bytes_transferred)
+        );
+
+        return;
+    }
+
+    // standard non-SSL connection handling
     boost::asio::async_write(
         this->_socket.GetTcpSocket(), 
         boost::asio::buffer(data, size), 
@@ -99,6 +153,17 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
 
     char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
+    if (this->_socket.IsSSL())
+    {
+        this->_socket.GetSSLSocket().async_read_some(
+            boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
+            boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
+        );
+
+        return;
+    }
+
+    // standard non-SSL connection handling
     this->_socket.GetTcpSocket().async_read_some(
         boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
         boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)

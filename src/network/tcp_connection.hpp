@@ -68,6 +68,7 @@ protected:
 
     void HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
+    void HandleHandShake(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& error);
     
 public:
     TcpConnection(boost::asio::io_service& ios, TcpBase & parent, boost::asio::ssl::context & sslContext);
