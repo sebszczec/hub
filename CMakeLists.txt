@@ -55,9 +55,14 @@ add_executable(ut test.cpp)
 # ssl_client app
 add_executable(ssl_client ssl_client.cpp)
 
+# ssl_server app
+add_executable(ssl_server ssl_server.cpp)
+
 # linking
 TARGET_LINK_LIBRARIES(hub machine commands network tools config++ account database sqlite3 crypto ssl)
   
 TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 /usr/lib/libgtest.a crypto ssl)
 
 TARGET_LINK_LIBRARIES(ssl_client crypto ssl)
+
+TARGET_LINK_LIBRARIES(ssl_server crypto ssl)
