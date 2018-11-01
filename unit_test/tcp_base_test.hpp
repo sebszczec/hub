@@ -2,22 +2,22 @@
 #define __TCP_CONNECTION_STORAGE_TEST_HPP
 
 #include <gtest/gtest.h>
-#include "tcp_connection_storage.hpp"
+#include "tcp_base.hpp"
 #include "telnet_connection.hpp"
 #include "strings.hpp"
 
 using namespace commands;
 using namespace network;
 
-class TcpConnectionStorageTest : public testing::Test
+class TcpBaseTest : public testing::Test
 {
 protected:
-    TcpConnectionStorage * _sut;
+    TcpBase * _sut;
 public:
 
     void SetUp() override
     {
-        this->_sut = new TcpConnectionStorage(machine::string::telnet);
+        this->_sut = new TcpBase(machine::string::telnet);
     }
 
     void TearDown() override
@@ -26,12 +26,12 @@ public:
     }
 };
 
-TEST_F(TcpConnectionStorageTest, NoConnectionsAtStart)
+TEST_F(TcpBaseTest, NoConnectionsAtStart)
 {
     EXPECT_EQ(0, _sut->GetConnections().size());
 }   
 
-TEST_F(TcpConnectionStorageTest, AddConnection)
+TEST_F(TcpBaseTest, AddConnection)
 {
     EXPECT_EQ(0, _sut->GetConnections().size());
 
@@ -44,7 +44,7 @@ TEST_F(TcpConnectionStorageTest, AddConnection)
     EXPECT_EQ(1, _sut->GetConnections().size());
 }  
 
-TEST_F(TcpConnectionStorageTest, RemoveConnection)
+TEST_F(TcpBaseTest, RemoveConnection)
 {
     boost::asio::io_service ios;
     auto pointer = std::make_shared<TelnetConnection>(ios, *_sut);

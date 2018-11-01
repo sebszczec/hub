@@ -14,7 +14,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/tools)
 # test sources
 set (SOURCE_FILES access_level_test.cpp account_manager_test.cpp command_manager_test.cpp configuration_manager_test.cpp context_manager_test.cpp 
     database_test.hpp delegate_test.cpp help_command_test.cpp login_command_test.cpp logout_command_test.cpp ls_command_test.cpp memory_manager_test.cpp 
-    system_test.cpp tcp_connection_storage_test.cpp telnet_connection_test.cpp timer_test.cpp uptime_command_test.cpp user_test.cpp whoami_command_test.cpp worker_test.cpp)
+    system_test.cpp tcp_base_test.cpp telnet_connection_test.cpp timer_test.cpp uptime_command_test.cpp user_test.cpp whoami_command_test.cpp worker_test.cpp)
 add_library(testing ${SOURCE_FILES})
 
 

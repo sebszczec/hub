@@ -11,7 +11,7 @@ class TelnetConnection : public TcpConnection
 private:
 
 public:
-    TelnetConnection(boost::asio::io_service& ios, TcpConnectionStorage & parent)
+    TelnetConnection(boost::asio::io_service& ios, TcpBase & parent)
     : TcpConnection(ios, parent)
     {}
 

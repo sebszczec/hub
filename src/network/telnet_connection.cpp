@@ -1,5 +1,5 @@
 #include "telnet_connection.hpp"
-#include "tcp_connection_storage.hpp"
+#include "tcp_base.hpp"
 #include "system.hpp"
 #include "strings.hpp"
 

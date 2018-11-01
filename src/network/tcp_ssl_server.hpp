@@ -4,7 +4,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
 #include "system.hpp"
-#include "tcp_connection_storage.hpp"
+#include "tcp_base.hpp"
 
 namespace network
 {
@@ -12,7 +12,7 @@ namespace network
 using namespace machine;
 
 template <typename CONNECTION_TYPE>
-class TcpSSLServer : public TcpConnectionStorage
+class TcpSSLServer : public TcpBase
 {
 private:
     boost::asio::io_service _ios;
@@ -21,7 +21,7 @@ private:
 
 public:
     TcpSSLServer(std::string serverName, short port)
-    : TcpConnectionStorage(serverName), _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
+    : TcpBase(serverName), _ios(), _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), _port(port)
     {
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         
@@ -51,13 +51,13 @@ private:
         this->_acceptor.cancel();
         this->_acceptor.close();
 
-        auto & connections = TcpConnectionStorage::GetConnections();
+        auto & connections = TcpBase::GetConnections();
         for (auto connection : connections)
         {
             connection->Stop();
         }
         
-        TcpConnectionStorage::ClearConnections();
+        TcpBase::ClearConnections();
     }
 
     void HandleAccept(std::shared_ptr<CONNECTION_TYPE> connection, const boost::system::error_code& err)
@@ -71,7 +71,7 @@ private:
         }
 
         connection->Start();
-        TcpConnectionStorage::AddConnection(connection);
+        TcpBase::AddConnection(connection);
 
         connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpSSLServer::HandleAccept, this, connection, boost::asio::placeholders::error));       

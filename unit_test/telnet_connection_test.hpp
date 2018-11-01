@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "telnet_connection.hpp"
-#include "tcp_connection_storage.hpp"
+#include "tcp_base.hpp"
 #include "system.hpp"
 #include "icommand.hpp"
 #include "strings.hpp"
@@ -15,7 +15,7 @@ class TelnetConnectionTest : public testing::Test
 {
 protected:
     boost::asio::io_service ios;
-    TcpConnectionStorage parent;
+    TcpBase parent;
     TelnetConnection * _sut;
 public:
     TelnetConnectionTest()

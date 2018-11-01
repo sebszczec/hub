@@ -1,6 +1,6 @@
 #include "tcp_connection.hpp"
 #include <boost/bind.hpp>
-#include "tcp_connection_storage.hpp"
+#include "tcp_base.hpp"
 #include <iostream>
 
 namespace network

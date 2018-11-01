@@ -12,7 +12,7 @@ namespace network
 using boost::asio::ip::tcp;
 typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> ssl_socket;
 
-class TcpConnectionStorage;
+class TcpBase;
 
 class ClientSocket
 {
@@ -43,13 +43,13 @@ protected:
     Context * _context = nullptr;
     machine::Block * _memoryBlock = nullptr;
     tcp::socket _socket;
-    TcpConnectionStorage & _parent;
+    TcpBase & _parent;
 
     void HandleWrite(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     void HandleRead(std::shared_ptr<TcpConnection>& connection, const boost::system::error_code& err, size_t bytesTransferred);
     
 public:
-    TcpConnection(boost::asio::io_service& ios, TcpConnectionStorage & parent)
+    TcpConnection(boost::asio::io_service& ios, TcpBase & parent)
     : _context(machine::System::GetContextManager()->CreateContext()),
       _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
       _socket(ios),
