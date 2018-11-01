@@ -11,6 +11,22 @@ namespace network
 
 using namespace machine;
 
+class MissingSSLConfigurationException : public std::exception
+{
+private:
+    string _message = "";
+
+public:
+    MissingSSLConfigurationException(string && message)
+    : _message(message)
+    {}
+
+    virtual const char* what() const throw()
+    {
+        return _message.c_str();
+    }
+};
+
 template <typename CONNECTION_TYPE>
 class TcpServer : public TcpBase
 {
@@ -19,6 +35,10 @@ private:
     tcp::acceptor _acceptor;
     short _port;
     boost::asio::ssl::context _context;
+    string _sslCrtFile = "";
+    string _sslKeyFile = "";
+    string _sslDhFile = "";
+    string _sslPassword = "";
 
 public:
     TcpServer(std::string serverName, short port, bool ssl)
@@ -27,26 +47,47 @@ public:
     _port(port),
     _context(boost::asio::ssl::context::sslv23)
     {
+    }
+
+    void Run()
+    {
         if (TcpBase::IsSSL())
         {
+            if (this->_sslCrtFile.empty())
+            {
+                throw MissingSSLConfigurationException("SSL Server CRT file is not set");
+            }
+
+            if (this->_sslKeyFile.empty())
+            {
+                throw MissingSSLConfigurationException("SSL Server private Key file is not set");
+            }
+
+            if (this->_sslDhFile.empty())
+            {
+                throw MissingSSLConfigurationException("SSL Server DH file is not set");
+            }
+
+            if (this->_sslPassword.empty())
+            {
+                throw MissingSSLConfigurationException("SSL Server DH file is not set");
+            }
+
             this->_context.set_options(
                 boost::asio::ssl::context::default_workarounds
                 | boost::asio::ssl::context::no_sslv2
                 | boost::asio::ssl::context::single_dh_use);
             this->_context.set_password_callback(boost::bind(&TcpServer::GetPassword, this));
-            this->_context.use_certificate_chain_file("server.crt");
-            this->_context.use_private_key_file("server.key", boost::asio::ssl::context::pem);
-            this->_context.use_tmp_dh_file("dh512.pem");
+            this->_context.use_certificate_chain_file(this->_sslCrtFile);
+            this->_context.use_private_key_file(this->_sslKeyFile, boost::asio::ssl::context::pem);
+            this->_context.use_tmp_dh_file(this->_sslDhFile);
 
             System::GetLogger()->Log(this->GetLoggingPrefix() + ": SSL configured");
         }
 
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this, this->_context);  
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
-    }
 
-    void Run()
-    {
         System::GetLogger()->Log(this->GetLoggingPrefix() + ": started");
         this->_ios.run();
     }
@@ -62,10 +103,30 @@ public:
         return this->_port;
     }
 
+    void SetSSLServerCrtFile(string crtFile)
+    {
+        this->_sslCrtFile = crtFile;
+    }
+
+    void SetSSLServerKeyFile(string keyFile)
+    {
+        this->_sslKeyFile = keyFile;
+    }
+
+    void SetSSLServerDhFile(string dhFile)
+    {
+        this->_sslDhFile = dhFile;
+    }
+
+    void SetSSLPassword(string sslPassword)
+    {
+        this->_sslPassword = sslPassword;
+    }
+
 private:
     std::string GetPassword()
     {
-        return "Test";
+        return this->_sslPassword;
     }
 
     void HandleStop()

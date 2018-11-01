@@ -45,17 +45,35 @@ bool CM::LoadResources()
     int isDaemon = this->_configFile.lookup("daemon");
     this->_resources[CMV::IsDaemon] = new BoolResource(isDaemon == 1);
 
+    int telnetEnabled = this->_configFile.lookup("telnet_enabled");
+    this->_resources[CMV::TelnetEnabled] = new BoolResource(telnetEnabled == 1);
+
     int telnetPort = this->_configFile.lookup("telnet_port");
     this->_resources[CMV::TelnetPort] = new IntResource(telnetPort);
+
+    int telnetSSLEnabled = this->_configFile.lookup("telnet_ssl_enabled");
+    this->_resources[CMV::TelnetSSLEnabled] = new BoolResource(telnetSSLEnabled == 1);
+
+    int telnetSSLPort = this->_configFile.lookup("telnet_ssl_port");
+    this->_resources[CMV::TelnetSSLPort] = new IntResource(telnetSSLPort);
+
+    int mobileEnabled = this->_configFile.lookup("mobile_enabled");
+    this->_resources[CMV::MobileEnabled] = new BoolResource(mobileEnabled == 1);
 
     int mobilePort = this->_configFile.lookup("mobile_port");
     this->_resources[CMV::MobilePort] = new IntResource(mobilePort);
 
-    int tcpPooling = this->_configFile.lookup("tcp_pooling");
-    this->_resources[CMV::TcpPooling] = new IntResource(tcpPooling);
+    string sslCRTFile = this->_configFile.lookup("ssl_crt_file");
+    this->_resources[CMV::SSLCRTFile] = new StringResource(sslCRTFile);
 
-    int tcpooling = this->_configFile.lookup("tcp_cooling");
-    this->_resources[CMV::TcpCooling] = new IntResource(tcpooling);
+    string sslKeyFile = this->_configFile.lookup("ssl_key_file");
+    this->_resources[CMV::SSLKeyFile] = new StringResource(sslKeyFile);
+
+    string sslDhFile = this->_configFile.lookup("ssl_dh_file");
+    this->_resources[CMV::SSLDhFile] = new StringResource(sslDhFile);
+
+    string sslPassword = this->_configFile.lookup("ssl_password");
+    this->_resources[CMV::SSLPassword] = new StringResource(sslPassword);
 
     string memoryDumpName = this->_configFile.lookup("memory_dump_name");
     this->_resources[CMV::MemoryDumpName] = new StringResource(memoryDumpName);

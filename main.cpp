@@ -31,39 +31,49 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    // Worker worker(true, Worker::DelayMS(500));
-    // worker.StartAsync([](){
-    //     Logger::LogDebug("Keep alive message from worker.");
-    // });
-
-    // Timer timer(Worker::DelayMS(500), true);
-    // timer.StartAsync([](){
-    //     Logger::LogDebug("Keep alive message from timer.");
-    // });
-
+    // Telnet server
     TcpServer<TelnetConnection> telnetServer(
         ::machine::string::telnet, 
         System::GetConfigurationManager()->GetResource(CMV::TelnetPort).ToInt(),
         false);
     
     tools::Worker telnetWorker(false);
-    telnetWorker.StartAsync([&telnetServer] () {telnetServer.Run();});
 
+    if (System::GetConfigurationManager()->GetResource(CMV::TelnetEnabled).ToBool())
+    {
+        telnetWorker.StartAsync([&telnetServer] () {telnetServer.Run();});
+    }
+
+    // Mobile server
     TcpServer<MobileConnection> mobileServer(
         ::machine::string::mobile, 
         System::GetConfigurationManager()->GetResource(CMV::MobilePort).ToInt(),
         false);
     
     tools::Worker mobileWorker(false);
-    mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});
 
+    if (System::GetConfigurationManager()->GetResource(CMV::MobileEnabled).ToBool())
+    {
+        mobileWorker.StartAsync([&mobileServer] () {mobileServer.Run();});
+    }
+
+    // Telnet SSL server
     TcpServer<TelnetConnection> telnetServerSSL(
         ::machine::string::telnet, 
-        5555,
+        System::GetConfigurationManager()->GetResource(CMV::TelnetSSLPort).ToInt(),
         true);
-    
+
     tools::Worker telnetWorkerSSL(false);
-    telnetWorkerSSL.StartAsync([&telnetServerSSL] () {telnetServerSSL.Run();});
+
+    if (System::GetConfigurationManager()->GetResource(CMV::TelnetSSLEnabled).ToBool())
+    {
+        telnetServerSSL.SetSSLServerCrtFile(System::GetConfigurationManager()->GetResource(CMV::SSLCRTFile).ToString());
+        telnetServerSSL.SetSSLServerKeyFile(System::GetConfigurationManager()->GetResource(CMV::SSLKeyFile).ToString());
+        telnetServerSSL.SetSSLServerDhFile(System::GetConfigurationManager()->GetResource(CMV::SSLDhFile).ToString());
+        telnetServerSSL.SetSSLPassword(System::GetConfigurationManager()->GetResource(CMV::SSLPassword).ToString());
+          
+        telnetWorkerSSL.StartAsync([&telnetServerSSL] () {telnetServerSSL.Run();});
+    }
 
     /* The Big Loop */
     auto logger = System::GetLogger();
