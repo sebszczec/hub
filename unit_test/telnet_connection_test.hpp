@@ -14,17 +14,20 @@ using namespace network;
 class TelnetConnectionTest : public testing::Test
 {
 protected:
-    boost::asio::io_service ios;
-    TcpBase parent;
+    boost::asio::io_service _ios;
+    boost::asio::ssl::context _context;
+    TcpBase _parent;
     TelnetConnection * _sut;
 public:
     TelnetConnectionTest()
-    : parent(machine::string::telnet)
+    : _ios(),
+    _context(boost::asio::ssl::context::sslv23),
+    _parent(machine::string::telnet, false)
     {}
 
     void SetUp() override
     {
-        this->_sut = new TelnetConnection(ios, parent);
+        this->_sut = new TelnetConnection(_ios, _parent, _context);
     }
 
     void TearDown() override

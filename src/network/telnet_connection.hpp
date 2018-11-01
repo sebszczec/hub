@@ -1,6 +1,7 @@
 #ifndef __TELNET_CONNECTION_HPP
 #define __TELNET_CONNECTION_HPP
 
+#include <boost/asio/ssl.hpp>
 #include "tcp_connection.hpp"
 
 namespace network
@@ -11,8 +12,8 @@ class TelnetConnection : public TcpConnection
 private:
 
 public:
-    TelnetConnection(boost::asio::io_service& ios, TcpBase & parent)
-    : TcpConnection(ios, parent)
+    TelnetConnection(boost::asio::io_service& ios, TcpBase & parent, boost::asio::ssl::context & sslContext)
+    : TcpConnection(ios, parent, sslContext)
     {}
 
     void Start() override;

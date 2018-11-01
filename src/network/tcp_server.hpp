@@ -19,17 +19,15 @@ private:
     tcp::acceptor _acceptor;
     short _port;
     boost::asio::ssl::context _context;
-    bool _ssl;
 
 public:
     TcpServer(std::string serverName, short port, bool ssl)
-    : TcpBase(serverName), _ios(), 
+    : TcpBase(serverName, ssl), _ios(), 
     _acceptor(_ios, tcp::endpoint(tcp::v4(), port)), 
     _port(port),
-    _context(boost::asio::ssl::context::sslv23),
-    _ssl(ssl)
+    _context(boost::asio::ssl::context::sslv23)
     {
-        if (this->_ssl)
+        if (TcpBase::IsSSL())
         {
             this->_context.set_options(
                 boost::asio::ssl::context::default_workarounds
@@ -39,9 +37,11 @@ public:
             this->_context.use_certificate_chain_file("server.crt");
             this->_context.use_private_key_file("server.key", boost::asio::ssl::context::pem);
             this->_context.use_tmp_dh_file("dh512.pem");
+
+            System::GetLogger()->Log(this->GetLoggingPrefix() + ": SSL configured");
         }
 
-        auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);        
+        auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this, this->_context);        
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
     }
 
@@ -95,7 +95,7 @@ private:
         connection->Start();
         TcpBase::AddConnection(connection);
 
-        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this);
+        connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this, this->_context);
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));       
     }
 };

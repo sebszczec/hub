@@ -8,6 +8,18 @@ namespace network
 
 using namespace machine;
 
+TcpConnection::TcpConnection(boost::asio::io_service& ios, TcpBase & parent, boost::asio::ssl::context & sslContext)
+: _context(machine::System::GetContextManager()->CreateContext()),
+    _memoryBlock(machine::System::GetMemoryManager()->GetFreeBlock()), 
+    _socket(ios, sslContext),
+    _parent(parent)
+{
+    if (this->_parent.IsSSL())
+    {
+        this->_socket.SetSSLflag(true);
+    }
+}
+
 TcpConnection::~TcpConnection()
 {
     machine::System::GetContextManager()->DeleteContext(this->_context);
@@ -23,7 +35,12 @@ void TcpConnection::Start()
 {
     char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
-    this->_socket.async_read_some(
+    if (this->_parent.IsSSL())
+    {
+
+    }
+
+    this->_socket.GetTcpSocket().async_read_some(
         boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
         boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
     );
@@ -31,13 +48,13 @@ void TcpConnection::Start()
 
 void TcpConnection::Stop()
 {
-    this->_socket.close();
+    this->_socket.GetTcpSocket().close();
 }
 
 void TcpConnection::SendData(const void * data, unsigned int size)
 {
     boost::asio::async_write(
-        this->_socket, 
+        this->_socket.GetTcpSocket(), 
         boost::asio::buffer(data, size), 
         boost::bind(&TcpConnection::HandleWrite,
         this, 
@@ -82,15 +99,15 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
 
     char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
-    this->_socket.async_read_some(
+    this->_socket.GetTcpSocket().async_read_some(
         boost::asio::buffer(buffer, this->_memoryBlock->GetMaxSize()),
         boost::bind(&TcpConnection::HandleRead, this, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
     );
 }
 
-tcp::socket& TcpConnection::GetSocket()
+tcp::socket & TcpConnection::GetSocket()
 {
-    return this->_socket;
+    return this->_socket.GetTcpSocket();
 }
 
 Context & TcpConnection::GetContext()

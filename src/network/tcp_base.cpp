@@ -35,14 +35,19 @@ const vector<shared_ptr<TcpConnection>> & TcpBase::GetConnections()
     return this->_connections;
 }
 
-std::string TcpBase::GetLoggingPrefix()
+std::string TcpBase::GetLoggingPrefix() const
 {
     return "Server<" + this->_serverName + ">[" + std::to_string(this->_instanceIndex) + "]";
 }
 
-void TcpBase::ClearConnections()
+void TcpBase::ClearConnections() 
 {
     this->_connections.clear();
+}
+
+bool TcpBase::IsSSL() const
+{
+    return this->_ssl;
 }
 
 } // namespace network

@@ -17,7 +17,7 @@ public:
 
     void SetUp() override
     {
-        this->_sut = new TcpBase(machine::string::telnet);
+        this->_sut = new TcpBase(machine::string::telnet, false);
     }
 
     void TearDown() override
@@ -36,9 +36,10 @@ TEST_F(TcpBaseTest, AddConnection)
     EXPECT_EQ(0, _sut->GetConnections().size());
 
     boost::asio::io_service ios;
+    boost::asio::ssl::context context(boost::asio::ssl::context::sslv23);
     EXPECT_EQ(0, _sut->GetConnections().size());
 
-    auto pointer = std::make_shared<TelnetConnection>(ios, *_sut);
+    auto pointer = std::make_shared<TelnetConnection>(ios, *_sut, context);
     
     _sut->AddConnection(pointer);
     EXPECT_EQ(1, _sut->GetConnections().size());
@@ -47,7 +48,8 @@ TEST_F(TcpBaseTest, AddConnection)
 TEST_F(TcpBaseTest, RemoveConnection)
 {
     boost::asio::io_service ios;
-    auto pointer = std::make_shared<TelnetConnection>(ios, *_sut);
+    boost::asio::ssl::context context(boost::asio::ssl::context::sslv23);
+    auto pointer = std::make_shared<TelnetConnection>(ios, *_sut, context);
     
     _sut->AddConnection(pointer);
     EXPECT_EQ(1, _sut->GetConnections().size());
