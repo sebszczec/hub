@@ -1,12 +1,13 @@
 import telnetlib
 from network import NetworkClient
+from environment import Environment
 import time
 
 class Telnet(object):
-    def __init__(self, host, port, timeout):
-        self.host = host
-        self.port = port
-        self.timeout = timeout
+    def __init__(self):
+        self.host = Environment.host
+        self.port = Environment.telnet_port
+        self.timeout = Environment.telnet_timeout
         self.connection = None
 
     def connect(self):
