@@ -1,4 +1,4 @@
-import socket
+import socket, ssl
 import sys
 
 class NetworkClient(object):
@@ -34,3 +34,37 @@ class NetworkClient(object):
 
         return b''.join(chunks)
         
+class SSLClient(NetworkClient):
+    def __init__(self, address, port):
+        NetworkClient.__init__(self, address, port)
+
+        self.context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+        self.context.verify_mode = ssl.CERT_REQUIRED
+        self.context.check_hostname = True
+        self.context.load_default_certs()
+        self.ssl_sock = self.context.wrap_socket(self.sock, server_hostname=self.address)
+
+    def connect(self):
+        self.ssl_sock.connect((self.address, self.port))
+
+    def disconnect(self):
+        self.ssl_sock.close()
+
+    def send_data(self, data):
+        self.ssl_sock.send(data)
+
+    def receive_data(self, size):
+        chunks = []
+        bytes_recd = 0
+        while bytes_recd < size:
+            chunk = self.ssl_sock.recv(min(size - bytes_recd, 2048))
+            if chunk == b'':
+                raise RuntimeError("SSL socket connection broken")
+            
+            chunks.append(chunk)
+            bytes_recd = bytes_recd + len(chunk)
+
+            if chunk == '\n':
+                break
+
+        return b''.join(chunks)
