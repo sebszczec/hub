@@ -1,11 +1,12 @@
 from lib.test import Test
 from lib.telnet import Telnet
+from lib.environment import Environment
 from time import sleep
 
 # Base class for all telnet tests
 class TelnetTest(Test):
     def setup(self):
-        self.connection = Telnet("localhost", 1235, 0.1)
+        self.connection = Telnet("localhost", Environment.telnet_port, Environment.telnet_timeout)
         self.connection.connect()
         result = self.connection.expect("Welcome\n")
         return result
@@ -25,7 +26,7 @@ class TelnetTalkWithOtherSessionTest(TelnetTest):
     def run(self):
         Test.run(self)
         
-        connection2 = Telnet("localhost", 1235, 0.1)
+        connection2 = Telnet("localhost", Environment.telnet_port, Environment.telnet_timeout)
         connection2.connect()
         connection2.expect("Welcome\n")
         message1 = "MESSAGE1"
