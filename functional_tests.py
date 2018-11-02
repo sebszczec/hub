@@ -5,6 +5,7 @@ from junit_xml import TestSuite, TestCase
 from testing.telnet_test import *
 from testing.telnet_command_test import *
 from testing.test_runner import *
+from testing.lib.environment import Environment
 
 tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetUptimeCommandAfterLoginTest(), TelnetTalkWithOtherSessionTest(), TelnetNotReadingTest(), 
     TelnetHelpLoginCommandTest(), TelnetHelpUptimeCommandTest(), TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), 
@@ -48,6 +49,7 @@ if args.random is not None:
     random.shuffle(tests)
 
 
+Environment.use_ssl = True
 runner = TestRunner()
 runner.run(tests)
 results = runner.getResults()

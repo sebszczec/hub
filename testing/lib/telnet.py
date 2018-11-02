@@ -1,17 +1,26 @@
 import telnetlib
-from network import NetworkClient
+from network import *
 from environment import Environment
 import time
 
 class Telnet(object):
     def __init__(self):
         self.host = Environment.host
-        self.port = Environment.telnet_port
+
+        if (Environment.use_ssl == True):
+            self.port = Environment.ssl_port
+        else:
+            self.port = Environment.telnet_port
+        
         self.timeout = Environment.telnet_timeout
         self.connection = None
 
     def connect(self):
-        self.network_connection = NetworkClient(self.host, self.port)
+        if (Environment.use_ssl == True):
+            self.network_connection = SSLClient(self.host, self.port)
+        else:
+            self.network_connection = NetworkClient(self.host, self.port)
+        
         self.network_connection.connect()
 
     def close(self):

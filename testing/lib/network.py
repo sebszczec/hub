@@ -38,9 +38,9 @@ class SSLClient(NetworkClient):
     def __init__(self, address, port):
         NetworkClient.__init__(self, address, port)
 
-        self.context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        self.context.verify_mode = ssl.CERT_REQUIRED
-        self.context.check_hostname = True
+        self.context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+        self.context.verify_mode = ssl.CERT_NONE
+        self.context.check_hostname = False
         self.context.load_default_certs()
         self.ssl_sock = self.context.wrap_socket(self.sock, server_hostname=self.address)
 
@@ -49,6 +49,7 @@ class SSLClient(NetworkClient):
 
     def disconnect(self):
         self.ssl_sock.close()
+        NetworkClient.disconnect(self)
 
     def send_data(self, data):
         self.ssl_sock.send(data)

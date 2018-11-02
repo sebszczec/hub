@@ -64,7 +64,7 @@ do
     sleep ${DELAY}
     (( retry++ ))
 
-    nc -z -v localhost 1235
+    nc -z -v localhost 5555
     if [ $? -eq 0 ] ; then
         # functional tests
         echo $ARGS
