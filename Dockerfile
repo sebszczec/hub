@@ -12,8 +12,7 @@ RUN apt-get -y install mc
 RUN apt-get -y install libgtest-dev 
 RUN apt-get -y install python 
 RUN apt-get -y install valgrind 
-RUN apt-get -y install vim 
-RUN apt-get -y install expect 
+RUN apt-get -y install vim  
 RUN apt-get -y install telnet 
 RUN apt-get -y install python-pip 
 RUN apt-get -y install screen 
@@ -27,6 +26,8 @@ RUN apt-get -y install dos2unix
 RUN apt-get -y install netcat 
 RUN apt-get -y install iperf 
 RUN apt-get -y install libssl-dev
+RUN apt-get -y install tcpdump
+RUN apt-get -y install tcpflow
 
 RUN pip install --upgrade pip
 RUN pip install junit_xml
