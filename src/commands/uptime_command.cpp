@@ -20,8 +20,6 @@ string UptimeCommand::PrintHelp()
     
 bool UptimeCommand::Execute(const CommandArgument &)
 {
-    System::GetLogger()->LogDebug(this->_name + " called");
-
     auto uptime = System::UpTime();
 
     auto milliseconds = std::chrono::duration_cast<UptimeCommand::Milliseconds>(uptime).count();

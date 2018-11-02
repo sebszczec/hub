@@ -22,8 +22,6 @@ bool HelpCommand::Execute(const CommandArgument &arg)
 {
     auto logger = System::GetLogger();
 
-    logger->LogDebug(this->_name + " called");
-
     auto && size = arg.Args.size();
     if (size == 0)
     {

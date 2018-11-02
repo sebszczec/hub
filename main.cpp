@@ -59,7 +59,7 @@ int main()
 
     // Telnet SSL server
     TcpServer<TelnetConnection> telnetServerSSL(
-        ::machine::string::telnet, 
+        ::machine::string::telnetSSL, 
         System::GetConfigurationManager()->GetResource(CMV::TelnetSSLPort).ToInt(),
         true);
 

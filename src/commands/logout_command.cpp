@@ -21,10 +21,6 @@ string LogoutCommand::PrintHelp()
 
 bool LogoutCommand::Execute(const CommandArgument & commandArgument)
 {
-    auto logger = System::GetLogger();
-
-    logger->LogDebug(this->_name + " called");
-
     commandArgument.Context->GetUser().GetAccessLevel().SetLevel(account::AccessLevel::Level::NotLogged);
     this->_result = "logout successful";
     return true;

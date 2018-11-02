@@ -19,10 +19,6 @@ string WhoamiCommand::PrintHelp()
 
 bool WhoamiCommand::Execute(const CommandArgument & commandArgument)
 {
-    auto logger = System::GetLogger();
-
-    logger->LogDebug(this->_name + " called");
-
     this->_result = commandArgument.Context->GetUser().GetName();
     return true;
 }

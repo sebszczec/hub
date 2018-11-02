@@ -23,8 +23,6 @@ bool LoginCommand::Execute(const CommandArgument & commandArgument)
 {
     auto logger = System::GetLogger();
 
-    logger->LogDebug(this->_name + " called");
-
     if (commandArgument.Args.size() < 2)
     {   
         auto errorMessage = "failed, not enough arguments";
