@@ -18,8 +18,8 @@ class TestRunner(object):
     def __init__(self):
         self.results = {}
 
-    def runTest(self, test):
-        name = test.getName()
+    def runTest(self, test, prefix):
+        name = prefix + test.getName()
         testResult = True
 
         if test.setup() is False:
@@ -41,11 +41,12 @@ class TestRunner(object):
         print TestMarker.PASSED + "[Teardown].." + FontColor.OKGREEN + name  + FontColor.ENDC
         return testResult
 
-    def run(self, tests):
+    def run(self, tests, prefix):
         result = True
         for test in tests:
-            self.results[test.getName()] = self.runTest(test)
-            if self.results[test.getName()] is False:
+            name = prefix + test.getName()
+            self.results[name] = self.runTest(test, prefix)
+            if self.results[name] is False:
                 result = False
 
         return result

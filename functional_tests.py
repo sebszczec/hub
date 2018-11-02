@@ -49,10 +49,18 @@ if args.random is not None:
     random.shuffle(tests)
 
 
-Environment.use_ssl = True
 runner = TestRunner()
-runner.run(tests)
-results = runner.getResults()
+
+Environment.use_ssl = False
+runner.run(tests, "no_ssl_")
+results_no_ssl = runner.getResults()
+
+Environment.use_ssl = True
+runner.run(tests, "ssl_")
+results_with_ssl = runner.getResults()
+
+results = results_no_ssl.copy()
+results.update(results_with_ssl)
 
 passed = 0
 test_cases = []
