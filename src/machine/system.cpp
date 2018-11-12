@@ -28,13 +28,13 @@ MemoryManager * System::_memoryManager = nullptr;
 
 system_clock::time_point System::_timeNow = system_clock::now();
 
-bool System::Start()
+bool System::Start(std::string confileFileName)
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
     
     System::_configurationManager = new ConfigurationManager();
-    if (!System::_configurationManager->LoadResources())
+    if (!System::_configurationManager->LoadResources(confileFileName))
     {
         return false;
     }

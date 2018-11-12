@@ -27,5 +27,8 @@ run_ft:
 run_interactive:
 	docker run -P -v "${WORKSPACE}:/root/repo" -t -i ci_hub /bin/bash
 
+run_deploy:
+	docker run -p 6001:6001 -p 6002:6002 -p 6003:6003 -P -v "${WORKSPACE}:/root/repo" ci_hub /bin/bash -c "cd repo && ./hub deploy.cfg"
+
 clean:
 	docker system prune -a

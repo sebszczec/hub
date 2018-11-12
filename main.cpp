@@ -21,12 +21,18 @@ using namespace machine;
 
 using boost::asio::ip::tcp;
 
-int main()
+int main(int argc, char** argv)
 {
     using CM = ConfigurationManager;
     using CMV = CM::Variable;
 
-    if (!System::Start())
+    std::string configFile = "";
+    if (argc > 1)
+    {
+        configFile = std::string(argv[1]);
+    }
+
+    if (!System::Start(configFile))
     {
         exit(EXIT_FAILURE);
     }

@@ -88,7 +88,7 @@ public:
         auto connection = std::make_shared<CONNECTION_TYPE>(this->_ios, *this, this->_context);  
         this->_acceptor.async_accept(connection->GetSocket(), boost::bind(&TcpServer::HandleAccept, this, connection, boost::asio::placeholders::error));
 
-        System::GetLogger()->Log(this->GetLoggingPrefix() + ": started");
+        System::GetLogger()->Log(this->GetLoggingPrefix() + ": started on port: " + std::to_string(this->_port));
         this->_ios.run();
     }
 

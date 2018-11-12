@@ -15,9 +15,19 @@ CM::~ConfigurationManager()
 
 bool CM::LoadResources()
 {
+    return this->LoadResources("");
+}
+
+bool CM::LoadResources(string settingFile)
+{
+    if (settingFile.empty())
+    {
+        settingFile = "settings.cfg";
+    }
+
     try
     {
-        this->_configFile.readFile("settings.cfg");
+        this->_configFile.readFile(settingFile.c_str());
     }
     catch (const FileIOException &exception)
     {

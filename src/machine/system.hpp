@@ -35,7 +35,7 @@ class System
 public:
     using DelayUS = std::chrono::duration<int, std::micro>;
 
-    static bool Start();
+    static bool Start(std::string confileFileName);
     static void Stop();
 
     static account::AccountManager * GetAccountManager();

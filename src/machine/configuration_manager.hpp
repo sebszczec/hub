@@ -132,6 +132,7 @@ public:
         DatabaseFileName
     };
 
+    bool LoadResources(string settingFile);
     bool LoadResources();
     IResource & GetResource(ConfigurationManager::Variable variableName);
 
