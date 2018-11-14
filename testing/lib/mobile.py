@@ -20,4 +20,4 @@ class Mobile(object):
         return False
 
     def send(self, message):
-        return False
+        self.network_connection.send_data(message)

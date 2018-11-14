@@ -13,7 +13,7 @@ tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetUptimeCommand
     TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest(), TelnetLoginNoArgTest(), TelnetLoginTooLessArgTest(), TelnetLoginTooManyArgTest(), 
     TelnetLoginWrongUserTest(), TelnetLoginWrongPasswordTest(), TelnetLoginAccessGrantedTest(), TelnetLsTest(), TelnetLogoutCommandTest(), 
     TelnetLogoutCommandAfterLoginTest(), TelnetWhoamiCommandTest(), TelnetWhoamiCommandAfterLoginTest(),
-    MobileConnectionTest()
+    MobileConnectionTest(), MobileHandshakeTest(), MobileUnknownMessageTest()
     ]
 
 parser = argparse.ArgumentParser()
