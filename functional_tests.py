@@ -2,6 +2,7 @@ import argparse
 import random
 import sys
 from junit_xml import TestSuite, TestCase
+from testing.mobile_test import *
 from testing.telnet_test import *
 from testing.telnet_command_test import *
 from testing.test_runner import *
@@ -11,7 +12,8 @@ tests = [ TelnetConnectionTest(), TelnetUptimeCommandTest(), TelnetUptimeCommand
     TelnetHelpLoginCommandTest(), TelnetHelpUptimeCommandTest(), TelnetHelpCommandSelfTest(), TelnetHelpCommandNoArgTest(), TelnetHelpCommandTooManyArgsTest(), 
     TelnetUnknownCommandTest(), TelnetUnknownCommandWithArgTest(), TelnetLoginNoArgTest(), TelnetLoginTooLessArgTest(), TelnetLoginTooManyArgTest(), 
     TelnetLoginWrongUserTest(), TelnetLoginWrongPasswordTest(), TelnetLoginAccessGrantedTest(), TelnetLsTest(), TelnetLogoutCommandTest(), 
-    TelnetLogoutCommandAfterLoginTest(), TelnetWhoamiCommandTest(), TelnetWhoamiCommandAfterLoginTest()
+    TelnetLogoutCommandAfterLoginTest(), TelnetWhoamiCommandTest(), TelnetWhoamiCommandAfterLoginTest(),
+    MobileConnectionTest()
     ]
 
 parser = argparse.ArgumentParser()

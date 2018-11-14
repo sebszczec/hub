@@ -4,3 +4,5 @@ class Environment(object):
     telnet_timeout = 0.1
     ssl_port = 5555
     use_ssl = False
+    mobile_port = 8001
+    
