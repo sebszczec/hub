@@ -37,7 +37,6 @@ void TcpConnection::Start()
 
     if (this->_parent.IsSSL())
     {
-
         // blocking handshake. i.e. stopping telnet from broadcasting
         try
         {
@@ -139,7 +138,17 @@ void TcpConnection::HandleRead(std::shared_ptr<TcpConnection>& connection, const
     }
 
     this->_memoryBlock->SetPayloadLength(bytesTransferred);
-    this->HandleData();
+
+    try 
+    {
+        this->HandleData();
+    }
+    catch (std::exception &)
+    {
+        auto id = std::to_string(connection->GetContext().GetId());
+        auto prefix = this->_parent.GetLoggingPrefix();
+        System::GetLogger()->LogError(prefix + "[" + id +  "]: HandleData stopped because of exception");
+    }
 
     char * buffer = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
