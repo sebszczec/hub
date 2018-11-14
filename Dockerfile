@@ -27,20 +27,35 @@ RUN apt-get -y install netcat
 RUN apt-get -y install iperf 
 RUN apt-get -y install libssl-dev
 RUN apt-get -y install tcpdump
-RUN apt-get -y install tcpflow
+RUN apt-get -y install tcpflow 
+RUN apt-get -y install autoconf 
+RUN apt-get -y install automake 
+RUN apt-get -y install libtool 
+RUN apt-get -y install curl 
+# RUN apt-get -y install make 
+# RUN apt-get -y install g++ 
+RUN apt-get -y install unzip
+RUN apt-get -y install wget
 
 RUN pip install --upgrade pip
 RUN pip install junit_xml
 RUN pip install gcovr
-
-RUN git config --global user.name "Seba"
-RUN git config --global user.email "sebszczec@wp.pl"
 
 WORKDIR /usr/src/gtest
 RUN cmake . && \
     make && \
     cp libgtest.a /usr/lib/libgtest.a && \
     cp libgtest_main.a /usr/lib/libgtest_main.a
+
+WORKDIR /root
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz
+RUN tar -zxf protobuf-all-3.6.1.tar.gz
+
+WORKDIR /root/protobuf-3.6.1
+RUN ./configure
+RUN make
+RUN make install
+RUN ldconfig
 
 ENV WORKSPACE=/root/repo
 
