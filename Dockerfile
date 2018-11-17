@@ -32,8 +32,6 @@ RUN apt-get -y install autoconf
 RUN apt-get -y install automake 
 RUN apt-get -y install libtool 
 RUN apt-get -y install curl 
-# RUN apt-get -y install make 
-# RUN apt-get -y install g++ 
 RUN apt-get -y install unzip
 RUN apt-get -y install wget
 
@@ -48,14 +46,27 @@ RUN cmake . && \
     cp libgtest_main.a /usr/lib/libgtest_main.a
 
 WORKDIR /root
+RUN wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2
+RUN tar -jxf boost_1_68_0.tar.bz2
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz
 RUN tar -zxf protobuf-all-3.6.1.tar.gz
 
 WORKDIR /root/protobuf-3.6.1
 RUN ./configure
-RUN make
+RUN make -j2
 RUN make install
 RUN ldconfig
+
+WORKDIR /root/boost_1_68_0
+RUN mkdir /root/include
+RUN cp -R boost /root/include
+
+WORKDIR /root
+RUN rm boost_1_68_0.tar.bz2
+RUN rm protobuf-all-3.6.1.tar.gz
+RUN rm -Rf protobuf-3.6.1
+RUN rm -Rf boost_1_68_0
+
 
 ENV WORKSPACE=/root/repo
 
