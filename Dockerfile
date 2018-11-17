@@ -38,6 +38,7 @@ RUN apt-get -y install wget
 RUN pip install --upgrade pip
 RUN pip install junit_xml
 RUN pip install gcovr
+RUN pip install protobuf
 
 WORKDIR /usr/src/gtest
 RUN cmake . && \

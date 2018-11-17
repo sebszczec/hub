@@ -1,5 +1,6 @@
 from lib.test import Test
 from lib.mobile import Mobile
+from mobile_messages_pb2 import *
 from time import sleep
 import struct
 from collections import namedtuple
@@ -24,24 +25,17 @@ class MobileConnectionTest(MobileTest):
 
 class MobileHandshakeTest(MobileTest):
     def run(self):
-        message = '' 
-        message += struct.pack('B', 0)
-
-        for i in range(127):
-            message += struct.pack('B', 0)
-
-        self.connection.send(message)
+        message = HandshakeRequest()
+        message.messageId = 0
+        self.connection.send(message.SerializeToString())
         return True
 
 class MobileUnknownMessageTest(MobileTest):
     def run(self):
-        message = '' 
-        message += struct.pack('B', 1)
-
-        for i in range(127):
-            message += struct.pack('B', 0)
-
-        self.connection.send(message)
+        message = HandshakeRequest()
+        message.messageId = 99
+        self.connection.send(message.SerializeToString())
         return True
+
         
 

@@ -55,7 +55,7 @@ include_directories(unit_test)
 add_executable(ut test.cpp)
 
 # linking
-TARGET_LINK_LIBRARIES(hub machine commands network tools config++ account database sqlite3 crypto ssl)
+TARGET_LINK_LIBRARIES(hub machine commands network tools config++ account database sqlite3 crypto ssl protobuf)
   
-TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 /usr/lib/libgtest.a crypto ssl)
+TARGET_LINK_LIBRARIES(ut machine account commands database network tools testing config++ sqlite3 /usr/lib/libgtest.a crypto ssl protobuf)
 

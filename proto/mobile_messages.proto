@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package mobile_messages;
+
+message NetworkMessage {
+  required int32 messageId = 1;
+}
+
+message HandshakeRequest {
+  required int32 messageId = 1;
+}
+
+message HandshakeResponse {
+  required int32 messageId = 1;
+
+  enum ResponseType {
+    OK = 0;
+    NOK = 1;
+  }
+
+  required int32 mobileId = 2;
+}
