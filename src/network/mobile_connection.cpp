@@ -14,16 +14,16 @@ void MobileConnection::HandleData()
     auto packetLength = this->_memoryBlock->GetPayloadLength();
     logger->LogDebug("MobileConnection: Network packet size: " + std::to_string(packetLength));
 
-    auto array = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
+    auto dataArray = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
     mobile_messages::NetworkMessage message;
-    if (message.ParseFromArray(array, packetLength))
+    if (message.ParseFromArray(dataArray, packetLength))
     {
-        logger->LogDebug("MobileConnection: NetworkMessage succeded");
+        logger->LogDebug("MobileConnection: NetworkMessage parsing succeded");
     }
     else
     {
-        logger->LogDebug("MobileConnection: NetworkMessage failed");
+        logger->LogError("MobileConnection: NetworkMessage parsing failed");
     }
 
     switch (message.messageid())

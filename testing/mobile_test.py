@@ -38,5 +38,12 @@ class MobileUnknownMessageTest(MobileTest):
         self.connection.send(message.SerializeToString())
         return True
 
-        
+class MobileRandomBytesTest(MobileTest):
+    def run(self):
+        message = HandshakeRequest()
+        message.messageId = 0
+        data = message.SerializeToString()
+        data += "DEADBEEF"
+        self.connection.send(data)
+        return True
 
