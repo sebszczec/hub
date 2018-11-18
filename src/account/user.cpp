@@ -23,4 +23,14 @@ namespace account
         this->_name = std::move(name);
     }
 
+    const User::UserType & User::GetUserType()
+    {
+        return this->_type;
+    }
+
+    void User::SetUserType(const User::UserType & type)
+    {
+        this->_type = type;
+    }
+
 } // namespace account

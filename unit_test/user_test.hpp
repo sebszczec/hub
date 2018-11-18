@@ -50,4 +50,17 @@ TEST_F(UserTest, SetName)
     EXPECT_STREQ(expect.c_str(), result.c_str());
 }
 
+TEST_F(UserTest, GetDefaultUserType)
+{
+    User::UserType expected = User::UserType::NotSet;
+    EXPECT_EQ(expected, _sut->GetUserType());
+}
+
+TEST_F(UserTest, SetUserType)
+{
+    User::UserType expected = User::UserType::Mobile;
+    _sut->SetUserType(expected);
+    EXPECT_EQ(expected, _sut->GetUserType());
+}
+
 #endif
