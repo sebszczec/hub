@@ -20,7 +20,8 @@ public:
     : TcpConnection(ios, parent, sslContext)
     {}
 
-    void HandleData();
+    void Start() override;
+    void HandleData() override;
 };
 
 } // namespace network

@@ -6,6 +6,12 @@
 namespace network
 {
 
+void MobileConnection::Start()
+{
+    TcpConnection::Start();
+    this->GetContext().GetUser().SetUserType(account::User::UserType::Mobile);
+}
+
 void MobileConnection::HandleData() 
 {
     auto logger = machine::System::GetLogger();

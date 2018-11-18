@@ -11,6 +11,7 @@ using namespace machine;
 void TelnetConnection::Start()
 {
     TcpConnection::Start();
+    this->GetContext().GetUser().SetUserType(account::User::UserType::Telnet);
 
     auto message = ::machine::string::telnetWelcomeMessage;
     this->SendData(message.c_str(), message.size());
