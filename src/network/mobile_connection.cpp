@@ -1,6 +1,7 @@
 #include "mobile_connection.hpp"
 #include "mobile_messages.hpp"
 #include "mobile_messages.pb.h"
+#include "strings.hpp"
 #include <iomanip>
 
 namespace network
@@ -15,31 +16,30 @@ void MobileConnection::Start()
 void MobileConnection::HandleData() 
 {
     auto logger = machine::System::GetLogger();
-    logger->LogDebug("MobileConnection: Received data block");
 
     auto packetLength = this->_memoryBlock->GetPayloadLength();
-    logger->LogDebug("MobileConnection: Network packet size: " + std::to_string(packetLength));
+    logger->LogDebug(::machine::string::mobileConnectionMessage1 + std::to_string(packetLength));
 
     auto dataArray = reinterpret_cast<char *>(this->_memoryBlock->GetPayload());
 
     mobile_messages::NetworkMessage message;
     if (message.ParseFromArray(dataArray, packetLength))
     {
-        logger->LogDebug("MobileConnection: NetworkMessage parsing succeded");
+        logger->LogDebug(::machine::string::mobileConnectionMessage2);
     }
     else
     {
-        logger->LogError("MobileConnection: NetworkMessage parsing failed");
+        logger->LogError(::machine::string::mobileConnectionMessage3);
     }
 
     switch (message.messageid())
     {
         case network::MessageId::HandshakeRequest:
-        logger->Log("MobileConnection: HandshakeRequest received");
+        logger->Log(::machine::string::mobileConnectionMessage4);
         break;
 
         default:
-        logger->LogError("MobileConnection: Unknown network message: " + std::to_string(message.messageid()));
+        logger->LogError(::machine::string::mobileConnectionMessage5 + std::to_string(message.messageid()));
         break;
     }
 }

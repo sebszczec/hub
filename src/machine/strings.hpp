@@ -27,6 +27,12 @@ namespace machine
         static const std::string daemonMessage7 = "Daemon: disabling standard descriptors SUCCESSED";
         static const std::string daemonMessage8 = "Daemon: staying in foreground";
 
+        static const std::string mobileConnectionMessage1 = "MobileConnection: Network packet size: ";
+        static const std::string mobileConnectionMessage2 = "MobileConnection: NetworkMessage parsing succeded";
+        static const std::string mobileConnectionMessage3 = "MobileConnection: NetworkMessage parsing failed";
+        static const std::string mobileConnectionMessage4 = "MobileConnection: HandshakeRequest received";
+        static const std::string mobileConnectionMessage5 = "MobileConnection: Unknown network message: ";
+
         static const std::string telnet = "Telnet";
         static const std::string telnetSSL = "TelnetSSL";
         static const std::string telnetWelcomeMessage = "Welcome\n";
