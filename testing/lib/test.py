@@ -3,6 +3,7 @@ import sys
 class Test(object):
     def __init__(self):
         self.name = type(self).__name__
+        self.test_with_ssl = True
 
     def setup(self):
         return True

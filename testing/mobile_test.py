@@ -10,6 +10,7 @@ class MobileTest(Test):
     def setup(self):
         self.connection = Mobile()
         self.connection.connect()
+        self.test_with_ssl = False
         return True
 
     def run(self):

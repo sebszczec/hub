@@ -57,8 +57,13 @@ Environment.use_ssl = False
 runner.run(tests, "no_ssl_")
 results_no_ssl = runner.getResults()
 
+ssl_tests = []
+for test in tests:
+    if test.test_with_ssl is True:
+        ssl_tests.append(test)
+
 Environment.use_ssl = True
-runner.run(tests, "ssl_")
+runner.run(ssl_tests, "ssl_")
 results_with_ssl = runner.getResults()
 
 results = results_no_ssl.copy()
